@@ -8,8 +8,11 @@ import {
 } from "react-router";
 
 import type { Route } from "./+types/root";
+import { LayoutVanilla } from "./components/layout-vanilla";
+import { useEffect } from "react";
 import "./app.css";
 
+// todo: Remove fonts later
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
@@ -34,6 +37,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         {children}
+        <LayoutVanilla config={{ option: "grid", size: 100, animate: false }} />
+        {/* <LayoutVanilla
+          config={{ option: "columns", count: 20, animate: false }}
+        /> */}
+        <LayoutVanilla
+          config={{ option: "columns", type: "center", width: 100 }}
+        />
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -42,6 +52,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+  useEffect(() => {
+    console.log("PROV 22:29⚡");
+  }, []);
   return <Outlet />;
 }
 
