@@ -39,7 +39,7 @@ export const LayoutVanilla = ({ config }: LayoutVanillaProps) => {
   }, [option, size]);
 
   useEffect(() => {
-    if (import.meta.env.PROD) return;
+    // if (import.meta.env.PROD) return; // todo: Uncomment this later
 
     const toggleLayout = (e: KeyboardEvent) => {
       if (e.shiftKey && (e.key === "G" || e.key === "g")) {
@@ -56,7 +56,9 @@ export const LayoutVanilla = ({ config }: LayoutVanillaProps) => {
     };
   }, []);
 
-  if (import.meta.env.DEV) {
+  // if (import.meta.env.DEV) {
+  if (true) {
+    // todo: Change this later
     if (option === "grid" && type) {
       console.warn(
         `[React Figma Layout]: "type" is ignored when option is "grid"`,
