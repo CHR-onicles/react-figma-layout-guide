@@ -37,13 +37,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         {children}
-        <LayoutVanilla config={{ option: "grid", size: 100, animate: false }} />
+        {/* <LayoutVanilla config={{ option: "grid", size: 100, animate: false }} /> */}
         {/* <LayoutVanilla
           config={{ option: "columns", count: 20, animate: false }}
         /> */}
-        <LayoutVanilla
+        {/* <LayoutVanilla
           config={{ option: "columns", type: "center", width: 100 }}
-        />
+        /> */}
         <ScrollRestoration />
         <Scripts />
       </body>

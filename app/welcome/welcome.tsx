@@ -1,47 +1,163 @@
+import { useSearchParams } from "react-router";
+import { useMemo } from "react";
+import { LayoutVanilla } from "~/components/layout-vanilla";
 import logoDark from "./logo-dark.svg";
 import logoLight from "./logo-light.svg";
 
+const COLUMNS_TYPES = ["stretch", "left", "right", "center"] as const;
+const ROWS_TYPES = ["stretch", "top", "center", "bottom"] as const;
+type ColumnsOptionType = (typeof COLUMNS_TYPES)[number];
+type RowsOptionType = (typeof ROWS_TYPES)[number];
+
+function parseNum(value: string | null, fallback: number): number {
+  if (value === null || value === "") return fallback;
+  const n = Number(value);
+  return Number.isNaN(n) ? fallback : n;
+}
+
+function parseBool(value: string | null, fallback: boolean): boolean {
+  if (value === null || value === "") return fallback;
+  return value === "true" || value === "1";
+}
+
 export function Welcome() {
+  const [searchParams] = useSearchParams();
+
+  console.log("option:", searchParams.get("option"));
+  console.log("type:", searchParams.get("type"));
+  console.log("count:", searchParams.get("count"));
+  console.log("color:", searchParams.get("color"));
+  console.log("animate:", searchParams.get("animate"));
+
+  const layoutConfig = useMemo(() => {
+    const option = (searchParams.get("option") ?? "columns") as
+      | "columns"
+      | "grid"
+      | "rows";
+    const color = searchParams.get("color") ?? undefined;
+    const animate = parseBool(searchParams.get("animate"), true);
+
+    if (option === "grid") {
+      return {
+        option: "grid" as const,
+        size: parseNum(searchParams.get("size"), 25),
+        color,
+        animate,
+      };
+    }
+
+    if (option === "columns") {
+      const typeParam = searchParams.get("type");
+      const type: ColumnsOptionType = COLUMNS_TYPES.includes(
+        typeParam as ColumnsOptionType,
+      )
+        ? (typeParam as ColumnsOptionType)
+        : "center";
+      const widthParam = searchParams.get("width");
+      const width =
+        widthParam === "auto" ? ("auto" as const) : parseNum(widthParam, 100);
+
+      return {
+        option: "columns" as const,
+        type,
+        width,
+        margin: parseNum(searchParams.get("margin"), 0),
+        gutter: parseNum(searchParams.get("gutter"), 20),
+        offset: parseNum(searchParams.get("offset"), 0),
+        count: parseNum(searchParams.get("count"), 5),
+        color,
+        animate,
+      };
+    }
+
+    if (option === "rows") {
+      const typeParam = searchParams.get("type");
+      const type: RowsOptionType = ROWS_TYPES.includes(
+        typeParam as RowsOptionType,
+      )
+        ? (typeParam as RowsOptionType)
+        : "stretch";
+      const heightParam = searchParams.get("height");
+      const height =
+        heightParam === "auto" ? ("auto" as const) : parseNum(heightParam, 50);
+
+      return {
+        option: "rows" as const,
+        type,
+        height,
+        margin: parseNum(searchParams.get("margin"), 0),
+        gutter: parseNum(searchParams.get("gutter"), 20),
+        offset: parseNum(searchParams.get("offset"), 0),
+        count: parseNum(searchParams.get("count"), 5),
+        color,
+        animate,
+      };
+    }
+
+    return {
+      option: "columns" as const,
+      type: "center" as ColumnsOptionType,
+      width: 100,
+      margin: 0,
+      gutter: 20,
+      offset: 0,
+      count: 5,
+      color,
+      animate,
+    };
+  }, [searchParams]);
+
   return (
-    <main className="flex items-center justify-center pt-16 pb-4">
-      <div className="flex-1 flex flex-col items-center gap-16 min-h-0">
-        <header className="flex flex-col items-center gap-9">
-          <div className="w-[500px] max-w-[100vw] p-4">
-            <img
-              src={logoLight}
-              alt="React Router"
-              className="block w-full dark:hidden"
-            />
-            <img
-              src={logoDark}
-              alt="React Router"
-              className="hidden w-full dark:block"
-            />
+    <>
+      {layoutConfig.option === "grid" && (
+        <LayoutVanilla config={layoutConfig} />
+      )}
+      {layoutConfig.option === "columns" && (
+        <LayoutVanilla config={layoutConfig} />
+      )}
+      {layoutConfig.option === "rows" && (
+        <LayoutVanilla config={layoutConfig} />
+      )}
+      <main className="flex items-center justify-center pt-16 pb-4">
+        <div className="flex-1 flex flex-col items-center gap-16 min-h-0">
+          <header className="flex flex-col items-center gap-9">
+            <div className="w-[500px] max-w-[100vw] p-4">
+              <img
+                src={logoLight}
+                alt="React Router"
+                className="block w-full dark:hidden"
+              />
+              <img
+                src={logoDark}
+                alt="React Router"
+                className="hidden w-full dark:block"
+              />
+            </div>
+          </header>
+          <div className="max-w-[300px] w-full space-y-6 px-4">
+            <nav className="rounded-3xl border border-gray-200 p-6 dark:border-gray-700 space-y-4">
+              <p className="leading-6 text-gray-700 dark:text-gray-200 text-center">
+                What&apos;s next?
+              </p>
+              <ul>
+                {resources.map(({ href, text, icon }) => (
+                  <li key={href}>
+                    <a
+                      className="group flex items-center gap-3 self-stretch p-3 leading-normal text-blue-700 hover:underline dark:text-blue-500"
+                      href={href}
+                      target="_blank"
+                      rel="noreferrer">
+                      {icon}
+                      {text}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
           </div>
-        </header>
-        <div className="max-w-[300px] w-full space-y-6 px-4">
-          <nav className="rounded-3xl border border-gray-200 p-6 dark:border-gray-700 space-y-4">
-            <p className="leading-6 text-gray-700 dark:text-gray-200 text-center">
-              What&apos;s next?
-            </p>
-            <ul>
-              {resources.map(({ href, text, icon }) => (
-                <li key={href}>
-                  <a
-                    className="group flex items-center gap-3 self-stretch p-3 leading-normal text-blue-700 hover:underline dark:text-blue-500"
-                    href={href}
-                    target="_blank"
-                    rel="noreferrer">
-                    {icon}
-                    {text}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
         </div>
-      </div>
-    </main>
+      </main>
+    </>
   );
 }
 
