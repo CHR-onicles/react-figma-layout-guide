@@ -36,6 +36,7 @@ export function Welcome() {
       | "rows";
     const color = searchParams.get("color") ?? undefined;
     const animate = parseBool(searchParams.get("animate"), true);
+    const defaultVisible = parseBool(searchParams.get("visible"), false);
 
     if (option === "grid") {
       return {
@@ -43,6 +44,7 @@ export function Welcome() {
         size: parseNum(searchParams.get("size"), 25),
         color,
         animate,
+        defaultVisible,
       };
     }
 
@@ -67,6 +69,7 @@ export function Welcome() {
         count: parseNum(searchParams.get("count"), 5),
         color,
         animate,
+        defaultVisible,
       };
     }
 
@@ -91,6 +94,7 @@ export function Welcome() {
         count: parseNum(searchParams.get("count"), 5),
         color,
         animate,
+        defaultVisible,
       };
     }
 
@@ -104,6 +108,7 @@ export function Welcome() {
       count: 5,
       color,
       animate,
+      defaultVisible,
     };
   }, [searchParams]);
 

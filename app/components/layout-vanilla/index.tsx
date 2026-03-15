@@ -19,9 +19,10 @@ export const LayoutVanilla = ({ config }: LayoutVanillaProps) => {
   const margin = "margin" in config ? config.margin : 0;
   const offset = "offset" in config ? config.offset : 0;
   const animate = "animate" in config ? config.animate : true;
+  const defaultVisible = config.defaultVisible ?? false;
   const delayConstant = animate ? 0.015 : 0;
 
-  const [displayLayout, setDisplayLayout] = useState(false);
+  const [displayLayout, setDisplayLayout] = useState(defaultVisible);
   const [gridColumns, setGridColumns] = useState(0);
   const [gridRows, setGridRows] = useState(0);
 
@@ -43,7 +44,7 @@ export const LayoutVanilla = ({ config }: LayoutVanillaProps) => {
     const toggleLayout = (e: KeyboardEvent) => {
       if (e.shiftKey && (e.key === "G" || e.key === "g")) {
         e.preventDefault();
-        // console.log("shift + g pressed");
+        console.log("shift + g pressed");
         setDisplayLayout(prev => !prev);
       }
     };

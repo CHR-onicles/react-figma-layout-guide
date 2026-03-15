@@ -42,6 +42,13 @@ export type LayoutBase = {
   animate?: boolean;
 
   /**
+   * Whether the layout guide is visible by default (without pressing Shift+G).
+   *
+   * Default: false
+   */
+  defaultVisible?: boolean;
+
+  /**
    * Config to setup layout for each media query: mobile, tablet and desktop using mobile-first.
    */
   mediaQueries?: LayoutMediaQueries;
