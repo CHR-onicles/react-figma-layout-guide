@@ -1,24 +1,45 @@
-type LayoutOption = "grid" | "columns" | "rows";
+type DistributiveOmit<T, K extends keyof any> = T extends any
+  ? Omit<T, K>
+  : never; // To preserve discrimination in union
+
+export type Breakpoint = "mobile" | "tablet" | "desktop";
+
+export type LayoutOption = "grid" | "columns" | "rows";
 
 // Alignment types scoped to each layout option
-type ColumnsOptionType = "stretch" | "left" | "right" | "center";
-type RowsOptionType = "stretch" | "top" | "center" | "bottom";
+export type ColumnsOptionType = "stretch" | "left" | "right" | "center";
+export type RowsOptionType = "stretch" | "top" | "center" | "bottom";
 
-type LayoutMediaQueries = {
+export type LayoutMediaQueries = {
   /**
    * Screen sizes <= 767px
    */
-  mobile?: Omit<LayoutDefault, "mediaQueries">;
+  mobile?: DistributiveOmit<LayoutDefault, "mediaQueries">;
 
   /**
    * Screen sizes between 768px and 1023px
    */
-  tablet?: Omit<LayoutDefault, "mediaQueries">;
+  tablet?: DistributiveOmit<LayoutDefault, "mediaQueries">;
 
   /**
    * Screen sizes >= 1024px
    */
-  desktop?: Omit<LayoutDefault, "mediaQueries">;
+  desktop?: DistributiveOmit<LayoutDefault, "mediaQueries">;
+};
+
+export type FlatConfig = {
+  option?: LayoutOption;
+  color?: string;
+  animate?: boolean;
+  defaultVisible?: boolean;
+  type?: string;
+  size?: number;
+  width?: number | "auto";
+  height?: number | "auto";
+  margin?: number;
+  gutter?: number;
+  offset?: number;
+  count?: number;
 };
 
 export type LayoutBase = {
@@ -162,6 +183,23 @@ export type LayoutDefault =
  * // Rows layout - type (stretch|top|center|bottom), height, gutter, margin, offset
  * <LayoutVanilla config={{ option: "rows", type: "stretch", gutter: 20, margin: 50 }} />
  */
+
+// Can be used always at the top level
+export type LayoutGlobalProps = {
+  color?: string;
+  animate?: boolean;
+  defaultVisible?: boolean;
+};
+
+// Branch 1: no mediaQueries → full layout config (current behavior)
+type LayoutWithoutMediaQueries = LayoutDefault & { mediaQueries?: never };
+// Branch 2: with mediaQueries → only global props at top level
+type LayoutWithMediaQueries = LayoutGlobalProps & {
+  mediaQueries: LayoutMediaQueries;
+  // layout-specific props are forbidden at top level
+  option?: never;
+};
+
 export type LayoutVanillaProps = {
-  config: LayoutDefault;
+  config: LayoutWithMediaQueries | LayoutWithoutMediaQueries;
 };

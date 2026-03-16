@@ -12,7 +12,6 @@ import { LayoutVanilla } from "./components/layout-vanilla";
 import { useEffect } from "react";
 import "./app.css";
 
-// todo: Remove fonts later
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
@@ -37,12 +36,20 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         {children}
-        {/* <LayoutVanilla config={{ option: "grid", size: 100, animate: false }} /> */}
         {/* <LayoutVanilla
-          config={{ option: "columns", count: 20, animate: false }}
-        /> */}
-        {/* <LayoutVanilla
-          config={{ option: "columns", type: "center", width: 100 }}
+          config={{
+            // animate: false,
+            mediaQueries: {
+              mobile: { option: "columns", count: 3 },
+              tablet: {
+                option: "rows",
+                count: 5,
+                type: "center",
+                color: "#ffffff7f",
+              },
+              desktop: { option: "columns", count: 12 },
+            },
+          }}
         /> */}
         <ScrollRestoration />
         <Scripts />

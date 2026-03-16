@@ -1,42 +1,39 @@
 import React, { useEffect, useState } from "react";
 import classes from "./layout-vanilla.module.css";
-import type { LayoutVanillaProps } from "~/types/layout";
+import type { FlatConfig, LayoutVanillaProps } from "~/types/layout";
+import { resolveConfig } from "~/utils/resolve-config";
 
 export const LayoutVanilla = ({ config }: LayoutVanillaProps) => {
-  const option = config.option ?? "columns";
-  const type =
-    option !== "grid"
-      ? "type" in config
-        ? config.type
-        : "stretch"
-      : undefined;
-  const size = "size" in config ? config.size : 25;
-  const color = config.color ?? "hsl(0, 100%, 100%, 0.5)";
-  const count = "count" in config ? config.count : 5;
-  const width = "width" in config ? config.width : 25;
-  const height = "height" in config ? config.height : 50;
-  const gutter = "gutter" in config ? config.gutter : 20;
-  const margin = "margin" in config ? config.margin : 0;
-  const offset = "offset" in config ? config.offset : 0;
-  const animate = "animate" in config ? config.animate : true;
-  const defaultVisible = config.defaultVisible ?? false;
-  const delayConstant = animate ? 0.015 : 0;
-
-  const [displayLayout, setDisplayLayout] = useState(defaultVisible);
+  const [activeConfig, setActiveConfig] = useState<FlatConfig>(() =>
+    resolveConfig(
+      config,
+      typeof window !== "undefined" ? window.innerWidth : 1024,
+    ),
+  );
+  const [displayLayout, setDisplayLayout] = useState(
+    activeConfig.defaultVisible ?? false,
+  );
   const [gridColumns, setGridColumns] = useState(0);
   const [gridRows, setGridRows] = useState(0);
 
   useEffect(() => {
-    if (option === "grid") {
-      const viewportWidth = window.innerWidth;
-      const viewportHeight = window.innerHeight;
+    const update = () => {
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const resolved = resolveConfig(config, vw);
+      setActiveConfig(resolved);
 
-      setGridColumns(Math.floor(viewportWidth / (size ?? 1)));
-      setGridRows(Math.floor(viewportHeight / (size ?? 1)));
+      if ((resolved.option ?? "columns") === "grid") {
+        const s = resolved.size ?? 25;
+        setGridColumns(Math.floor(vw / s));
+        setGridRows(Math.floor(vh / s));
+      }
+    };
 
-      // console.log(viewportWidth, viewportHeight);
-    }
-  }, [option, size]);
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, [config]);
 
   useEffect(() => {
     // if (import.meta.env.PROD) return; // todo: Uncomment this later
@@ -44,17 +41,27 @@ export const LayoutVanilla = ({ config }: LayoutVanillaProps) => {
     const toggleLayout = (e: KeyboardEvent) => {
       if (e.shiftKey && (e.key === "G" || e.key === "g")) {
         e.preventDefault();
-        console.log("shift + g pressed");
+        // console.log("shift + g pressed");
         setDisplayLayout(prev => !prev);
       }
     };
 
     window.addEventListener("keydown", toggleLayout);
-
-    return () => {
-      window.removeEventListener("keydown", toggleLayout);
-    };
+    return () => window.removeEventListener("keydown", toggleLayout);
   }, []);
+
+  const option = activeConfig.option ?? "columns";
+  const type = option !== "grid" ? (activeConfig.type ?? "stretch") : undefined;
+  const size = activeConfig.size ?? 25;
+  const color = activeConfig.color ?? "hsl(0, 100%, 50%, 0.1)";
+  const count = activeConfig.count ?? 5;
+  const width = activeConfig.width ?? 25;
+  const height = activeConfig.height ?? 50;
+  const gutter = activeConfig.gutter ?? 20;
+  const margin = activeConfig.margin ?? 0;
+  const offset = activeConfig.offset ?? 0;
+  const animate = activeConfig.animate ?? true;
+  const delayConstant = animate ? 0.015 : 0;
 
   // if (import.meta.env.DEV) {
   if (true) {
@@ -87,15 +94,15 @@ export const LayoutVanilla = ({ config }: LayoutVanillaProps) => {
           "--count": count,
           "--bg-color": color,
           "--size": `${size}px`,
-          "--width": `${width}px`,
-          "--height": `${height}px`,
+          "--width": typeof width === "number" ? `${width}px` : width,
+          "--height": typeof height === "number" ? `${height}px` : height,
           "--gutter": `${gutter}px`,
           "--margin": `${margin}px`,
           "--offset": `${offset}px`,
         } as React.CSSProperties
       }>
       {option === "rows" || option === "columns" ? (
-        Array.from({ length: count! }).map((_, index) => (
+        Array.from({ length: count }).map((_, index) => (
           <div
             key={index}
             className={classes["layout-track"]}
@@ -126,7 +133,6 @@ export const LayoutVanilla = ({ config }: LayoutVanillaProps) => {
                 className={classes["grid-row"]}
                 style={
                   {
-                    // "--delay": `${index * 0.015 * 0.5}s`,
                     "--delay": `${index * 0.015 * 0.5 * (gridColumns > gridRows ? 1 : 0.5)}s`,
                   } as React.CSSProperties
                 }

@@ -1,6 +1,11 @@
 import { useSearchParams } from "react-router";
 import { useMemo } from "react";
 import { LayoutVanilla } from "~/components/layout-vanilla";
+import type {
+  LayoutMediaQueries,
+  LayoutOption,
+  LayoutVanillaProps,
+} from "~/types/layout";
 import logoDark from "./logo-dark.svg";
 import logoLight from "./logo-light.svg";
 
@@ -20,23 +25,86 @@ function parseBool(value: string | null, fallback: boolean): boolean {
   return value === "true" || value === "1";
 }
 
+function buildBreakpointConfig(searchParams: URLSearchParams, prefix: string) {
+  const hasAny = [...searchParams.keys()].some(k => k.startsWith(prefix));
+  if (!hasAny) return undefined;
+
+  const get = (key: string) => searchParams.get(`${prefix}${key}`);
+  const option = (get("option") ?? "columns") as LayoutOption;
+
+  if (option === "grid") {
+    return {
+      option: "grid" as const,
+      size: parseNum(get("size"), 25),
+    };
+  }
+
+  if (option === "rows") {
+    const typeParam = get("type");
+    const type: RowsOptionType = ROWS_TYPES.includes(
+      typeParam as RowsOptionType,
+    )
+      ? (typeParam as RowsOptionType)
+      : "stretch";
+    const heightParam = get("height");
+    const height =
+      heightParam === "auto" ? ("auto" as const) : parseNum(heightParam, 50);
+    return {
+      option: "rows" as const,
+      type,
+      height,
+      margin: parseNum(get("margin"), 0),
+      gutter: parseNum(get("gutter"), 20),
+      offset: parseNum(get("offset"), 0),
+      count: parseNum(get("count"), 5),
+    };
+  }
+
+  const typeParam = get("type");
+  const type: ColumnsOptionType = COLUMNS_TYPES.includes(
+    typeParam as ColumnsOptionType,
+  )
+    ? (typeParam as ColumnsOptionType)
+    : "center";
+  const widthParam = get("width");
+  const width =
+    widthParam === "auto" ? ("auto" as const) : parseNum(widthParam, 100);
+  return {
+    option: "columns" as const,
+    type,
+    width,
+    margin: parseNum(get("margin"), 0),
+    gutter: parseNum(get("gutter"), 20),
+    offset: parseNum(get("offset"), 0),
+    count: parseNum(get("count"), 5),
+  };
+}
+
 export function Welcome() {
   const [searchParams] = useSearchParams();
 
-  console.log("option:", searchParams.get("option"));
-  console.log("type:", searchParams.get("type"));
-  console.log("count:", searchParams.get("count"));
-  console.log("color:", searchParams.get("color"));
-  console.log("animate:", searchParams.get("animate"));
-
-  const layoutConfig = useMemo(() => {
-    const option = (searchParams.get("option") ?? "columns") as
-      | "columns"
-      | "grid"
-      | "rows";
+  const layoutConfig = useMemo<LayoutVanillaProps["config"]>(() => {
     const color = searchParams.get("color") ?? undefined;
     const animate = parseBool(searchParams.get("animate"), true);
     const defaultVisible = parseBool(searchParams.get("visible"), false);
+
+    const hasMq = (["mobile_", "tablet_", "desktop_"] as const).some(prefix =>
+      [...searchParams.keys()].some(k => k.startsWith(prefix)),
+    );
+
+    if (hasMq) {
+      const mobile = buildBreakpointConfig(searchParams, "mobile_");
+      const tablet = buildBreakpointConfig(searchParams, "tablet_");
+      const desktop = buildBreakpointConfig(searchParams, "desktop_");
+      const mediaQueries: LayoutMediaQueries = {
+        ...(mobile && { mobile }),
+        ...(tablet && { tablet }),
+        ...(desktop && { desktop }),
+      };
+      return { color, animate, defaultVisible, mediaQueries };
+    }
+
+    const option = (searchParams.get("option") ?? "columns") as LayoutOption;
 
     if (option === "grid") {
       return {
@@ -114,15 +182,7 @@ export function Welcome() {
 
   return (
     <>
-      {layoutConfig.option === "grid" && (
-        <LayoutVanilla config={layoutConfig} />
-      )}
-      {layoutConfig.option === "columns" && (
-        <LayoutVanilla config={layoutConfig} />
-      )}
-      {layoutConfig.option === "rows" && (
-        <LayoutVanilla config={layoutConfig} />
-      )}
+      <LayoutVanilla config={layoutConfig} />
       <main className="flex items-center justify-center pt-16 pb-4">
         <div className="flex-1 flex flex-col items-center gap-16 min-h-0">
           <header className="flex flex-col items-center gap-9">
