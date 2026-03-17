@@ -168,20 +168,20 @@ export type LayoutDefault =
     });
 
 /**
- * Props for LayoutVanilla component.
+ * Props for LayoutGuide component.
  * Pass layout configuration via the `config` prop.
  *
  * @example
  * // Grid layout - only size and base options (no type, width, height)
- * <LayoutVanilla config={{ option: "grid", size: 20 }} />
+ * <LayoutGuide config={{ option: "grid", size: 20 }} />
  *
  * @example
  * // Columns layout - type (stretch|left|right|center), width, gutter, margin, offset
- * <LayoutVanilla config={{ option: "columns", type: "center", width: 100 }} />
+ * <LayoutGuide config={{ option: "columns", type: "center", width: 100 }} />
  *
  * @example
  * // Rows layout - type (stretch|top|center|bottom), height, gutter, margin, offset
- * <LayoutVanilla config={{ option: "rows", type: "stretch", gutter: 20, margin: 50 }} />
+ * <LayoutGuide config={{ option: "rows", type: "stretch", gutter: 20, margin: 50 }} />
  */
 
 // Can be used always at the top level
@@ -200,6 +200,6 @@ type LayoutWithMediaQueries = LayoutGlobalProps & {
   option?: never;
 };
 
-export type LayoutVanillaProps = {
+export type LayoutGuideProps = {
   config: LayoutWithMediaQueries | LayoutWithoutMediaQueries;
 };

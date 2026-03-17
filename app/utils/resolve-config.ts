@@ -1,12 +1,12 @@
 import type {
   FlatConfig,
   LayoutMediaQueries,
-  LayoutVanillaProps,
+  LayoutGuideProps,
 } from "~/types/layout";
 import { getBreakpoint } from "./get-breakpoint";
 
 export function resolveConfig(
-  config: LayoutVanillaProps["config"],
+  config: LayoutGuideProps["config"],
   width: number,
 ): FlatConfig {
   const mq = (config as { mediaQueries?: LayoutMediaQueries }).mediaQueries;

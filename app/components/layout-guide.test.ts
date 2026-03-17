@@ -1,5 +1,5 @@
 import { describe, it } from "vitest";
 
-describe("layout vanilla", () => {
+describe("layout guide", () => {
   it("Add tests");
 });

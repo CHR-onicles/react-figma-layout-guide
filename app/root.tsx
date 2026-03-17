@@ -8,7 +8,7 @@ import {
 } from "react-router";
 
 import type { Route } from "./+types/root";
-import { LayoutVanilla } from "./components/layout-vanilla";
+import { LayoutGuide } from "./components/layout-guide";
 import { useEffect } from "react";
 import "./app.css";
 
@@ -36,7 +36,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         {children}
-        {/* <LayoutVanilla
+        {/* <LayoutGuide
           config={{
             // animate: false,
             mediaQueries: {

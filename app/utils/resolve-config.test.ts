@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { LayoutVanillaProps } from "~/types/layout";
+import type { LayoutGuideProps } from "~/types/layout";
 import { resolveConfig } from "./resolve-config";
 
 describe("resolveConfig without mediaQueries", () => {
@@ -9,7 +9,7 @@ describe("resolveConfig without mediaQueries", () => {
     defaultVisible: false,
     option: "grid",
     size: 20,
-  } as LayoutVanillaProps["config"];
+  } as LayoutGuideProps["config"];
   it("returns the config as-is", () => {
     expect(resolveConfig(config, 1000)).toBe(config);
   });
@@ -22,13 +22,13 @@ describe("resolveConfig with mediaQueries", () => {
       color: "#0000fa34",
       defaultVisible: false,
       mediaQueries: {
-        desktop: { option: "columns", type: "stretch" },
+        desktop: { option: "columns", type: "stretch", color: "#00ff0011" },
       },
-    } as LayoutVanillaProps["config"];
+    } as LayoutGuideProps["config"];
 
     expect(resolveConfig(config, 1440)).toEqual({
       animate: false,
-      color: "#0000fa34",
+      color: "#00ff0011",
       defaultVisible: false,
       option: "columns",
       type: "stretch",
@@ -43,7 +43,7 @@ describe("resolveConfig with mediaQueries", () => {
       mediaQueries: {
         tablet: { option: "rows" },
       },
-    } as LayoutVanillaProps["config"];
+    } as LayoutGuideProps["config"];
 
     expect(resolveConfig(config, 1440)).toEqual({
       animate: false,
@@ -63,7 +63,7 @@ describe("resolveConfig with mediaQueries", () => {
         tablet: { option: "rows" },
         mobile: { option: "grid" },
       },
-    } as LayoutVanillaProps["config"];
+    } as LayoutGuideProps["config"];
 
     expect(resolveConfig(config, 1023)).toEqual({
       animate: false,
@@ -82,7 +82,7 @@ describe("resolveConfig with mediaQueries", () => {
         desktop: { option: "columns" },
         mobile: { option: "grid", size: 10 },
       },
-    } as LayoutVanillaProps["config"];
+    } as LayoutGuideProps["config"];
 
     expect(resolveConfig(config, 1023)).toEqual({
       animate: false,
@@ -102,7 +102,7 @@ describe("resolveConfig with mediaQueries", () => {
         tablet: { option: "columns" },
         mobile: { option: "grid" },
       },
-    } as LayoutVanillaProps["config"];
+    } as LayoutGuideProps["config"];
 
     expect(resolveConfig(config, 375)).toEqual({
       animate: false,
@@ -120,7 +120,7 @@ describe("resolveConfig with mediaQueries", () => {
       mediaQueries: {
         mobile: { option: "grid" },
       },
-    } as LayoutVanillaProps["config"];
+    } as LayoutGuideProps["config"];
 
     expect(resolveConfig(config, 1440)).toEqual({
       animate: false,

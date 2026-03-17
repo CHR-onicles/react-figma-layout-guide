@@ -1,10 +1,10 @@
 import { useSearchParams } from "react-router";
 import { useMemo } from "react";
-import { LayoutVanilla } from "~/components/layout-vanilla";
+import { LayoutGuide } from "~/components/layout-guide";
 import type {
   LayoutMediaQueries,
   LayoutOption,
-  LayoutVanillaProps,
+  LayoutGuideProps,
 } from "~/types/layout";
 import logoDark from "./logo-dark.svg";
 import logoLight from "./logo-light.svg";
@@ -83,7 +83,7 @@ function buildBreakpointConfig(searchParams: URLSearchParams, prefix: string) {
 export function Welcome() {
   const [searchParams] = useSearchParams();
 
-  const layoutConfig = useMemo<LayoutVanillaProps["config"]>(() => {
+  const layoutConfig = useMemo<LayoutGuideProps["config"]>(() => {
     const color = searchParams.get("color") ?? undefined;
     const animate = parseBool(searchParams.get("animate"), true);
     const defaultVisible = parseBool(searchParams.get("visible"), false);
@@ -182,7 +182,7 @@ export function Welcome() {
 
   return (
     <>
-      <LayoutVanilla config={layoutConfig} />
+      <LayoutGuide config={layoutConfig} />
       <main className="flex items-center justify-center pt-16 pb-4">
         <div className="flex-1 flex flex-col items-center gap-16 min-h-0">
           <header className="flex flex-col items-center gap-9">

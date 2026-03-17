@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import classes from "./layout-vanilla.module.css";
-import type { FlatConfig, LayoutVanillaProps } from "~/types/layout";
+import classes from "./layout-guide.module.css";
+import type { FlatConfig, LayoutGuideProps } from "~/types/layout";
 import { resolveConfig } from "~/utils/resolve-config";
 
-export const LayoutVanilla = ({ config }: LayoutVanillaProps) => {
+export const LayoutGuide = ({ config }: LayoutGuideProps) => {
   const [activeConfig, setActiveConfig] = useState<FlatConfig>(() =>
     resolveConfig(
       config,
@@ -87,8 +87,9 @@ export const LayoutVanilla = ({ config }: LayoutVanillaProps) => {
 
   return (
     <div
-      className={`${classes["layout-vanilla"]} ${displayLayout ? classes.display : ""} ${classes[option]} ${type ? classes[type] : ""}`}
+      className={`${classes["layout-guide"]} ${displayLayout ? classes.display : ""} ${classes[option]} ${type ? classes[type] : ""}`}
       aria-hidden
+      tabIndex={-1}
       style={
         {
           "--count": count,
