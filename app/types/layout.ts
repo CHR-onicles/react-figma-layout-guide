@@ -28,7 +28,7 @@ export type LayoutMediaQueries = {
 };
 
 export type FlatConfig = {
-  option?: LayoutOption;
+  layout?: LayoutOption;
   color?: string;
   animate?: boolean;
   defaultVisible?: boolean;
@@ -48,7 +48,7 @@ export type LayoutBase = {
    *
    * Default: "columns"
    */
-  option?: LayoutOption;
+  layout?: LayoutOption;
 
   /**
    * Hex, rgb, hsl, or any other type of colors
@@ -78,7 +78,7 @@ export type LayoutBase = {
 // Type is scoped to option
 export type LayoutDefault =
   | (LayoutBase & {
-      option: "grid";
+      layout: "grid";
       type?: never;
 
       /**
@@ -89,7 +89,7 @@ export type LayoutDefault =
       size?: number;
     })
   | (LayoutBase & {
-      option: "columns";
+      layout: "columns";
       type?: ColumnsOptionType;
 
       /**
@@ -128,7 +128,7 @@ export type LayoutDefault =
       count?: number;
     })
   | (LayoutBase & {
-      option: "rows";
+      layout: "rows";
       type?: RowsOptionType;
 
       /**
@@ -173,15 +173,15 @@ export type LayoutDefault =
  *
  * @example
  * // Grid layout - only size and base options (no type, width, height)
- * <LayoutGuide config={{ option: "grid", size: 20 }} />
+ * <LayoutGuide config={{ layout: "grid", size: 20 }} />
  *
  * @example
  * // Columns layout - type (stretch|left|right|center), width, gutter, margin, offset
- * <LayoutGuide config={{ option: "columns", type: "center", width: 100 }} />
+ * <LayoutGuide config={{ layout: "columns", type: "center", width: 100 }} />
  *
  * @example
  * // Rows layout - type (stretch|top|center|bottom), height, gutter, margin, offset
- * <LayoutGuide config={{ option: "rows", type: "stretch", gutter: 20, margin: 50 }} />
+ * <LayoutGuide config={{ layout: "rows", type: "stretch", gutter: 20, margin: 50 }} />
  */
 
 // Can be used always at the top level
@@ -197,7 +197,7 @@ type LayoutWithoutMediaQueries = LayoutDefault & { mediaQueries?: never };
 type LayoutWithMediaQueries = LayoutGlobalProps & {
   mediaQueries: LayoutMediaQueries;
   // layout-specific props are forbidden at top level
-  option?: never;
+  layout?: never;
 };
 
 export type LayoutGuideProps = {

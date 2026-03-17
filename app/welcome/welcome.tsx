@@ -34,7 +34,7 @@ function buildBreakpointConfig(searchParams: URLSearchParams, prefix: string) {
 
   if (option === "grid") {
     return {
-      option: "grid" as const,
+      layout: "grid" as const,
       size: parseNum(get("size"), 25),
     };
   }
@@ -50,7 +50,7 @@ function buildBreakpointConfig(searchParams: URLSearchParams, prefix: string) {
     const height =
       heightParam === "auto" ? ("auto" as const) : parseNum(heightParam, 50);
     return {
-      option: "rows" as const,
+      layout: "rows" as const,
       type,
       height,
       margin: parseNum(get("margin"), 0),
@@ -70,7 +70,7 @@ function buildBreakpointConfig(searchParams: URLSearchParams, prefix: string) {
   const width =
     widthParam === "auto" ? ("auto" as const) : parseNum(widthParam, 100);
   return {
-    option: "columns" as const,
+    layout: "columns" as const,
     type,
     width,
     margin: parseNum(get("margin"), 0),
@@ -108,7 +108,7 @@ export function Welcome() {
 
     if (option === "grid") {
       return {
-        option: "grid" as const,
+        layout: "grid" as const,
         size: parseNum(searchParams.get("size"), 25),
         color,
         animate,
@@ -128,7 +128,7 @@ export function Welcome() {
         widthParam === "auto" ? ("auto" as const) : parseNum(widthParam, 100);
 
       return {
-        option: "columns" as const,
+        layout: "columns" as const,
         type,
         width,
         margin: parseNum(searchParams.get("margin"), 0),
@@ -153,7 +153,7 @@ export function Welcome() {
         heightParam === "auto" ? ("auto" as const) : parseNum(heightParam, 50);
 
       return {
-        option: "rows" as const,
+        layout: "rows" as const,
         type,
         height,
         margin: parseNum(searchParams.get("margin"), 0),
@@ -167,7 +167,7 @@ export function Welcome() {
     }
 
     return {
-      option: "columns" as const,
+      layout: "columns" as const,
       type: "center" as ColumnsOptionType,
       width: 100,
       margin: 0,

@@ -23,7 +23,7 @@ export const LayoutGuide = ({ config }: LayoutGuideProps) => {
       const resolved = resolveConfig(config, vw);
       setActiveConfig(resolved);
 
-      if ((resolved.option ?? "columns") === "grid") {
+      if ((resolved.layout ?? "columns") === "grid") {
         const s = resolved.size ?? 25;
         setGridColumns(Math.floor(vw / s));
         setGridRows(Math.floor(vh / s));
@@ -50,8 +50,8 @@ export const LayoutGuide = ({ config }: LayoutGuideProps) => {
     return () => window.removeEventListener("keydown", toggleLayout);
   }, []);
 
-  const option = activeConfig.option ?? "columns";
-  const type = option !== "grid" ? (activeConfig.type ?? "stretch") : undefined;
+  const layout = activeConfig.layout ?? "columns";
+  const type = layout !== "grid" ? (activeConfig.type ?? "stretch") : undefined;
   const size = activeConfig.size ?? 25;
   const color = activeConfig.color ?? "hsl(0, 100%, 50%, 0.1)";
   const count = activeConfig.count ?? 5;
@@ -66,28 +66,28 @@ export const LayoutGuide = ({ config }: LayoutGuideProps) => {
   // if (import.meta.env.DEV) {
   if (true) {
     // todo: Change this later
-    if (option === "grid" && type) {
+    if (layout === "grid" && type) {
       console.warn(
-        `[React Figma Layout]: "type" is ignored when option is "grid"`,
+        `[React Figma Layout]: "type" is ignored when layout is "grid"`,
       );
     }
 
-    if (option === "columns" && ["bottom", "top"].includes(type!)) {
+    if (layout === "columns" && ["bottom", "top"].includes(type!)) {
       console.warn(
-        `[React Figma Layout]: ${type} is invalid when option is "columns". Use left, right or center.`,
+        `[React Figma Layout]: ${type} is invalid when layout is "columns". Use left, right or center.`,
       );
     }
 
-    if (option === "rows" && ["left", "right"].includes(type!)) {
+    if (layout === "rows" && ["left", "right"].includes(type!)) {
       console.warn(
-        `[React Figma Layout]: ${type} is invalid when option is "rows". Use top, bottom or center.`,
+        `[React Figma Layout]: ${type} is invalid when layout is "rows". Use top, bottom or center.`,
       );
     }
   }
 
   return (
     <div
-      className={`${classes["layout-guide"]} ${displayLayout ? classes.display : ""} ${classes[option]} ${type ? classes[type] : ""}`}
+      className={`${classes["layout-guide"]} ${displayLayout ? classes.display : ""} ${classes[layout]} ${type ? classes[type] : ""}`}
       aria-hidden
       tabIndex={-1}
       style={
@@ -102,7 +102,7 @@ export const LayoutGuide = ({ config }: LayoutGuideProps) => {
           "--offset": `${offset}px`,
         } as React.CSSProperties
       }>
-      {option === "rows" || option === "columns" ? (
+      {layout === "rows" || layout === "columns" ? (
         Array.from({ length: count }).map((_, index) => (
           <div
             key={index}

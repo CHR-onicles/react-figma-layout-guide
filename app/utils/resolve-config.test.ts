@@ -7,7 +7,7 @@ describe("resolveConfig without mediaQueries", () => {
     animate: false,
     color: "#0000fa34",
     defaultVisible: false,
-    option: "grid",
+    layout: "grid",
     size: 20,
   } as LayoutGuideProps["config"];
   it("returns the config as-is", () => {
@@ -22,7 +22,7 @@ describe("resolveConfig with mediaQueries", () => {
       color: "#0000fa34",
       defaultVisible: false,
       mediaQueries: {
-        desktop: { option: "columns", type: "stretch", color: "#00ff0011" },
+        desktop: { layout: "columns", type: "stretch", color: "#00ff0011" },
       },
     } as LayoutGuideProps["config"];
 
@@ -30,7 +30,7 @@ describe("resolveConfig with mediaQueries", () => {
       animate: false,
       color: "#00ff0011",
       defaultVisible: false,
-      option: "columns",
+      layout: "columns",
       type: "stretch",
     });
   });
@@ -41,7 +41,7 @@ describe("resolveConfig with mediaQueries", () => {
       color: "#0000fa34",
       defaultVisible: false,
       mediaQueries: {
-        tablet: { option: "rows" },
+        tablet: { layout: "rows" },
       },
     } as LayoutGuideProps["config"];
 
@@ -49,7 +49,7 @@ describe("resolveConfig with mediaQueries", () => {
       animate: false,
       color: "#0000fa34",
       defaultVisible: false,
-      option: "rows",
+      layout: "rows",
     });
   });
 
@@ -59,9 +59,9 @@ describe("resolveConfig with mediaQueries", () => {
       color: "#0000fa34",
       defaultVisible: false,
       mediaQueries: {
-        desktop: { option: "columns" },
-        tablet: { option: "rows" },
-        mobile: { option: "grid" },
+        desktop: { layout: "columns" },
+        tablet: { layout: "rows" },
+        mobile: { layout: "grid" },
       },
     } as LayoutGuideProps["config"];
 
@@ -69,7 +69,7 @@ describe("resolveConfig with mediaQueries", () => {
       animate: false,
       color: "#0000fa34",
       defaultVisible: false,
-      option: "rows",
+      layout: "rows",
     });
   });
 
@@ -79,8 +79,8 @@ describe("resolveConfig with mediaQueries", () => {
       color: "#0000fa34",
       defaultVisible: false,
       mediaQueries: {
-        desktop: { option: "columns" },
-        mobile: { option: "grid", size: 10 },
+        desktop: { layout: "columns" },
+        mobile: { layout: "grid", size: 10 },
       },
     } as LayoutGuideProps["config"];
 
@@ -88,7 +88,7 @@ describe("resolveConfig with mediaQueries", () => {
       animate: false,
       color: "#0000fa34",
       defaultVisible: false,
-      option: "grid",
+      layout: "grid",
       size: 10,
     });
   });
@@ -99,8 +99,8 @@ describe("resolveConfig with mediaQueries", () => {
       color: "#0000fa34",
       defaultVisible: false,
       mediaQueries: {
-        tablet: { option: "columns" },
-        mobile: { option: "grid" },
+        tablet: { layout: "columns" },
+        mobile: { layout: "grid" },
       },
     } as LayoutGuideProps["config"];
 
@@ -108,7 +108,7 @@ describe("resolveConfig with mediaQueries", () => {
       animate: false,
       color: "#0000fa34",
       defaultVisible: false,
-      option: "grid",
+      layout: "grid",
     });
   });
 
@@ -118,7 +118,7 @@ describe("resolveConfig with mediaQueries", () => {
       color: "#0000fa34",
       defaultVisible: false,
       mediaQueries: {
-        mobile: { option: "grid" },
+        mobile: { layout: "grid" },
       },
     } as LayoutGuideProps["config"];
 
@@ -126,7 +126,7 @@ describe("resolveConfig with mediaQueries", () => {
       animate: false,
       color: "#0000fa34",
       defaultVisible: false,
-      option: "grid",
+      layout: "grid",
     });
   });
 });

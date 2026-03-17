@@ -40,14 +40,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
           config={{
             // animate: false,
             mediaQueries: {
-              mobile: { option: "columns", count: 3 },
+              mobile: { layout: "columns", count: 3 },
               tablet: {
-                option: "rows",
+                layout: "rows",
                 count: 5,
                 type: "center",
                 color: "#ffffff7f",
               },
-              desktop: { option: "columns", count: 12 },
+              desktop: { layout: "columns", count: 12 },
             },
           }}
         /> */}
