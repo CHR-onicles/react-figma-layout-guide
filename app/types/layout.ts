@@ -34,8 +34,8 @@ export type FlatConfig = {
   defaultVisible?: boolean;
   type?: string;
   size?: number;
-  width?: number | "auto";
-  height?: number | "auto";
+  width?: number;
+  height?: number;
   margin?: number;
   gutter?: number;
   offset?: number;
@@ -97,7 +97,7 @@ export type LayoutDefault =
        *
        * Default: 10px
        */
-      width?: number | "auto";
+      width?: number;
 
       /**
        * Space outside the `rows` and `columns`, using logical properties.
@@ -136,7 +136,7 @@ export type LayoutDefault =
        *
        * Default: 10px
        */
-      height?: number | "auto";
+      height?: number;
 
       /**
        * Space outside the `rows` and `columns`, using logical properties.

@@ -23,7 +23,7 @@
 .layout-track {
   height: 100%;
   width: 100%;
-  background: var(--bg-color);
+  background-color: var(--bg-color);
   opacity: 0;
   transition: opacity 0.15s var(--delay) ease-out;
 }

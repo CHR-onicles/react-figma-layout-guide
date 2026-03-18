@@ -46,9 +46,7 @@ function buildBreakpointConfig(searchParams: URLSearchParams, prefix: string) {
     )
       ? (typeParam as RowsOptionType)
       : "stretch";
-    const heightParam = get("height");
-    const height =
-      heightParam === "auto" ? ("auto" as const) : parseNum(heightParam, 50);
+    const height = parseNum(get("height"), 50);
     return {
       layout: "rows" as const,
       type,
@@ -66,9 +64,7 @@ function buildBreakpointConfig(searchParams: URLSearchParams, prefix: string) {
   )
     ? (typeParam as ColumnsOptionType)
     : "center";
-  const widthParam = get("width");
-  const width =
-    widthParam === "auto" ? ("auto" as const) : parseNum(widthParam, 100);
+  const width = parseNum(get("width"), 100);
   return {
     layout: "columns" as const,
     type,
@@ -123,9 +119,7 @@ export function Welcome() {
       )
         ? (typeParam as ColumnsOptionType)
         : "center";
-      const widthParam = searchParams.get("width");
-      const width =
-        widthParam === "auto" ? ("auto" as const) : parseNum(widthParam, 100);
+      const width = parseNum(searchParams.get("width"), 100);
 
       return {
         layout: "columns" as const,
@@ -148,9 +142,7 @@ export function Welcome() {
       )
         ? (typeParam as RowsOptionType)
         : "stretch";
-      const heightParam = searchParams.get("height");
-      const height =
-        heightParam === "auto" ? ("auto" as const) : parseNum(heightParam, 50);
+      const height = parseNum(searchParams.get("height"), 50);
 
       return {
         layout: "rows" as const,
@@ -182,7 +174,8 @@ export function Welcome() {
 
   return (
     <>
-      <LayoutGuide config={layoutConfig} />
+      {/* <LayoutGuide config={layoutConfig} /> */}
+      <LayoutGuide config={{ layout: "columns", width: 200 }} />
       <main className="flex items-center justify-center pt-16 pb-4">
         <div className="flex-1 flex flex-col items-center gap-16 min-h-0">
           <header className="flex flex-col items-center gap-9">
