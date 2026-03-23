@@ -40,7 +40,7 @@ export const LayoutGuide = ({ config }: LayoutGuideProps) => {
 
     const toggleLayout = (e: KeyboardEvent) => {
       if (e.shiftKey && (e.key === "G" || e.key === "g")) {
-        e.preventDefault();
+        e.preventDefault(); // To guard against browser shortcuts although shift+G is not a common shortcut
         // console.log("shift + g pressed");
         setDisplayLayout(prev => !prev);
       }
@@ -62,28 +62,6 @@ export const LayoutGuide = ({ config }: LayoutGuideProps) => {
   const offset = activeConfig.offset ?? 0;
   const animate = activeConfig.animate ?? true;
   const delayConstant = animate ? 0.015 : 0;
-
-  // if (import.meta.env.DEV) {
-  if (true) {
-    // todo: Change this later
-    if (layout === "grid" && type) {
-      console.warn(
-        `[React Figma Layout]: "type" is ignored when layout is "grid"`,
-      );
-    }
-
-    if (layout === "columns" && ["bottom", "top"].includes(type!)) {
-      console.warn(
-        `[React Figma Layout]: ${type} is invalid when layout is "columns". Use left, right or center.`,
-      );
-    }
-
-    if (layout === "rows" && ["left", "right"].includes(type!)) {
-      console.warn(
-        `[React Figma Layout]: ${type} is invalid when layout is "rows". Use top, bottom or center.`,
-      );
-    }
-  }
 
   return (
     <div

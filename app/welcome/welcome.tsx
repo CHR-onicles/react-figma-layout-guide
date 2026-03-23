@@ -1,5 +1,5 @@
 import { useSearchParams } from "react-router";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { LayoutGuide } from "~/components/layout-guide";
 import type {
   LayoutMediaQueries,
@@ -174,8 +174,16 @@ export function Welcome() {
 
   return (
     <>
-      {/* <LayoutGuide config={layoutConfig} /> */}
-      <LayoutGuide config={{ layout: "columns", width: 200 }} />
+      <LayoutGuide config={layoutConfig} />
+      {/* <LayoutGuide
+        config={{
+          mediaQueries: {
+            mobile: { layout: "columns", count: 3 },
+            desktop: { layout: "columns", count: 12 },
+          },
+          color: "#ffffff11",
+        }}
+      /> */}
       <main className="flex items-center justify-center pt-16 pb-4">
         <div className="flex-1 flex flex-col items-center gap-16 min-h-0">
           <header className="flex flex-col items-center gap-9">
