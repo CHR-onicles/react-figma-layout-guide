@@ -4,20 +4,19 @@ type DistributiveOmit<T, K extends keyof any> = T extends any
 
 export type Breakpoint = "mobile" | "tablet" | "desktop";
 
-export type LayoutOption = "grid" | "columns" | "rows";
+export type Layout = "grid" | "columns" | "rows";
 
-// Alignment types scoped to each layout option
-export type ColumnsOptionType = "stretch" | "left" | "right" | "center";
-export type RowsOptionType = "stretch" | "top" | "center" | "bottom";
+export type ColumnsLayoutType = "stretch" | "left" | "right" | "center";
+export type RowsLayoutType = "stretch" | "top" | "center" | "bottom";
 
 export type LayoutMediaQueries = {
   /**
-   * Screen sizes <= 767px
+   * Screen sizes < 768px
    */
   mobile?: DistributiveOmit<LayoutDefault, "mediaQueries">;
 
   /**
-   * Screen sizes between 768px and 1023px
+   * Screen sizes between 768px and 1023px inclusive
    */
   tablet?: DistributiveOmit<LayoutDefault, "mediaQueries">;
 
@@ -27,8 +26,13 @@ export type LayoutMediaQueries = {
   desktop?: DistributiveOmit<LayoutDefault, "mediaQueries">;
 };
 
+/**
+ * Single-viewport layout settings returned by {@link resolveConfig} (either the
+ * top-level `config` or `color` / `animate` / `defaultVisible` merged with the
+ * active `mediaQueries` branch).
+ */
 export type FlatConfig = {
-  layout?: LayoutOption;
+  layout?: Layout;
   color?: string;
   animate?: boolean;
   defaultVisible?: boolean;
@@ -48,17 +52,19 @@ export type LayoutBase = {
    *
    * Default: "columns"
    */
-  layout?: LayoutOption;
+  layout?: Layout;
 
   /**
-   * Hex, rgb, hsl, or any other type of colors
+   * Hex, rgb, hsl, or any other valid CSS color value.
    *
    * Default: hsl(0, 100%, 50%, 0.1) - Red
    */
   color?: string;
 
   /**
-   * Whether or not to animate the appearance of the layout guide
+   * Whether or not to animate the appearance of the layout guide.
+   *
+   * Default: true
    */
   animate?: boolean;
 
@@ -70,32 +76,38 @@ export type LayoutBase = {
   defaultVisible?: boolean;
 
   /**
-   * Config to setup layout for each media query: mobile, tablet and desktop using mobile-first.
+   * Per-breakpoint layout (mobile, tablet, desktop); mobile-first fallbacks.
    */
   mediaQueries?: LayoutMediaQueries;
 };
 
-// Type is scoped to option
+// Type is scoped to layout
 export type LayoutDefault =
   | (LayoutBase & {
       layout: "grid";
       type?: never;
 
       /**
-       * For option: grid
+       * For layout: grid
        *
-       * Default: 10px
+       * Default: 25px
        */
       size?: number;
     })
   | (LayoutBase & {
       layout: "columns";
-      type?: ColumnsOptionType;
+
+      /**
+       * For layout: columns
+       *
+       * Default: stretch
+       */
+      type?: ColumnsLayoutType;
 
       /**
        * For option: columns
        *
-       * Default: 10px
+       * Default: 25px
        */
       width?: number;
 
@@ -107,14 +119,14 @@ export type LayoutDefault =
       margin?: number;
 
       /**
-       *  Space in between rows and columns.
+       * Space in between rows and columns.
        *
        * Default: 20px
        */
       gutter?: number;
 
       /**
-       * For option type: left, right. Replaces margin in these scenarios.
+       * For `type` left, right. Replaces margin in these scenarios.
        *
        * Default: 0
        */
@@ -129,12 +141,18 @@ export type LayoutDefault =
     })
   | (LayoutBase & {
       layout: "rows";
-      type?: RowsOptionType;
 
       /**
-       * For option: rows
+       * For layout: rows
        *
-       * Default: 10px
+       * Default: stretch
+       */
+      type?: RowsLayoutType;
+
+      /**
+       * For layout: rows
+       *
+       * Default: 50px
        */
       height?: number;
 
@@ -146,14 +164,14 @@ export type LayoutDefault =
       margin?: number;
 
       /**
-       *  Space in between rows and columns.
+       * Space in between rows and columns.
        *
        * Default: 20px
        */
       gutter?: number;
 
       /**
-       * For option type: left, right, center. Replaces margin in these scenarios.
+       * For `type` top, bottom. Replaces margin in these scenarios.
        *
        * Default: 0
        */
@@ -166,6 +184,43 @@ export type LayoutDefault =
        */
       count?: number;
     });
+
+/**
+ * Allowed top-level props when `config` includes `mediaQueries` (no `layout` here).
+ * In `resolveConfig` they are applied first, then the active breakpoint branch is
+ * spread on top—per-breakpoint keys override these when both are set.
+ */
+export type LayoutGlobalProps = {
+  /**
+   * Hex, rgb, hsl, or any other valid CSS color value.
+   *
+   * Default: hsl(0, 100%, 50%, 0.1) - Red
+   */
+  color?: string;
+
+  /**
+   * Whether or not to animate the appearance of the layout guide.
+   *
+   * Default: true
+   */
+  animate?: boolean;
+
+  /**
+   * Whether the layout guide is visible by default (without pressing Shift+G).
+   *
+   * Default: false
+   */
+  defaultVisible?: boolean;
+};
+
+// Branch 1: no mediaQueries → full layout config (current behavior)
+type LayoutWithoutMediaQueries = LayoutDefault & { mediaQueries?: never };
+// Branch 2: with mediaQueries → only global props at top level
+type LayoutWithMediaQueries = LayoutGlobalProps & {
+  mediaQueries: LayoutMediaQueries;
+  // layout-specific props are forbidden at top level
+  layout?: never;
+};
 
 /**
  * Props for LayoutGuide component.
@@ -183,23 +238,6 @@ export type LayoutDefault =
  * // Rows layout - type (stretch|top|center|bottom), height, gutter, margin, offset
  * <LayoutGuide config={{ layout: "rows", type: "stretch", gutter: 20, margin: 50 }} />
  */
-
-// Can be used always at the top level
-export type LayoutGlobalProps = {
-  color?: string;
-  animate?: boolean;
-  defaultVisible?: boolean;
-};
-
-// Branch 1: no mediaQueries → full layout config (current behavior)
-type LayoutWithoutMediaQueries = LayoutDefault & { mediaQueries?: never };
-// Branch 2: with mediaQueries → only global props at top level
-type LayoutWithMediaQueries = LayoutGlobalProps & {
-  mediaQueries: LayoutMediaQueries;
-  // layout-specific props are forbidden at top level
-  layout?: never;
-};
-
 export type LayoutGuideProps = {
   config: LayoutWithMediaQueries | LayoutWithoutMediaQueries;
 };

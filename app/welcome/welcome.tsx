@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { LayoutGuide } from "~/components/layout-guide";
 import type {
   LayoutMediaQueries,
-  LayoutOption,
+  Layout,
   LayoutGuideProps,
 } from "~/types/layout";
 import logoDark from "./logo-dark.svg";
@@ -30,7 +30,7 @@ function buildBreakpointConfig(searchParams: URLSearchParams, prefix: string) {
   if (!hasAny) return undefined;
 
   const get = (key: string) => searchParams.get(`${prefix}${key}`);
-  const option = (get("option") ?? "columns") as LayoutOption;
+  const option = (get("option") ?? "columns") as Layout;
 
   if (option === "grid") {
     return {
@@ -100,7 +100,7 @@ export function Welcome() {
       return { color, animate, defaultVisible, mediaQueries };
     }
 
-    const option = (searchParams.get("option") ?? "columns") as LayoutOption;
+    const option = (searchParams.get("option") ?? "columns") as Layout;
 
     if (option === "grid") {
       return {
