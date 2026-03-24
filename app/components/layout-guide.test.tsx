@@ -1,7 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { fireEvent, render, waitFor } from "@testing-library/react";
 import { LayoutGuide } from "./layout-guide";
-import classes from "./layout-guide/layout-guide.module.css";
 import { resolveConfig } from "~/utils/resolve-config";
 
 describe("initial render", () => {
@@ -19,13 +18,13 @@ describe("initial render", () => {
     expect(root).toHaveAttribute("tabindex", "-1");
   });
 
-  it("root element always has the layout-guide class", () => {
+  it("root element always has the rflg-layout-guide class", () => {
     const { container } = render(
       <LayoutGuide config={{ layout: "columns" }} />,
     );
     const root = container.firstElementChild;
 
-    expect(root).toHaveClass(classes["layout-guide"]);
+    expect(root).toHaveClass("rflg-layout-guide");
   });
 
   it("root element is not shown by default when defaultVisible is omitted", () => {
@@ -34,7 +33,7 @@ describe("initial render", () => {
     );
     const root = container.firstElementChild;
 
-    expect(root).not.toHaveClass(classes["display"]);
+    expect(root).not.toHaveClass("rflg-display");
   });
 });
 
@@ -43,8 +42,8 @@ describe("default prop fallbacks", () => {
     const { container } = render(<LayoutGuide config={{ layout: "grid" }} />);
     const root = container.firstElementChild;
 
-    expect(root).toHaveClass(classes["grid"]);
-    expect(root).not.toHaveClass(classes["columns"]);
+    expect(root).toHaveClass("rflg-grid");
+    expect(root).not.toHaveClass("rflg-columns");
   });
 
   it("overrides the default column type when provided", () => {
@@ -53,8 +52,8 @@ describe("default prop fallbacks", () => {
     );
     const root = container.firstElementChild;
 
-    expect(root).toHaveClass(classes["center"]);
-    expect(root).not.toHaveClass(classes["stretch"]);
+    expect(root).toHaveClass("rflg-center");
+    expect(root).not.toHaveClass("rflg-stretch");
   });
 
   it("overrides the default row type when provided", () => {
@@ -63,8 +62,8 @@ describe("default prop fallbacks", () => {
     );
     const root = container.firstElementChild;
 
-    expect(root).toHaveClass(classes["bottom"]);
-    expect(root).not.toHaveClass(classes["stretch"]);
+    expect(root).toHaveClass("rflg-bottom");
+    expect(root).not.toHaveClass("rflg-stretch");
   });
 
   it("overrides the default column/row count when provided", () => {
@@ -73,9 +72,7 @@ describe("default prop fallbacks", () => {
     );
     const root = container.firstElementChild;
 
-    expect(root?.querySelectorAll(`.${classes["layout-track"]}`)).toHaveLength(
-      4,
-    );
+    expect(root?.querySelectorAll(".rflg-layout-track")).toHaveLength(4);
   });
 
   it("overrides the default background color when provided", () => {
@@ -149,142 +146,136 @@ describe("default prop fallbacks", () => {
     );
     const root = container.firstElementChild;
 
-    expect(root?.querySelector(`.${classes["layout-track"]}`)).toHaveStyle(
+    expect(root?.querySelector(".rflg-layout-track")).toHaveStyle(
       "--delay: 0s",
     );
   });
 });
 
 describe("css class application", () => {
-  it("adds columns class to root when passed as prop", () => {
+  it("adds rflg-columns class to root when passed as prop", () => {
     const { container } = render(
       <LayoutGuide config={{ layout: "columns" }} />,
     );
     const root = container.firstElementChild;
 
-    expect(root).toHaveClass(classes["columns"]);
+    expect(root).toHaveClass("rflg-columns");
   });
 
-  it("adds rows class to root when passed as prop", () => {
+  it("adds rflg-rows class to root when passed as prop", () => {
     const { container } = render(<LayoutGuide config={{ layout: "rows" }} />);
     const root = container.firstElementChild;
 
-    expect(root).toHaveClass(classes["rows"]);
+    expect(root).toHaveClass("rflg-rows");
   });
 
-  it("adds stretch class to root when passed as prop", () => {
+  it("adds rflg-stretch class to root when passed as prop", () => {
     const { container } = render(
       <LayoutGuide config={{ layout: "columns", type: "stretch" }} />,
     );
     const root = container.firstElementChild;
 
-    expect(root).toHaveClass(`${classes["stretch"]}`);
+    expect(root).toHaveClass("rflg-stretch");
   });
 
-  it("adds left class to root when passed as prop with columns layout", () => {
+  it("adds rflg-left class to root when passed as prop with columns layout", () => {
     const { container } = render(
       <LayoutGuide config={{ layout: "columns", type: "left" }} />,
     );
     const root = container.firstElementChild;
 
-    expect(root).toHaveClass(classes["left"]);
+    expect(root).toHaveClass("rflg-left");
   });
 
-  it("adds right class to root when passed as prop with columns layout", () => {
+  it("adds rflg-right class to root when passed as prop with columns layout", () => {
     const { container } = render(
       <LayoutGuide config={{ layout: "columns", type: "right" }} />,
     );
     const root = container.firstElementChild;
 
-    expect(root).toHaveClass(classes["right"]);
+    expect(root).toHaveClass("rflg-right");
   });
 
-  it("adds top class to root when passed as prop with rows layout", () => {
+  it("adds rflg-top class to root when passed as prop with rows layout", () => {
     const { container } = render(
       <LayoutGuide config={{ layout: "rows", type: "top" }} />,
     );
     const root = container.firstElementChild;
 
-    expect(root).toHaveClass(classes["top"]);
+    expect(root).toHaveClass("rflg-top");
   });
 
-  it("adds center class to root when passed as prop with rows layout", () => {
+  it("adds rflg-center class to root when passed as prop with rows layout", () => {
     const { container } = render(
       <LayoutGuide config={{ layout: "rows", type: "center" }} />,
     );
     const root = container.firstElementChild;
 
-    expect(root).toHaveClass(classes["center"]);
+    expect(root).toHaveClass("rflg-center");
   });
 
-  it("adds grid class to root when passed as prop", () => {
+  it("adds rflg-grid class to root when passed as prop", () => {
     const { container } = render(<LayoutGuide config={{ layout: "grid" }} />);
     const root = container.firstElementChild;
 
-    expect(root).toHaveClass(classes["grid"]);
+    expect(root).toHaveClass("rflg-grid");
   });
 
-  it("adds display class to root when defaultVisible is true", () => {
+  it("adds rflg-display class to root when defaultVisible is true", () => {
     const { container } = render(
       <LayoutGuide config={{ layout: "columns", defaultVisible: true }} />,
     );
     const root = container.firstElementChild;
 
-    expect(root).toHaveClass(classes["display"]);
+    expect(root).toHaveClass("rflg-display");
   });
 });
 
 describe("children rendered for columns/rows layout", () => {
-  it("columns layout renders exactly 'count' .layout-track divs", () => {
+  it("columns layout renders exactly 'count' .rflg-layout-track divs", () => {
     const { container } = render(
       <LayoutGuide config={{ layout: "columns", count: 10 }} />,
     );
     const root = container.firstElementChild;
 
-    expect(root?.querySelectorAll(`.${classes["layout-track"]}`)).toHaveLength(
-      10,
-    );
+    expect(root?.querySelectorAll(".rflg-layout-track")).toHaveLength(10);
   });
 
-  it("rows layout renders exactly 'count' .layout-track divs", () => {
+  it("rows layout renders exactly 'count' .rflg-layout-track divs", () => {
     const { container } = render(
       <LayoutGuide config={{ layout: "rows", count: 15 }} />,
     );
     const root = container.firstElementChild;
 
-    expect(root?.querySelectorAll(`.${classes["layout-track"]}`)).toHaveLength(
-      15,
-    );
+    expect(root?.querySelectorAll(".rflg-layout-track")).toHaveLength(15);
   });
 
-  it("count: 0 renders the root with 0 .layout-tracks divs", () => {
+  it("count: 0 renders the root with 0 .rflg-layout-track divs", () => {
     const { container } = render(
       <LayoutGuide config={{ layout: "columns", count: 0 }} />,
     );
     const root = container.firstElementChild;
 
     expect(root).toBeInTheDocument();
-    expect(root?.querySelectorAll(`.${classes["layout-track"]}`)).toHaveLength(
-      0,
-    );
+    expect(root?.querySelectorAll(".rflg-layout-track")).toHaveLength(0);
   });
 
-  it("columns layout does not render .inner-column-grid or .inner-row-grid", () => {
+  it("columns layout does not render .rflg-inner-column-grid or .rflg-inner-row-grid", () => {
     const { container } = render(
       <LayoutGuide config={{ layout: "columns" }} />,
     );
     const root = container.firstElementChild;
 
-    expect(root?.querySelector(`.${classes["inner-row-grid"]}`)).toBeNull();
-    expect(root?.querySelector(`.${classes["inner-column-grid"]}`)).toBeNull();
+    expect(root?.querySelector(".rflg-inner-row-grid")).toBeNull();
+    expect(root?.querySelector(".rflg-inner-column-grid")).toBeNull();
   });
 
-  it("rows layout does not render .inner-column-grid or .inner-row-grid", () => {
+  it("rows layout does not render .rflg-inner-column-grid or .rflg-inner-row-grid", () => {
     const { container } = render(<LayoutGuide config={{ layout: "rows" }} />);
     const root = container.firstElementChild;
 
-    expect(root?.querySelector(`.${classes["inner-row-grid"]}`)).toBeNull();
-    expect(root?.querySelector(`.${classes["inner-column-grid"]}`)).toBeNull();
+    expect(root?.querySelector(".rflg-inner-row-grid")).toBeNull();
+    expect(root?.querySelector(".rflg-inner-column-grid")).toBeNull();
   });
 });
 
@@ -298,28 +289,26 @@ describe("children rendered for grid layout", () => {
     vi.restoreAllMocks();
   });
 
-  it("grid layout renders .inner-column-grid and .inner-row-grid", () => {
+  it("grid layout renders .rflg-inner-column-grid and .rflg-inner-row-grid", () => {
     const { container } = render(<LayoutGuide config={{ layout: "grid" }} />);
     const root = container.firstElementChild;
 
     expect(
-      root?.querySelector(`.${classes["inner-column-grid"]}`),
+      root?.querySelector(".rflg-inner-column-grid"),
     ).toBeInTheDocument();
     expect(
-      root?.querySelector(`.${classes["inner-row-grid"]}`),
+      root?.querySelector(".rflg-inner-row-grid"),
     ).toBeInTheDocument();
   });
 
-  it("grid layout does not render .layout-track divs", () => {
+  it("grid layout does not render .rflg-layout-track divs", () => {
     const { container } = render(<LayoutGuide config={{ layout: "grid" }} />);
     const root = container.firstElementChild;
 
-    expect(root?.querySelectorAll(`.${classes["layout-track"]}`)).toHaveLength(
-      0,
-    );
+    expect(root?.querySelectorAll(".rflg-layout-track")).toHaveLength(0);
   });
 
-  it("number of .grid-column divs is the floor of window.innerWidth divided by size prop", async () => {
+  it("number of .rflg-grid-column divs is the floor of window.innerWidth divided by size prop", async () => {
     const { container } = render(
       <LayoutGuide config={{ layout: "grid", size: 25 }} />,
     );
@@ -327,19 +316,19 @@ describe("children rendered for grid layout", () => {
 
     // to wait for the useEffect to run first
     await waitFor(() => {
-      const columns = root?.querySelectorAll(`.${classes["grid-column"]}`);
+      const columns = root?.querySelectorAll(".rflg-grid-column");
       expect(columns).toHaveLength(Math.floor(window.innerWidth / 25));
     });
   });
 
-  it("number of .grid-row divs is the floor of window.innerHeight divided by size prop", async () => {
+  it("number of .rflg-grid-row divs is the floor of window.innerHeight divided by size prop", async () => {
     const { container } = render(
       <LayoutGuide config={{ layout: "grid", size: 25 }} />,
     );
     const root = container.firstElementChild;
 
     await waitFor(() => {
-      const rows = root?.querySelectorAll(`.${classes["grid-row"]}`);
+      const rows = root?.querySelectorAll(".rflg-grid-row");
       expect(rows).toHaveLength(Math.floor(window.innerHeight / 25));
     });
   });
@@ -351,8 +340,8 @@ describe("children rendered for grid layout", () => {
     const root = container.firstElementChild;
 
     await waitFor(() => {
-      const columns = root?.querySelectorAll(`.${classes["grid-column"]}`);
-      const rows = root?.querySelectorAll(`.${classes["grid-row"]}`);
+      const columns = root?.querySelectorAll(".rflg-grid-column");
+      const rows = root?.querySelectorAll(".rflg-grid-row");
       expect(columns).toHaveLength(Math.floor(window.innerWidth / 50));
       expect(rows).toHaveLength(Math.floor(window.innerHeight / 50));
     });
@@ -360,39 +349,39 @@ describe("children rendered for grid layout", () => {
 });
 
 describe("keyboard toggle", () => {
-  it("adds .display class when shift+G is pressed and removes class when it is pressed again", () => {
+  it("adds .rflg-display class when shift+G is pressed and removes class when it is pressed again", () => {
     const { container } = render(
       <LayoutGuide config={{ layout: "columns" }} />,
     );
     const root = container.firstElementChild;
 
-    expect(root).not.toHaveClass(`.${classes["display"]}`);
+    expect(root).not.toHaveClass("rflg-display");
 
     fireEvent.keyDown(document, { key: "g", shiftKey: true });
-    expect(root).toHaveClass(classes["display"]);
+    expect(root).toHaveClass("rflg-display");
 
     fireEvent.keyDown(document, { key: "G", shiftKey: true });
-    expect(root).not.toHaveClass(classes["display"]);
+    expect(root).not.toHaveClass("rflg-display");
   });
 
-  it("pressing 'g' without shift does not toggle .display class", () => {
+  it("pressing 'g' without shift does not toggle .rflg-display class", () => {
     const { container } = render(
       <LayoutGuide config={{ layout: "columns" }} />,
     );
     const root = container.firstElementChild;
 
     fireEvent.keyDown(document, { key: "g", shiftKey: false });
-    expect(root).not.toHaveClass(classes["display"]);
+    expect(root).not.toHaveClass("rflg-display");
   });
 
-  it("pressing shift+K does not toggle .display class", () => {
+  it("pressing shift+K does not toggle .rflg-display class", () => {
     const { container } = render(
       <LayoutGuide config={{ layout: "columns" }} />,
     );
     const root = container.firstElementChild;
 
     fireEvent.keyDown(document, { shiftKey: true, key: "K" });
-    expect(root).not.toHaveClass(classes["display"]);
+    expect(root).not.toHaveClass("rflg-display");
   });
 });
 
@@ -420,7 +409,7 @@ describe("media queries", () => {
     const { container } = render(<LayoutGuide config={config} />);
     const root = container.firstElementChild;
 
-    expect(root).toHaveClass(classes.rows);
+    expect(root).toHaveClass("rflg-rows");
   });
 
   it("uses tablet config when viewport 768 <= width < 1024", () => {
@@ -429,7 +418,7 @@ describe("media queries", () => {
     const { container } = render(<LayoutGuide config={config} />);
     const root = container.firstElementChild;
 
-    expect(root).toHaveClass(classes.columns);
+    expect(root).toHaveClass("rflg-columns");
   });
 
   it("uses mobile config when viewport 768 < width", () => {
@@ -437,7 +426,7 @@ describe("media queries", () => {
     const { container } = render(<LayoutGuide config={config} />);
     const root = container.firstElementChild;
 
-    expect(root).toHaveClass(classes.grid);
+    expect(root).toHaveClass("rflg-grid");
   });
 });
 
@@ -495,13 +484,13 @@ describe("config prop reactivity", () => {
     );
     const root = container.firstElementChild;
 
-    expect(root).toHaveClass(classes.rows);
+    expect(root).toHaveClass("rflg-rows");
 
     rerender(<LayoutGuide config={{ layout: "columns" }} />);
 
     await waitFor(() => {
-      expect(root).toHaveClass(classes.columns);
-      expect(root).not.toHaveClass(classes.rows);
+      expect(root).toHaveClass("rflg-columns");
+      expect(root).not.toHaveClass("rflg-rows");
     });
   });
 
@@ -514,17 +503,13 @@ describe("config prop reactivity", () => {
     );
     const root = container.firstElementChild;
 
-    expect(root).toHaveClass(classes.columns);
-    expect(root?.querySelectorAll(`.${classes["layout-track"]}`)).toHaveLength(
-      3,
-    );
+    expect(root).toHaveClass("rflg-columns");
+    expect(root?.querySelectorAll(".rflg-layout-track")).toHaveLength(3);
 
     rerender(<LayoutGuide config={{ layout: "grid" }} />);
-    expect(root?.querySelectorAll(`.${classes["layout-track"]}`)).toHaveLength(
-      0,
-    );
-    const cols = root?.querySelectorAll(`.${classes["grid-column"]}`);
-    const rows = root?.querySelectorAll(`.${classes["grid-row"]}`);
+    expect(root?.querySelectorAll(".rflg-layout-track")).toHaveLength(0);
+    const cols = root?.querySelectorAll(".rflg-grid-column");
+    const rows = root?.querySelectorAll(".rflg-grid-row");
 
     expect(cols).toHaveLength(Math.floor(window.innerWidth / 25));
     expect(rows).toHaveLength(Math.floor(window.innerHeight / 25));

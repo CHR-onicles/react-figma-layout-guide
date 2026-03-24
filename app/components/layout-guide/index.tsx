@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import classes from "./layout-guide.module.css";
 import type { FlatConfig, LayoutGuideProps } from "~/types/layout";
 import { resolveConfig } from "~/utils/resolve-config";
+import "./layout-guide.css";
 
 export const LayoutGuide = ({ config }: LayoutGuideProps) => {
   const [activeConfig, setActiveConfig] = useState<FlatConfig>(() =>
@@ -65,7 +65,7 @@ export const LayoutGuide = ({ config }: LayoutGuideProps) => {
 
   return (
     <div
-      className={`${classes["layout-guide"]} ${displayLayout ? classes.display : ""} ${classes[layout]} ${type ? classes[type] : ""}`}
+      className={`rflg-layout-guide ${displayLayout ? "rflg-display" : ""} rflg-${layout} ${type ? `rflg-${type}` : ""}`}
       aria-hidden
       tabIndex={-1}
       style={
@@ -84,7 +84,7 @@ export const LayoutGuide = ({ config }: LayoutGuideProps) => {
         Array.from({ length: count }).map((_, index) => (
           <div
             key={index}
-            className={classes["layout-track"]}
+            className="rflg-layout-track"
             style={
               { "--delay": `${index * delayConstant}s` } as React.CSSProperties
             }
@@ -92,11 +92,11 @@ export const LayoutGuide = ({ config }: LayoutGuideProps) => {
         ))
       ) : (
         <>
-          <div className={classes["inner-column-grid"]}>
+          <div className="rflg-inner-column-grid">
             {Array.from({ length: gridColumns }).map((_, index) => (
               <div
                 key={index}
-                className={classes["grid-column"]}
+                className="rflg-grid-column"
                 style={
                   {
                     "--delay": `${index * delayConstant * 0.5 * (gridColumns > gridRows ? 0.5 : 1)}s`, // Divide more to happen as quickly as rows for landscape orientation
@@ -105,11 +105,11 @@ export const LayoutGuide = ({ config }: LayoutGuideProps) => {
               />
             ))}
           </div>
-          <div className={classes["inner-row-grid"]}>
+          <div className="rflg-inner-row-grid">
             {Array.from({ length: gridRows }).map((_, index) => (
               <div
                 key={index}
-                className={classes["grid-row"]}
+                className="rflg-grid-row"
                 style={
                   {
                     "--delay": `${index * 0.015 * 0.5 * (gridColumns > gridRows ? 1 : 0.5)}s`,

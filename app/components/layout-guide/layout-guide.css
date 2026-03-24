@@ -1,6 +1,6 @@
-.layout-guide,
-.inner-column-grid,
-.inner-row-grid {
+.rflg-layout-guide,
+.rflg-inner-column-grid,
+.rflg-inner-row-grid {
   position: fixed;
   inset: 0;
   display: grid;
@@ -8,19 +8,19 @@
   z-index: 999999999; /* Nine 9s */
 }
 
-.display {
-  .layout-track {
+.rflg-display {
+  .rflg-layout-track {
     opacity: 1 !important;
   }
-  .grid-column {
+  .rflg-grid-column {
     opacity: 1 !important;
   }
-  .grid-row {
+  .rflg-grid-row {
     opacity: 1 !important;
   }
 }
 
-.layout-track {
+.rflg-layout-track {
   height: 100%;
   width: 100%;
   background-color: var(--bg-color);
@@ -29,12 +29,12 @@
 }
 
 /* Layout options ----------------------------*/
-.grid {
-  .inner-column-grid {
+.rflg-grid {
+  .rflg-inner-column-grid {
     /* Don't necessarily need to specify the exact number of columns or rows */
     grid-template-columns: repeat(auto-fill, var(--size));
 
-    .grid-column {
+    .rflg-grid-column {
       height: 100%;
       width: 100%;
       border-left: 1px solid var(--bg-color);
@@ -47,11 +47,11 @@
     }
   }
 
-  .inner-row-grid {
+  .rflg-inner-row-grid {
     grid-template-columns: 1fr;
     grid-template-rows: repeat(auto-fill, var(--size));
 
-    .grid-row {
+    .rflg-grid-row {
       height: 100%;
       width: 100%;
       border-top: 1px solid var(--bg-color);
@@ -65,48 +65,48 @@
   }
 }
 
-.columns {
+.rflg-columns {
   grid-template-columns: repeat(var(--count), 1fr);
   gap: var(--gutter);
 }
 
-.rows {
+.rflg-rows {
   grid-template-rows: repeat(var(--count), 1fr);
   gap: var(--gutter);
 }
 
 /* Layout option types ------------------------ */
-/* .stretch { */
+/* .rflg-stretch { */
 /* Do nothing */
 /* } */
 
-.stretch.columns {
+.rflg-stretch.rflg-columns {
   margin-inline: var(--margin);
 }
 
-.stretch.rows {
+.rflg-stretch.rflg-rows {
   margin-block: var(--margin);
 }
 
-.left,
-.right,
-.center {
+.rflg-left,
+.rflg-right,
+.rflg-center {
   margin-inline: 0;
 }
 
-.left.columns,
-.right.columns,
-.center.columns {
+.rflg-left.rflg-columns,
+.rflg-right.rflg-columns,
+.rflg-center.rflg-columns {
   grid-template-columns: repeat(var(--count), var(--width));
 }
 
-.center.rows,
-.top.rows,
-.bottom.rows {
+.rflg-center.rflg-rows,
+.rflg-top.rflg-rows,
+.rflg-bottom.rflg-rows {
   grid-template-rows: repeat(var(--count), var(--height));
 }
 
-.left {
+.rflg-left {
   left: 0;
   top: 0;
   bottom: 0;
@@ -115,7 +115,7 @@
   width: fit-content;
 }
 
-.right {
+.rflg-right {
   top: 0;
   bottom: 0;
   right: 0;
@@ -124,7 +124,7 @@
   width: fit-content;
 }
 
-.center.columns {
+.rflg-center.rflg-columns {
   top: 0;
   bottom: 0;
   left: 50%;
@@ -133,7 +133,7 @@
   width: fit-content;
 }
 
-.rows.center {
+.rflg-rows.rflg-center {
   top: 50%;
   transform: translateY(-50%);
   left: 0;
@@ -142,14 +142,14 @@
   height: fit-content;
 }
 
-.top {
+.rflg-top {
   top: 0;
   bottom: unset;
   margin-top: var(--offset);
   height: fit-content;
 }
 
-.bottom {
+.rflg-bottom {
   top: unset;
   bottom: 0;
   margin-bottom: var(--offset);
