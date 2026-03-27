@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import type { Route } from "./+types/home";
-import { LayoutGuide } from "~/components/layout-guide";
+import { LayoutGuide } from "packages/react-figma-layout-guide/src";
 import type {
   Breakpoint,
   ColumnsLayoutType,
@@ -8,7 +8,7 @@ import type {
   LayoutDefault,
   LayoutGuideProps,
   RowsLayoutType,
-} from "~/types/layout";
+} from "packages/react-figma-layout-guide/src/types/layout";
 
 // ── Helpers ───────────────────────────────────────────────
 

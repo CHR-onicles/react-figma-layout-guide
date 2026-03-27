@@ -1,0 +1,56 @@
+{
+  "name": "react-figma-layout-guide",
+  "version": "0.0.0",
+  "type": "module",
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "author": {
+    "name": "Divine Anum",
+    "url": "https://www.divineanum.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CHR-onicles/react-figma-layout-guide"
+  },
+  "license": "MIT",
+  "description": "Overlay a Figma-style layout guide in React: columns, rows, or grid with responsive breakpoints.",
+  "keywords": [
+    "react",
+    "figma",
+    "layout-guide",
+    "layout",
+    "grid",
+    "columns",
+    "rows",
+    "responsive",
+    "breakpoints",
+    "design",
+    "overlay",
+    "development",
+    "typescript"
+  ],
+  "scripts": {
+    "test": "vitest run",
+    "build": "tsup",
+    "prepublishOnly": "npm run build",
+    "tsc": "tsc"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "default": "./dist/index.mjs"
+    },
+    "./style.css": "./dist/index.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": [
+    "*.css"
+  ],
+  "types": "./dist/index.d.ts"
+}

@@ -1,5 +1,5 @@
 {
-  "name": "react-figma-layout-guide-app",
+  "name": "react-figma-layout-guide-playground",
   "private": true,
   "type": "module",
   "version": "0.0.0",
@@ -7,6 +7,7 @@
     "name": "Divine Anum",
     "url": "https://www.divineanum.com"
   },
+  "license": "MIT",
   "scripts": {
     "build": "react-router build",
     "dev": "react-router dev",
@@ -33,6 +34,7 @@
     "@types/react-dom": "^19.2.3",
     "jsdom": "^28.1.0",
     "tailwindcss": "^4.1.13",
+    "tsup": "^8.5.1",
     "typescript": "^5.9.2",
     "vite": "^7.1.7",
     "vite-tsconfig-paths": "^5.1.4",
@@ -43,5 +45,8 @@
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "*"
-  }
+  },
+  "workspaces": [
+    "packages/*"
+  ]
 }

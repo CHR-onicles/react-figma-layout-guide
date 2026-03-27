@@ -2,12 +2,12 @@
 
 import { renderToString } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
-import { LayoutGuide } from "./layout-guide";
-import { resolveConfig } from "~/utils/resolve-config";
+import { LayoutGuide } from ".";
+import { resolveConfig } from "./utils/resolve-config";
 
-vi.mock("~/utils/resolve-config", async importOriginal => {
+vi.mock("./utils/resolve-config", async importOriginal => {
   const module =
-    await importOriginal<typeof import("~/utils/resolve-config")>();
+    await importOriginal<typeof import("./utils/resolve-config")>();
   return { ...module, resolveConfig: vi.fn(module.resolveConfig) };
 });
 

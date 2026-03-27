@@ -8,7 +8,7 @@ import {
 } from "react-router";
 
 import type { Route } from "./+types/root";
-import { LayoutGuide } from "./components/layout-guide";
+import { LayoutGuide } from "../packages/react-figma-layout-guide/src";
 import { useEffect } from "react";
 import "./app.css";
 

@@ -1,4 +1,4 @@
-import type { Breakpoint } from "~/types/layout";
+import type { Breakpoint } from "../types/layout";
 
 export function getBreakpoint(width: number): Breakpoint {
   if (width == null) throw new Error("width is not defined");

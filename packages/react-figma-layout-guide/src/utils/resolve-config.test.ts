@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { LayoutGuideProps } from "~/types/layout";
+import type { LayoutGuideProps } from "../types/layout";
 import { resolveConfig } from "./resolve-config";
 
 describe("resolveConfig without mediaQueries", () => {

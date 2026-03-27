@@ -2,7 +2,7 @@ import type {
   FlatConfig,
   LayoutMediaQueries,
   LayoutGuideProps,
-} from "~/types/layout";
+} from "../types/layout";
 import { getBreakpoint } from "./get-breakpoint";
 
 export function resolveConfig(

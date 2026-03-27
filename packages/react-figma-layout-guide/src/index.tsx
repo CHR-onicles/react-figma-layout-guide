@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import type { FlatConfig, LayoutGuideProps } from "~/types/layout";
-import { resolveConfig } from "~/utils/resolve-config";
+import type { FlatConfig, LayoutGuideProps } from "./types/layout";
+import { resolveConfig } from "./utils/resolve-config";
 import "./layout-guide.css";
 
 export const LayoutGuide = ({ config }: LayoutGuideProps) => {

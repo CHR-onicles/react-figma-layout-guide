@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { fireEvent, render, waitFor } from "@testing-library/react";
-import { LayoutGuide } from "./layout-guide";
-import { resolveConfig } from "~/utils/resolve-config";
+import { LayoutGuide } from ".";
+import { resolveConfig } from "./utils/resolve-config";
 
 describe("initial render", () => {
   it("renders without crashing with a minimal config", () => {
@@ -293,12 +293,8 @@ describe("children rendered for grid layout", () => {
     const { container } = render(<LayoutGuide config={{ layout: "grid" }} />);
     const root = container.firstElementChild;
 
-    expect(
-      root?.querySelector(".rflg-inner-column-grid"),
-    ).toBeInTheDocument();
-    expect(
-      root?.querySelector(".rflg-inner-row-grid"),
-    ).toBeInTheDocument();
+    expect(root?.querySelector(".rflg-inner-column-grid")).toBeInTheDocument();
+    expect(root?.querySelector(".rflg-inner-row-grid")).toBeInTheDocument();
   });
 
   it("grid layout does not render .rflg-layout-track divs", () => {
@@ -431,9 +427,9 @@ describe("media queries", () => {
 });
 
 describe("resize event handling", () => {
-  vi.mock("~/utils/resolve-config", async importOriginal => {
+  vi.mock("./utils/resolve-config", async importOriginal => {
     const module =
-      await importOriginal<typeof import("~/utils/resolve-config")>();
+      await importOriginal<typeof import("./utils/resolve-config")>();
     return { ...module, resolveConfig: vi.fn(module.resolveConfig) };
   });
 
