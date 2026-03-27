@@ -9,6 +9,10 @@ Monorepo for:
 - **react-figma-layout-guide** package: a React overlay for Figma-style column, row, and grid layout guides.
 - A React Router app playground to test the component interactively.
 
+## [Playground](https://react-figma-layout-guide.vercel.app/)
+
+![Playground screenshot](./assets/playground.png)
+
 ## Using the package
 
 If you are installing the package in your own app, see this documentation:

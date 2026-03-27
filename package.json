@@ -7,6 +7,7 @@
     "name": "Divine Anum",
     "url": "https://www.divineanum.com"
   },
+  "homepage": "https://react-figma-layout-guide.vercel.app",
   "license": "MIT",
   "scripts": {
     "build": "react-router build",
