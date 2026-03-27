@@ -3,11 +3,17 @@ import type { FlatConfig, LayoutGuideProps } from "./types/layout";
 import { resolveConfig } from "./utils/resolve-config";
 import "./layout-guide.css";
 
+const isProd = process.env.NODE_ENV === "production";
+
+const DEFAULT_WINDOW_INNERWIDTH = 1024;
+
 export const LayoutGuide = ({ config }: LayoutGuideProps) => {
   const [activeConfig, setActiveConfig] = useState<FlatConfig>(() =>
     resolveConfig(
       config,
-      typeof window !== "undefined" ? window.innerWidth : 1024,
+      typeof window !== "undefined"
+        ? window.innerWidth
+        : DEFAULT_WINDOW_INNERWIDTH,
     ),
   );
   const [displayLayout, setDisplayLayout] = useState(
@@ -17,6 +23,7 @@ export const LayoutGuide = ({ config }: LayoutGuideProps) => {
   const [gridRows, setGridRows] = useState(0);
 
   useEffect(() => {
+    if (isProd) return;
     const update = () => {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
@@ -36,7 +43,7 @@ export const LayoutGuide = ({ config }: LayoutGuideProps) => {
   }, [config]);
 
   useEffect(() => {
-    // if (import.meta.env.PROD) return; // todo: Uncomment this later
+    if (isProd) return;
 
     const toggleLayout = (e: KeyboardEvent) => {
       if (e.shiftKey && (e.key === "G" || e.key === "g")) {
@@ -63,6 +70,7 @@ export const LayoutGuide = ({ config }: LayoutGuideProps) => {
   const animate = activeConfig.animate ?? true;
   const delayConstant = animate ? 0.015 : 0;
 
+  if (isProd) return null;
   return (
     <div
       className={`rflg-layout-guide ${displayLayout ? "rflg-display" : ""} rflg-${layout} ${type ? `rflg-${type}` : ""}`}
