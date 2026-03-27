@@ -31,8 +31,8 @@
 /* Layout options ----------------------------*/
 .rflg-grid {
   .rflg-inner-column-grid {
-    /* Don't necessarily need to specify the exact number of columns or rows */
-    grid-template-columns: repeat(auto-fill, var(--size));
+    /* * Need to specify the exact number of columns or rows in order to prevent a mismatch with browser vs my calculations */
+    grid-template-columns: repeat(var(--grid-columns), var(--size));
 
     .rflg-grid-column {
       height: 100%;
@@ -49,7 +49,7 @@
 
   .rflg-inner-row-grid {
     grid-template-columns: 1fr;
-    grid-template-rows: repeat(auto-fill, var(--size));
+    grid-template-rows: repeat(var(--grid-rows), var(--size));
 
     .rflg-grid-row {
       height: 100%;

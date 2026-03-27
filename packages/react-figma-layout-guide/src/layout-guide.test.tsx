@@ -310,10 +310,13 @@ describe("children rendered for grid layout", () => {
     );
     const root = container.firstElementChild;
 
+    const calculatedColumns = Math.floor(window.innerWidth / 25);
+
     // to wait for the useEffect to run first
     await waitFor(() => {
       const columns = root?.querySelectorAll(".rflg-grid-column");
-      expect(columns).toHaveLength(Math.floor(window.innerWidth / 25));
+      expect(columns).toHaveLength(calculatedColumns);
+      expect(root).toHaveStyle(`--grid-columns: ${calculatedColumns}`);
     });
   });
 
@@ -323,9 +326,12 @@ describe("children rendered for grid layout", () => {
     );
     const root = container.firstElementChild;
 
+    const calculatedRows = Math.floor(window.innerHeight / 25);
+
     await waitFor(() => {
       const rows = root?.querySelectorAll(".rflg-grid-row");
-      expect(rows).toHaveLength(Math.floor(window.innerHeight / 25));
+      expect(rows).toHaveLength(calculatedRows);
+      expect(root).toHaveStyle(`--grid-rows: ${calculatedRows}`);
     });
   });
 
@@ -335,11 +341,16 @@ describe("children rendered for grid layout", () => {
     );
     const root = container.firstElementChild;
 
+    const calculatedColumns = Math.floor(window.innerWidth / 50);
+    const calculatedRows = Math.floor(window.innerHeight / 50);
+
     await waitFor(() => {
       const columns = root?.querySelectorAll(".rflg-grid-column");
       const rows = root?.querySelectorAll(".rflg-grid-row");
-      expect(columns).toHaveLength(Math.floor(window.innerWidth / 50));
-      expect(rows).toHaveLength(Math.floor(window.innerHeight / 50));
+      expect(columns).toHaveLength(calculatedColumns);
+      expect(root).toHaveStyle(`--grid-columns: ${calculatedColumns}`);
+      expect(rows).toHaveLength(calculatedRows);
+      expect(root).toHaveStyle(`--grid-rows: ${calculatedRows}`);
     });
   });
 });
