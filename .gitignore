@@ -10,3 +10,5 @@ dj.md
 
 *.tgz
 dist/
+
+.env.production

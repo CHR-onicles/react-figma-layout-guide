@@ -20,8 +20,10 @@ jobs:
 
       - run: npm install
 
+      - run: npm run tsc
+
       - run: npm run test:once
 
-      - run: npm run build
-
       - run: npm run build --workspace=react-figma-layout-guide
+
+      - run: npm run build

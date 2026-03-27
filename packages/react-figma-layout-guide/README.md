@@ -13,7 +13,7 @@ Overlay a **Figma-style layout guide** in React with columns, rows, or a square 
 - 📱 **Responsive config** via `mediaQueries` (mobile / tablet / desktop)
 - ⌨️ **Toggle visibility** with **Shift+G**
 - ✨ **Animations** for guide lines (configurable)
-- 📦 **Lightweight** — 6 kB gzipped with **zero** dependencies
+- 📦 **Lightweight** — 5 kB gzipped with **zero** dependencies
 
 ## [Playground](https://react-figma-layout-guide.vercel.app/)
 

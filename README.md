@@ -57,4 +57,4 @@ Issues and pull requests are welcome.
 
 ### License
 
-MIT
+[MIT](https://github.com/CHR-onicles/react-figma-layout-guide/blob/main/LICENSE)

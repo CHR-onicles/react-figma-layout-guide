@@ -214,12 +214,18 @@ export type LayoutGlobalProps = {
 };
 
 // Branch 1: no mediaQueries → full layout config (current behavior)
-type LayoutWithoutMediaQueries = LayoutDefault & { mediaQueries?: never };
+type LayoutWithoutMediaQueries = LayoutDefault & {
+  mediaQueries?: never;
+};
 // Branch 2: with mediaQueries → only global props at top level
 type LayoutWithMediaQueries = LayoutGlobalProps & {
   mediaQueries: LayoutMediaQueries;
   // layout-specific props are forbidden at top level
   layout?: never;
+};
+
+export type LayoutGuideProps = {
+  config: LayoutWithMediaQueries | LayoutWithoutMediaQueries;
 };
 
 /**
@@ -238,6 +244,3 @@ type LayoutWithMediaQueries = LayoutGlobalProps & {
  * // Rows layout - type (stretch|top|center|bottom), height, gutter, margin, offset
  * <LayoutGuide config={{ layout: "rows", type: "stretch", gutter: 20, margin: 50 }} />
  */
-export type LayoutGuideProps = {
-  config: LayoutWithMediaQueries | LayoutWithoutMediaQueries;
-};

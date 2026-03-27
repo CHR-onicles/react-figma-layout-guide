@@ -12,7 +12,8 @@
   "scripts": {
     "build": "react-router build",
     "dev": "react-router dev",
-    "start": "react-router-serve ./build/server/index.js",
+    "start": "npx serve build/client -s",
+    "preview": "npm run build && npm run start",
     "tsc": "react-router typegen && tsc",
     "test": "vitest",
     "test:once": "vitest run"

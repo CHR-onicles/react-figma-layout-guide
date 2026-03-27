@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import type { LayoutGuideProps } from "../types/layout";
 import { resolveConfig } from "./resolve-config";
+import type { LayoutGuideProps } from "../types/layout";
 
 describe("resolveConfig without mediaQueries", () => {
   const config = {
