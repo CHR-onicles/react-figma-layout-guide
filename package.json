@@ -2,7 +2,6 @@
   "name": "react-figma-layout-guide-playground",
   "private": true,
   "type": "module",
-  "version": "0.0.0",
   "author": {
     "name": "Divine Anum",
     "url": "https://www.divineanum.com"
@@ -10,6 +9,7 @@
   "homepage": "https://react-figma-layout-guide.vercel.app",
   "license": "MIT",
   "scripts": {
+    "release:package": "npm run release -w react-figma-layout-guide",
     "build": "react-router build",
     "dev": "react-router dev",
     "start": "npx serve build/client -s",

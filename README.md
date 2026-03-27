@@ -47,10 +47,6 @@ cd packages/react-figma-layout-guide
 npm run build
 ```
 
-The package uses [tsup](https://github.com/egoist/tsup) (`npm run build`). `prepublishOnly` runs a build before publish.
-
-Unit tests for utilities live under `packages/react-figma-layout-guide/src/**/*.test.ts`. The root Vitest `include` pattern is focused on the playground; when changing the library, run **`npm run test:once` from the repo root** so your PR matches CI, and run or add tests as appropriate for your changes.
-
 ## Contributing
 
 Issues and pull requests are welcome.
