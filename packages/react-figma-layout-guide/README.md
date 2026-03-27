@@ -17,7 +17,7 @@ Overlay a **Figma-style layout guide** in React with columns, rows, or a square 
 
 ## [Playground](https://react-figma-layout-guide.vercel.app/)
 
-![Playground screenshot]()
+![Playground screenshot](https://raw.githubusercontent.com/CHR-onicles/react-figma-layout-guide/main/assets/playground.png)
 
 ## Installation
 
