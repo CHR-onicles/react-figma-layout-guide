@@ -1,4 +1,4 @@
-# @chr-onicles/react-figma-layout-guide playground
+# react-figma-layout-guide playground
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/CHR-onicles/react-figma-layout-guide/blob/main/LICENSE)
 [![Node](https://img.shields.io/badge/node-%3E%3D20-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
@@ -6,7 +6,7 @@
 
 Monorepo for:
 
-- **@chr-onicles/react-figma-layout-guide** package: a React overlay for Figma-style column, row, and grid layout guides.
+- **react-figma-layout-guide** package: a React overlay for Figma-style column, row, and grid layout guides.
 - A React Router app playground to test the component interactively.
 
 ## Using the package

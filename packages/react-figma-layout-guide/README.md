@@ -1,4 +1,4 @@
-# @chr-onicles/react-figma-layout-guide
+# react-figma-layout-guide
 
 [![npm](https://img.shields.io/npm/v/react-figma-layout-guide)](https://www.npmjs.com/package/react-figma-layout-guide)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/CHR-onicles/react-figma-layout-guide/blob/main/LICENSE)
@@ -13,7 +13,7 @@ Overlay a **Figma-style layout guide** in React with columns, rows, or a square 
 - 📱 **Responsive config** via `mediaQueries` (mobile / tablet / desktop)
 - ⌨️ **Toggle visibility** with **Shift+G**
 - ✨ **Animations** for guide lines (configurable)
-- 📦 **Small size** — 6 kB gzipped
+- 📦 **Lightweight** — 6 kB gzipped with **zero** dependencies
 
 ## Installation
 
