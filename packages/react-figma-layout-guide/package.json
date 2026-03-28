@@ -12,6 +12,7 @@
     "type": "git",
     "url": "git+https://github.com/CHR-onicles/react-figma-layout-guide.git"
   },
+  "homepage": "https://react-figma-layout-guide.vercel.app",
   "license": "MIT",
   "description": "Overlay a Figma-style layout guide in React: columns, rows, or grid with responsive breakpoints.",
   "keywords": [

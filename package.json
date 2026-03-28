@@ -6,7 +6,6 @@
     "name": "Divine Anum",
     "url": "https://www.divineanum.com"
   },
-  "homepage": "https://react-figma-layout-guide.vercel.app",
   "license": "MIT",
   "scripts": {
     "release:package": "npm run release -w react-figma-layout-guide",
