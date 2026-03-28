@@ -3,8 +3,6 @@ import type { FlatConfig, LayoutGuideProps } from "./types/layout";
 import { resolveConfig } from "./utils/resolve-config";
 import "./layout-guide.css";
 
-const isProd = process.env.NODE_ENV === "production";
-
 const DEFAULT_WINDOW_INNERWIDTH = 1024;
 
 export const LayoutGuide = ({ config }: LayoutGuideProps) => {
@@ -22,11 +20,7 @@ export const LayoutGuide = ({ config }: LayoutGuideProps) => {
   const [gridColumns, setGridColumns] = useState(0);
   const [gridRows, setGridRows] = useState(0);
 
-  const _showInProd = process.env.SHOW_LAYOUT_GUIDE_IN_PROD === "true";
-  const disabledForProd = !_showInProd && isProd;
-
   useEffect(() => {
-    if (disabledForProd) return;
     const update = () => {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
@@ -46,8 +40,6 @@ export const LayoutGuide = ({ config }: LayoutGuideProps) => {
   }, [config]);
 
   useEffect(() => {
-    if (disabledForProd) return;
-
     const toggleLayout = (e: KeyboardEvent) => {
       if (e.shiftKey && (e.key === "G" || e.key === "g")) {
         e.preventDefault(); // To guard against browser shortcuts although shift+G is not a common shortcut
@@ -73,7 +65,6 @@ export const LayoutGuide = ({ config }: LayoutGuideProps) => {
   const animate = activeConfig.animate ?? true;
   const delayConstant = animate ? 0.015 : 0;
 
-  if (disabledForProd) return null;
   return (
     <div
       className={`rflg-layout-guide ${displayLayout ? "rflg-display" : ""} rflg-${layout} ${type ? `rflg-${type}` : ""}`}

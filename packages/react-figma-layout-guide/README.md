@@ -22,14 +22,14 @@ Overlay a **Figma-style layout guide** in React with columns, rows, or a square 
 ## Installation
 
 ```bash
-npm install react-figma-layout-guide
+npm install -D react-figma-layout-guide
 ```
 
 **Peer dependency:** `react` >= 18.
 
 ## Quick start
 
-Import the component and the stylesheet once (for example in your app root):
+Import the component and the stylesheet once (for example in your app root) and use it **only** in development. It is **not** intended for production:
 
 ```tsx
 import { LayoutGuide } from "react-figma-layout-guide";
@@ -38,10 +38,22 @@ import "react-figma-layout-guide/style.css";
 export function App() {
   return (
     <>
-      <LayoutGuide config={{ layout: "columns" }} />
+      {
+        // For Vite setups:
+        import.meta.env.DEV && (
+          <LayoutGuide config={{ layout: "columns", count: 12 }} />
+        )
+      }
       {/* your app */}
     </>
   );
+}
+```
+
+```tsx
+// Or for Node-based setups:
+{
+  process.env.DEV && <LayoutGuide config={{ layout: "grid", size: 25 }} />;
 }
 ```
 
