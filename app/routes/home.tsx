@@ -3,393 +3,19 @@ import type { Route } from "./+types/home";
 import { LayoutGuide } from "packages/react-figma-layout-guide/src";
 import type {
   Breakpoint,
-  ColumnsLayoutType,
   Layout,
-  LayoutDefault,
   LayoutGuideProps,
-  RowsLayoutType,
 } from "packages/react-figma-layout-guide/src/types/layout";
-
-// ── Helpers ───────────────────────────────────────────────
-
-function hexToRgba(hex: string, alpha: number): string {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-}
-
-// ── Primitive controls ────────────────────────────────────
-
-interface SliderFieldProps {
-  label: string;
-  value: number;
-  min: number;
-  max: number;
-  step?: number;
-  unit?: string;
-  onChange: (v: number) => void;
-}
-
-function SliderField({
-  label,
-  value,
-  min,
-  max,
-  step = 1,
-  unit = "px",
-  onChange,
-}: SliderFieldProps) {
-  const display = step < 1 ? value.toFixed(2) : String(value);
-  return (
-    <div className="flex flex-col gap-1.5">
-      <div className="flex justify-between items-center">
-        <label className="text-xs font-medium text-gray-300">{label}</label>
-        <span className="text-xs font-mono text-gray-500 tabular-nums">
-          {display}
-          {unit}
-        </span>
-      </div>
-      <input
-        type="range"
-        min={min}
-        max={max}
-        step={step}
-        value={value}
-        onChange={e => onChange(Number(e.target.value))}
-        className="w-full h-1 rounded-full accent-sky-500 cursor-pointer"
-      />
-    </div>
-  );
-}
-
-interface ToggleFieldProps {
-  label: string;
-  description?: string;
-  checked: boolean;
-  onChange: (v: boolean) => void;
-}
-
-function ToggleField({
-  label,
-  description,
-  checked,
-  onChange,
-}: ToggleFieldProps) {
-  return (
-    <div className="flex items-center justify-between gap-3">
-      <div className="min-w-0">
-        <p className="text-xs font-medium text-gray-300 leading-none">
-          {label}
-        </p>
-        {description && (
-          <p className="text-[10px] text-gray-500 mt-0.5 leading-snug">
-            {description}
-          </p>
-        )}
-      </div>
-      <button
-        type="button"
-        role="switch"
-        aria-checked={checked}
-        onClick={() => onChange(!checked)}
-        className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-sky-500 ${
-          checked ? "bg-sky-500" : "bg-gray-700"
-        }`}>
-        <span
-          className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow-sm transition-transform ${
-            checked ? "translate-x-[18px]" : "translate-x-0.5"
-          }`}
-        />
-      </button>
-    </div>
-  );
-}
-
-interface TypeButtonGroupProps<T extends string> {
-  options: T[];
-  value: T;
-  onChange: (v: T) => void;
-}
-
-function TypeButtonGroup<T extends string>({
-  options,
-  value,
-  onChange,
-}: TypeButtonGroupProps<T>) {
-  return (
-    <div className="grid grid-cols-2 gap-1">
-      {options.map(opt => (
-        <button
-          key={opt}
-          type="button"
-          onClick={() => onChange(opt)}
-          className={`py-1.5 rounded-md text-xs font-medium capitalize transition-colors ${
-            value === opt
-              ? "bg-sky-600 text-white shadow-sm"
-              : "bg-gray-900 text-gray-400 hover:text-gray-200 hover:bg-gray-800"
-          }`}>
-          {opt}
-        </button>
-      ))}
-    </div>
-  );
-}
-
-function SectionHeading({ children }: { children: React.ReactNode }) {
-  return (
-    <h2 className="text-[10px] font-semibold uppercase tracking-widest text-gray-500">
-      {children}
-    </h2>
-  );
-}
-
-// ── Breakpoint types & constants ──────────────────────────
-
-type BpState = {
-  layout: Layout;
-  colType: ColumnsLayoutType;
-  colWidth: number;
-  rowType: RowsLayoutType;
-  rowHeight: number;
-  size: number;
-  count: number;
-  gutter: number;
-  margin: number;
-  offset: number;
-};
-
-type BpRecord = Record<Breakpoint, BpState & { enabled: boolean }>;
-
-const DEFAULT_BP: BpState = {
-  layout: "columns",
-  colType: "stretch",
-  colWidth: 80,
-  rowType: "stretch",
-  rowHeight: 50,
-  size: 25,
-  count: 12,
-  gutter: 20,
-  margin: 0,
-  offset: 0,
-};
-
-const BP_SIZE_HINT: Record<Breakpoint, string> = {
-  mobile: "< 768px",
-  tablet: "768 – 1023px",
-  desktop: "≥ 1024px",
-};
-
-const BP_FALLBACKS: Record<Breakpoint, Breakpoint[]> = {
-  mobile: [],
-  tablet: ["mobile"],
-  desktop: ["tablet", "mobile"],
-};
-
-function getInheritLabel(bp: Breakpoint, bps: BpRecord): string {
-  const first = BP_FALLBACKS[bp].find(f => bps[f].enabled);
-  return first ? `Inherits from ${first}` : "Uses component defaults";
-}
-
-function buildBpLayout(bp: BpState): LayoutDefault {
-  if (bp.layout === "grid") return { layout: "grid", size: bp.size };
-  if (bp.layout === "columns") {
-    return {
-      layout: "columns",
-      type: bp.colType,
-      width: bp.colWidth,
-      count: bp.count,
-      gutter: bp.gutter,
-      margin: bp.margin,
-      offset: bp.offset,
-    };
-  }
-  return {
-    layout: "rows",
-    type: bp.rowType,
-    height: bp.rowHeight,
-    count: bp.count,
-    gutter: bp.gutter,
-    margin: bp.margin,
-    offset: bp.offset,
-  };
-}
-
-// ── LayoutControls ────────────────────────────────────────
-
-interface LayoutControlsProps {
-  state: BpState;
-  onChange: (updates: Partial<BpState>) => void;
-}
-
-function LayoutControls({ state, onChange }: LayoutControlsProps) {
-  const {
-    layout,
-    colType,
-    colWidth,
-    rowType,
-    rowHeight,
-    size,
-    count,
-    gutter,
-    margin,
-    offset,
-  } = state;
-
-  const showColWidth = colType !== "stretch";
-  const showColMargin = colType === "stretch";
-  const showColOffset = colType === "left" || colType === "right";
-  const showRowMargin = rowType === "stretch";
-  const showRowOffset = rowType === "top" || rowType === "bottom";
-
-  return (
-    <>
-      <section className="flex flex-col gap-2.5">
-        <SectionHeading>Layout</SectionHeading>
-        <div className="grid grid-cols-3 gap-1 p-1 bg-gray-900 rounded-lg">
-          {(["columns", "rows", "grid"] as Layout[]).map(l => (
-            <button
-              key={l}
-              type="button"
-              onClick={() => onChange({ layout: l })}
-              className={`py-1.5 rounded-md text-xs font-medium capitalize transition-colors ${
-                layout === l
-                  ? "bg-sky-600 text-white shadow-sm"
-                  : "text-gray-500 hover:text-gray-200 hover:bg-gray-800"
-              }`}>
-              {l}
-            </button>
-          ))}
-        </div>
-      </section>
-
-      {layout === "grid" && (
-        <section className="flex flex-col gap-3.5">
-          <SectionHeading>Grid</SectionHeading>
-          <SliderField
-            label="Cell size"
-            value={size}
-            min={8}
-            max={100}
-            onChange={v => onChange({ size: v })}
-          />
-        </section>
-      )}
-
-      {layout === "columns" && (
-        <section className="flex flex-col gap-3.5">
-          <SectionHeading>Columns</SectionHeading>
-          <div className="flex flex-col gap-2">
-            <p className="text-xs font-medium text-gray-300">Type</p>
-            <TypeButtonGroup<ColumnsLayoutType>
-              options={["stretch", "left", "right", "center"]}
-              value={colType}
-              onChange={t => onChange({ colType: t, offset: 0, margin: 0 })}
-            />
-          </div>
-          <SliderField
-            label="Count"
-            value={count}
-            min={1}
-            max={24}
-            unit=""
-            onChange={v => onChange({ count: v })}
-          />
-          <SliderField
-            label="Gutter"
-            value={gutter}
-            min={0}
-            max={80}
-            onChange={v => onChange({ gutter: v })}
-          />
-          {showColWidth && (
-            <SliderField
-              label="Column width"
-              value={colWidth}
-              min={10}
-              max={300}
-              onChange={v => onChange({ colWidth: v })}
-            />
-          )}
-          {showColMargin && (
-            <SliderField
-              label="Margin"
-              value={margin}
-              min={0}
-              max={200}
-              onChange={v => onChange({ margin: v })}
-            />
-          )}
-          {showColOffset && (
-            <SliderField
-              label="Offset"
-              value={offset}
-              min={0}
-              max={200}
-              onChange={v => onChange({ offset: v })}
-            />
-          )}
-        </section>
-      )}
-
-      {layout === "rows" && (
-        <section className="flex flex-col gap-3.5">
-          <SectionHeading>Rows</SectionHeading>
-          <div className="flex flex-col gap-2">
-            <p className="text-xs font-medium text-gray-300">Type</p>
-            <TypeButtonGroup<RowsLayoutType>
-              options={["stretch", "top", "center", "bottom"]}
-              value={rowType}
-              onChange={t => onChange({ rowType: t, offset: 0, margin: 0 })}
-            />
-          </div>
-          <SliderField
-            label="Count"
-            value={count}
-            min={1}
-            max={24}
-            unit=""
-            onChange={v => onChange({ count: v })}
-          />
-          <SliderField
-            label="Gutter"
-            value={gutter}
-            min={0}
-            max={80}
-            onChange={v => onChange({ gutter: v })}
-          />
-          <SliderField
-            label="Row height"
-            value={rowHeight}
-            min={10}
-            max={200}
-            onChange={v => onChange({ rowHeight: v })}
-          />
-          {showRowMargin && (
-            <SliderField
-              label="Margin"
-              value={margin}
-              min={0}
-              max={200}
-              onChange={v => onChange({ margin: v })}
-            />
-          )}
-          {showRowOffset && (
-            <SliderField
-              label="Offset"
-              value={offset}
-              min={0}
-              max={200}
-              onChange={v => onChange({ offset: v })}
-            />
-          )}
-        </section>
-      )}
-    </>
-  );
-}
-
-// ── Route exports ─────────────────────────────────────────
+import { SliderField } from "~/components/slider-field";
+import { ToggleField } from "~/components/toggle-field";
+import { CloseIcon, DemoIcon, InfoIcon } from "~/components/icons";
+import type { BpRecord, BpState } from "~/types";
+import { SectionHeading } from "~/components/section-heading";
+import { LayoutControls } from "~/components/layout-controls";
+import { BP_SIZE_HINT, DEFAULT_BP } from "~/constants";
+import { buildBpLayout } from "~/utils/build-bp-layout";
+import { hexToRgba } from "~/utils/hex-to-rgba";
+import { getInheritLabel } from "~/utils/get-inherit-label";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -401,13 +27,12 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
+// Helper function
 function toggleGuide() {
   window.dispatchEvent(
     new KeyboardEvent("keydown", { key: "G", shiftKey: true, bubbles: true }),
   );
 }
-
-// ── Home ──────────────────────────────────────────────────
 
 export default function Home() {
   const [panelOpen, setPanelOpen] = useState(false);
@@ -643,14 +268,7 @@ export default function Home() {
                 title="Close panel"
                 onClick={() => setPanelOpen(false)}
                 className="size-7 flex items-center justify-center rounded-md text-gray-500 hover:bg-gray-800 hover:text-gray-200 transition-colors">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                  <path
-                    d="M1 1l10 10M11 1L1 11"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                  />
-                </svg>
+                <CloseIcon />
               </button>
             </div>
           </div>
@@ -791,26 +409,7 @@ export default function Home() {
                   />
                 ) : (
                   <div className="rounded-lg bg-gray-900 border border-gray-800 px-3 py-2.5 flex items-start gap-2">
-                    <svg
-                      className="mt-0.5 shrink-0 text-gray-500"
-                      width="12"
-                      height="12"
-                      viewBox="0 0 12 12"
-                      fill="none">
-                      <path
-                        d="M6 1v5M6 8.5v1"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                      />
-                      <circle
-                        cx="6"
-                        cy="6"
-                        r="5.25"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                      />
-                    </svg>
+                    <InfoIcon />
                     <p className="text-[10px] text-gray-400 leading-relaxed">
                       {getInheritLabel(activeBp, bps)}. Enable to set a custom
                       layout for this breakpoint.
@@ -840,67 +439,7 @@ export default function Home() {
               ? "bg-gray-800 text-gray-300 hover:bg-gray-700"
               : "bg-sky-600 text-white hover:bg-sky-500 shadow-sky-500/30"
           }`}>
-          {panelOpen ? (
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path
-                d="M2 2l12 12M14 2L2 14"
-                stroke="currentColor"
-                strokeWidth="1.75"
-                strokeLinecap="round"
-              />
-            </svg>
-          ) : (
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <rect
-                x="1"
-                y="4"
-                width="14"
-                height="1.5"
-                rx="0.75"
-                fill="currentColor"
-              />
-              <rect
-                x="1"
-                y="7.25"
-                width="14"
-                height="1.5"
-                rx="0.75"
-                fill="currentColor"
-              />
-              <rect
-                x="1"
-                y="10.5"
-                width="14"
-                height="1.5"
-                rx="0.75"
-                fill="currentColor"
-              />
-              <circle
-                cx="5"
-                cy="4.75"
-                r="1.75"
-                fill="currentColor"
-                stroke="#1f2937"
-                strokeWidth="1"
-              />
-              <circle
-                cx="10"
-                cy="8"
-                r="1.75"
-                fill="currentColor"
-                stroke="#1f2937"
-                strokeWidth="1"
-              />
-              <circle
-                cx="6"
-                cy="11.25"
-                r="1.75"
-                fill="currentColor"
-                stroke="#1f2937"
-                strokeWidth="1"
-              />
-            </svg>
-          )}
+          {panelOpen ? <CloseIcon /> : <DemoIcon />}
         </button>
       </div>
 
