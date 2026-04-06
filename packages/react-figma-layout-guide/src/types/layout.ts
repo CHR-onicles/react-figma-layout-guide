@@ -40,7 +40,7 @@ export type FlatConfig = {
   size?: number;
   width?: number;
   height?: number;
-  margin?: number;
+  margin?: number | string;
   gutter?: number;
   offset?: number;
   count?: number;
@@ -112,11 +112,11 @@ export type LayoutDefault =
       width?: number;
 
       /**
-       * Space outside the `rows` and `columns`, using logical properties.
+       * Space outside the `rows` and `columns`. Could be a fixed number or relative units like: %, vw, vh, rem, em or even clamp().
        *
        * Default: 0
        */
-      margin?: number;
+      margin?: number | string;
 
       /**
        * Space in between rows and columns.
@@ -157,11 +157,11 @@ export type LayoutDefault =
       height?: number;
 
       /**
-       * Space outside the `rows` and `columns`, using logical properties.
+       * Space outside the `rows` and `columns`. Could be a fixed number or relative units like: %, vw, vh, rem, em or even clamp().
        *
        * Default: 0
        */
-      margin?: number;
+      margin?: number | string;
 
       /**
        * Space in between rows and columns.

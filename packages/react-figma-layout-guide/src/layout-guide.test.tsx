@@ -123,12 +123,18 @@ describe("default prop fallbacks", () => {
   });
 
   it("overrides the default column/row margin when provided", () => {
-    const { container } = render(
+    const { container, rerender } = render(
       <LayoutGuide config={{ layout: "rows", margin: 10 }} />,
     );
     const root = container.firstElementChild;
 
     expect(root).toHaveStyle("--margin: 10px");
+
+    rerender(<LayoutGuide config={{ layout: "rows", margin: "20vw" }} />);
+    expect(root).toHaveStyle("--margin: 20vw");
+
+    rerender(<LayoutGuide config={{ layout: "rows", margin: "15rem" }} />);
+    expect(root).toHaveStyle("--margin: 15rem");
   });
 
   it("overrides the default column/row offset when provided", () => {

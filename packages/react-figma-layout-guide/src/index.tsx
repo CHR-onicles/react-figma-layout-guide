@@ -78,7 +78,7 @@ export const LayoutGuide = ({ config }: LayoutGuideProps) => {
           "--width": `${width}px`,
           "--height": `${height}px`,
           "--gutter": `${gutter}px`,
-          "--margin": `${margin}px`,
+          "--margin": typeof margin === "number" ? `${margin}px` : `${margin}`,
           "--offset": `${offset}px`,
           "--grid-columns": gridColumns,
           "--grid-rows": gridRows,
