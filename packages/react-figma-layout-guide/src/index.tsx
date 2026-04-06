@@ -79,7 +79,7 @@ export const LayoutGuide = ({ config }: LayoutGuideProps) => {
           "--height": `${height}px`,
           "--gutter": `${gutter}px`,
           "--margin": typeof margin === "number" ? `${margin}px` : `${margin}`,
-          "--offset": `${offset}px`,
+          "--offset": typeof offset === "number" ? `${offset}px` : `${offset}`,
           "--grid-columns": gridColumns,
           "--grid-rows": gridRows,
         } as React.CSSProperties

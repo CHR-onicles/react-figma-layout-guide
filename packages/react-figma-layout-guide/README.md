@@ -139,21 +139,34 @@ Breakpoints (viewport width):
 
 ## API summary
 
-| Option           | Applies to        | Default                  | Notes                                      |
-| ---------------- | ----------------- | ------------------------ | ------------------------------------------ |
-| `layout`         | all               | `"columns"`              | `"grid"` \| `"columns"` \| `"rows"`        |
-| `color`          | all               | `hsl(0, 100%, 50%, 0.1)` | Any CSS color                              |
-| `animate`        | all               | `true`                   | Staggered line animation                   |
-| `defaultVisible` | all               | `false`                  | Without Shift+G                            |
-| `size`           | `grid`            | `25`                     | Cell size (px)                             |
-| `type`           | `columns`         | `"stretch"`              | `stretch` \| `left` \| `right` \| `center` |
-| `type`           | `rows`            | `"stretch"`              | `stretch` \| `top` \| `center` \| `bottom` |
-| `width`          | `columns`         | `25`                     | Column width (px)                          |
-| `height`         | `rows`            | `50`                     | Row height (px)                            |
-| `count`          | `columns`, `rows` | `5`                      | Number of tracks                           |
-| `gutter`         | `columns`, `rows` | `20`                     | Gap between tracks (px)                    |
-| `margin`         | `columns`, `rows` | `0`                      | Outer margin (px)                          |
-| `offset`         | `columns`, `rows` | `0`                      | For `left`/`right` or `top`/`bottom` types |
+| Option           | Applies to        | Default                  | Notes                                                                                                 |
+| ---------------- | ----------------- | ------------------------ | ----------------------------------------------------------------------------------------------------- |
+| `layout`         | all               | `"columns"`              | `"grid"` \| `"columns"` \| `"rows"`                                                                   |
+| `color`          | all               | `hsl(0, 100%, 50%, 0.1)` | Any CSS color                                                                                         |
+| `animate`        | all               | `true`                   | Staggered line animation                                                                              |
+| `defaultVisible` | all               | `false`                  | Without Shift+G                                                                                       |
+| `size`           | `grid`            | `25`                     | Cell size (px)                                                                                        |
+| `type`           | `columns`         | `"stretch"`              | `stretch` \| `left` \| `right` \| `center`                                                            |
+| `type`           | `rows`            | `"stretch"`              | `stretch` \| `top` \| `center` \| `bottom`                                                            |
+| `width`          | `columns`         | `25`                     | Column width (px)                                                                                     |
+| `height`         | `rows`            | `50`                     | Row height (px)                                                                                       |
+| `count`          | `columns`, `rows` | `5`                      | Number of tracks                                                                                      |
+| `gutter`         | `columns`, `rows` | `20`                     | Gap between tracks (px)                                                                               |
+| `margin`         | `columns`, `rows` | `0`                      | Outer margin: **number** → `px`, or **string** (any CSS length: `%`, `vw`, `vh`, `rem`, `clamp()`, …) |
+| `offset`         | `columns`, `rows` | `0`                      | For `left`/`right` or `top`/`bottom` types; same **number** \| **string** rules as `margin`           |
+
+### Margin and offset units
+
+- **`margin`** applies when `type` is `stretch` (outer space around the column/row tracks).
+- **`offset`** applies when `type` is `left` / `right` (columns) or `top` / `bottom` (rows) instead of margin in those layouts.
+
+Pass a **number** for pixel values (`20` → `20px`). Pass a **string** to use viewport-relative or other CSS lengths, for example:
+
+```tsx
+margin: "5vw";
+offset: "10%";
+margin: "clamp(1rem, 4vw, 3rem)";
+```
 
 ## License
 

@@ -42,7 +42,7 @@ export type FlatConfig = {
   height?: number;
   margin?: number | string;
   gutter?: number;
-  offset?: number;
+  offset?: number | string;
   count?: number;
 };
 
@@ -126,11 +126,11 @@ export type LayoutDefault =
       gutter?: number;
 
       /**
-       * For `type` left, right. Replaces margin in these scenarios.
+       * For `type` left, right. Replaces margin in these scenarios. Fixed px or relative units.
        *
        * Default: 0
        */
-      offset?: number;
+      offset?: number | string;
 
       /**
        * Number of columns or rows
@@ -171,11 +171,11 @@ export type LayoutDefault =
       gutter?: number;
 
       /**
-       * For `type` top, bottom. Replaces margin in these scenarios.
+       * For `type` top, bottom. Replaces margin in these scenarios. Fixed px or relative units.
        *
        * Default: 0
        */
-      offset?: number;
+      offset?: number | string;
 
       /**
        * Number of columns or rows

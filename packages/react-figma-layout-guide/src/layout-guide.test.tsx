@@ -138,12 +138,17 @@ describe("default prop fallbacks", () => {
   });
 
   it("overrides the default column/row offset when provided", () => {
-    const { container } = render(
+    const { container, rerender } = render(
       <LayoutGuide config={{ layout: "rows", offset: 100 }} />,
     );
     const root = container.firstElementChild;
-
     expect(root).toHaveStyle("--offset: 100px");
+
+    rerender(<LayoutGuide config={{ layout: "rows", offset: "10%" }} />);
+    expect(root).toHaveStyle("--offset: 10%");
+
+    rerender(<LayoutGuide config={{ layout: "rows", offset: "15vw" }} />);
+    expect(root).toHaveStyle("--offset: 15vw");
   });
 
   it("overrides the default animate value when provided", () => {
