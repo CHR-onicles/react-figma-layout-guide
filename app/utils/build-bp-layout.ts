@@ -11,7 +11,7 @@ export function buildBpLayout(bp: BpState): LayoutDefault {
       count: bp.count,
       gutter: bp.gutter,
       margin: `${bp.marginValue}${bp.marginUnit}`,
-      offset: bp.offset,
+      offset: `${bp.offsetValue}${bp.offsetUnit}`,
     };
   }
   return {
@@ -21,6 +21,6 @@ export function buildBpLayout(bp: BpState): LayoutDefault {
     count: bp.count,
     gutter: bp.gutter,
     margin: `${bp.marginValue}${bp.marginUnit}`,
-    offset: bp.offset,
+    offset: `${bp.offsetValue}${bp.offsetUnit}`,
   };
 }

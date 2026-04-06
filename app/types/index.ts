@@ -17,7 +17,8 @@ export type BpState = {
   gutter: number;
   marginValue: number;
   marginUnit: MarginUnit;
-  offset: number;
+  offsetValue: number;
+  offsetUnit: MarginUnit;
 };
 
 export type BpRecord = Record<Breakpoint, BpState & { enabled: boolean }>;

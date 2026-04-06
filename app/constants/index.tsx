@@ -12,7 +12,8 @@ export const DEFAULT_BP: BpState = {
   gutter: 20,
   marginValue: 0,
   marginUnit: "%",
-  offset: 0,
+  offsetValue: 0,
+  offsetUnit: "%",
 };
 
 export const BP_SIZE_HINT: Record<Breakpoint, string> = {

@@ -26,7 +26,8 @@ export function LayoutControls({ state, onChange }: LayoutControlsProps) {
     gutter,
     marginValue,
     marginUnit,
-    offset,
+    offsetValue,
+    offsetUnit,
   } = state;
 
   const showColWidth = colType !== "stretch";
@@ -78,7 +79,7 @@ export function LayoutControls({ state, onChange }: LayoutControlsProps) {
               options={["stretch", "left", "right", "center"]}
               value={colType}
               onChange={t =>
-                onChange({ colType: t, offset: 0, marginValue: 0 })
+                onChange({ colType: t, offsetValue: 0, marginValue: 0 })
               }
             />
           </div>
@@ -116,12 +117,12 @@ export function LayoutControls({ state, onChange }: LayoutControlsProps) {
             />
           )}
           {showColOffset && (
-            <SliderField
+            <MarginField
               label="Offset"
-              value={offset}
-              min={0}
-              max={200}
-              onChange={v => onChange({ offset: v })}
+              value={offsetValue}
+              unit={offsetUnit}
+              onValueChange={v => onChange({ offsetValue: v })}
+              onUnitChange={u => onChange({ offsetUnit: u })}
             />
           )}
         </section>
@@ -136,7 +137,7 @@ export function LayoutControls({ state, onChange }: LayoutControlsProps) {
               options={["stretch", "top", "center", "bottom"]}
               value={rowType}
               onChange={t =>
-                onChange({ rowType: t, offset: 0, marginValue: 0 })
+                onChange({ rowType: t, offsetValue: 0, marginValue: 0 })
               }
             />
           </div>
@@ -172,12 +173,12 @@ export function LayoutControls({ state, onChange }: LayoutControlsProps) {
             />
           )}
           {showRowOffset && (
-            <SliderField
+            <MarginField
               label="Offset"
-              value={offset}
-              min={0}
-              max={200}
-              onChange={v => onChange({ offset: v })}
+              value={offsetValue}
+              unit={offsetUnit}
+              onValueChange={v => onChange({ offsetValue: v })}
+              onUnitChange={u => onChange({ offsetUnit: u })}
             />
           )}
         </section>
