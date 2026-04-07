@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import type { Route } from "./+types/home";
+import type { Route } from "./+types/playground";
 import { LayoutGuide } from "packages/react-figma-layout-guide/src";
 import type {
   Breakpoint,
@@ -19,10 +19,10 @@ import { getInheritLabel } from "~/utils/get-inherit-label";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "React Figma Layout Guide — Interactive Demo" },
+    { title: "React Figma Layout Guide — Playground" },
     {
       name: "description",
-      content: "Interactive demo for the LayoutGuide component.",
+      content: "Playground for the LayoutGuide component.",
     },
   ];
 }
@@ -109,7 +109,7 @@ export default function Home() {
         {/* Hero */}
         <section className="px-12 pt-16 pb-12 border-b border-gray-100 dark:border-gray-800/60">
           <p className="text-xs font-semibold uppercase tracking-widest text-sky-500 mb-3">
-            Interactive Demo
+            Playground
           </p>
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white tracking-tight mb-4">
             React Figma Layout Guide
