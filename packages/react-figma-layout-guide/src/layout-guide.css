@@ -75,11 +75,11 @@
   gap: var(--gutter);
 }
 
-/* Layout option types ------------------------ */
-/* .rflg-stretch { */
-/* Do nothing */
-/* } */
+.rflg-columns.rflg-content-width {
+  width: var(--content-width, 100%);
+}
 
+/* Layout option types ------------------------ */
 .rflg-stretch.rflg-columns {
   margin-inline: var(--margin);
 }
@@ -97,13 +97,13 @@
 .rflg-left.rflg-columns,
 .rflg-right.rflg-columns,
 .rflg-center.rflg-columns {
-  grid-template-columns: repeat(var(--count), var(--width));
+  grid-template-columns: repeat(var(--count), var(--column-width));
 }
 
 .rflg-center.rflg-rows,
 .rflg-top.rflg-rows,
 .rflg-bottom.rflg-rows {
-  grid-template-rows: repeat(var(--count), var(--height));
+  grid-template-rows: repeat(var(--count), var(--row-height));
 }
 
 .rflg-left {

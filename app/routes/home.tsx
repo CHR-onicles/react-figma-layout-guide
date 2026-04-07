@@ -443,7 +443,16 @@ export default function Home() {
         </button>
       </div>
 
-      <LayoutGuide config={config} />
+      <LayoutGuide
+        // config={{
+        //   layout: "columns",
+        //   count: 12,
+        //   defaultVisible: true,
+        //   margin: "auto",
+        //   contentWidth: "min(90%, 1200px)",
+        // }}
+        config={config}
+      />
     </div>
   );
 }

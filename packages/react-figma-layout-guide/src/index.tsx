@@ -54,20 +54,25 @@ export const LayoutGuide = ({ config }: LayoutGuideProps) => {
 
   const layout = activeConfig.layout ?? "columns";
   const type = layout !== "grid" ? (activeConfig.type ?? "stretch") : undefined;
+  const isColumnsStretch =
+    layout === "columns" && (activeConfig.type ?? "stretch") === "stretch";
   const size = activeConfig.size ?? 25;
   const color = activeConfig.color ?? "hsl(0, 100%, 50%, 0.1)";
   const count = activeConfig.count ?? 5;
-  const width = activeConfig.width ?? 25;
-  const height = activeConfig.height ?? 50;
+  const columnWidth = activeConfig.columnWidth ?? 25;
+  const rowHeight = activeConfig.rowHeight ?? 50;
   const gutter = activeConfig.gutter ?? 20;
   const margin = activeConfig.margin ?? 0;
   const offset = activeConfig.offset ?? 0;
   const animate = activeConfig.animate ?? true;
   const delayConstant = animate ? 0.015 : 0;
+  const contentWidth = isColumnsStretch
+    ? (activeConfig.contentWidth ?? undefined)
+    : undefined;
 
   return (
     <div
-      className={`rflg-layout-guide ${displayLayout ? "rflg-display" : ""} rflg-${layout} ${type ? `rflg-${type}` : ""}`}
+      className={`rflg-layout-guide ${displayLayout ? "rflg-display" : ""} rflg-${layout} ${type ? `rflg-${type}` : ""} ${contentWidth != null ? "rflg-content-width" : ""}`}
       aria-hidden
       tabIndex={-1}
       style={
@@ -75,13 +80,19 @@ export const LayoutGuide = ({ config }: LayoutGuideProps) => {
           "--count": count,
           "--bg-color": color,
           "--size": `${size}px`,
-          "--width": `${width}px`,
-          "--height": `${height}px`,
+          "--column-width": `${columnWidth}px`,
+          "--row-height": `${rowHeight}px`,
           "--gutter": `${gutter}px`,
           "--margin": typeof margin === "number" ? `${margin}px` : `${margin}`,
           "--offset": typeof offset === "number" ? `${offset}px` : `${offset}`,
           "--grid-columns": gridColumns,
           "--grid-rows": gridRows,
+          "--content-width":
+            contentWidth == null
+              ? undefined
+              : typeof contentWidth === "number"
+                ? `${contentWidth}px`
+                : `${contentWidth}`,
         } as React.CSSProperties
       }>
       {layout === "rows" || layout === "columns" ? (

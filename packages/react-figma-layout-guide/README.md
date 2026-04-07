@@ -13,7 +13,7 @@ Overlay a **Figma-style layout guide** in React with columns, rows, or a square 
 - 📱 **Responsive config** via `mediaQueries` (mobile / tablet / desktop)
 - ⌨️ **Toggle visibility** with **Shift+G**
 - ✨ **Animations** for guide lines (configurable)
-- 📦 **Lightweight** — 5 kB gzipped with **zero** dependencies
+- 📦 **Lightweight** — 6 kB gzipped with **zero** dependencies
 
 ## [Playground](https://react-figma-layout-guide.vercel.app/)
 
@@ -71,10 +71,23 @@ Pass all options through the **`config`** prop. Types are inferred on the compon
     layout: "columns",
     type: "center", // stretch | left | right | center
     count: 5,
-    width: 25,
+    columnWidth: 25,
     gutter: 20,
     margin: 0,
     offset: 0, // used with type left | right
+  }}
+/>
+```
+
+**`contentWidth`** is only valid when `layout` is `"columns"` and `type` is `"stretch"` (or omitted, since `type` defaults to `"stretch"`). It sets the width of the overlay for fluid layout (number for px, or a string such as `%`, `rem`, `min(90%, 1200px)`). Omit it to use the default full-viewport behavior. Combine with `margin: "auto"` to center a constrained width.
+
+```tsx
+<LayoutGuide
+  config={{
+    layout: "columns",
+    type: "stretch",
+    margin: "auto",
+    contentWidth: "min(90%, 1200px)",
   }}
 />
 ```
@@ -87,7 +100,7 @@ Pass all options through the **`config`** prop. Types are inferred on the compon
     layout: "rows",
     type: "stretch", // stretch | top | center | bottom
     count: 5,
-    height: 50,
+    rowHeight: 50,
     gutter: 20,
     margin: 0,
     offset: 0, // used with type top | bottom
@@ -124,8 +137,8 @@ Breakpoints (viewport width):
     color: "hsl(200 80% 50% / 0.15)",
     defaultVisible: false,
     mediaQueries: {
-      mobile: { layout: "columns", type: "stretch", count: 4, width: 20 },
-      tablet: { layout: "columns", type: "center", count: 8, width: 24 },
+      mobile: { layout: "columns", type: "stretch", count: 4, columnWidth: 20 },
+      tablet: { layout: "columns", type: "center", count: 8, columnWidth: 24 },
       desktop: { layout: "grid", size: 32 },
     },
   }}
@@ -139,21 +152,22 @@ Breakpoints (viewport width):
 
 ## API summary
 
-| Option           | Applies to        | Default                  | Notes                                                                                                 |
-| ---------------- | ----------------- | ------------------------ | ----------------------------------------------------------------------------------------------------- |
-| `layout`         | all               | `"columns"`              | `"grid"` \| `"columns"` \| `"rows"`                                                                   |
-| `color`          | all               | `hsl(0, 100%, 50%, 0.1)` | Any CSS color                                                                                         |
-| `animate`        | all               | `true`                   | Staggered line animation                                                                              |
-| `defaultVisible` | all               | `false`                  | Without Shift+G                                                                                       |
-| `size`           | `grid`            | `25`                     | Cell size (px)                                                                                        |
-| `type`           | `columns`         | `"stretch"`              | `stretch` \| `left` \| `right` \| `center`                                                            |
-| `type`           | `rows`            | `"stretch"`              | `stretch` \| `top` \| `center` \| `bottom`                                                            |
-| `width`          | `columns`         | `25`                     | Column width (px)                                                                                     |
-| `height`         | `rows`            | `50`                     | Row height (px)                                                                                       |
-| `count`          | `columns`, `rows` | `5`                      | Number of tracks                                                                                      |
-| `gutter`         | `columns`, `rows` | `20`                     | Gap between tracks (px)                                                                               |
-| `margin`         | `columns`, `rows` | `0`                      | Outer margin: **number** → `px`, or **string** (any CSS length: `%`, `vw`, `vh`, `rem`, `clamp()`, …) |
-| `offset`         | `columns`, `rows` | `0`                      | For `left`/`right` or `top`/`bottom` types; same **number** \| **string** rules as `margin`           |
+| Option           | Applies to                 | Default                  | Notes                                                                                                               |
+| ---------------- | -------------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------- |
+| `layout`         | all                        | `"columns"`              | `"grid"` \| `"columns"` \| `"rows"`                                                                                 |
+| `color`          | all                        | `hsl(0, 100%, 50%, 0.1)` | Any CSS color                                                                                                       |
+| `animate`        | all                        | `true`                   | Staggered line animation                                                                                            |
+| `defaultVisible` | all                        | `false`                  | Without Shift+G                                                                                                     |
+| `size`           | `grid`                     | `25`                     | Cell size (px)                                                                                                      |
+| `type`           | `columns`                  | `"stretch"`              | `stretch` \| `left` \| `right` \| `center`                                                                          |
+| `type`           | `rows`                     | `"stretch"`              | `stretch` \| `top` \| `center` \| `bottom`                                                                          |
+| `columnWidth`    | `columns`                  | `25`                     | Column width (px)                                                                                                   |
+| `contentWidth`   | `columns` (`stretch` only) | undefined                | Overlay width: **number** (px) or **string** (any CSS length). Invalid when `type` is `left`, `right`, or `center`. |
+| `rowHeight`      | `rows`                     | `50`                     | Row height (px)                                                                                                     |
+| `count`          | `columns`, `rows`          | `5`                      | Number of tracks                                                                                                    |
+| `gutter`         | `columns`, `rows`          | `20`                     | Gap between tracks (px)                                                                                             |
+| `margin`         | `columns`, `rows`          | `0`                      | Outer margin: **number** → `px`, or **string** (any CSS length: `%`, `vw`, `vh`, `rem`, `clamp()`, …)               |
+| `offset`         | `columns`, `rows`          | `0`                      | For `left`/`right` or `top`/`bottom` types; same **number** \| **string** rules as `margin`                         |
 
 ### Margin and offset units
 

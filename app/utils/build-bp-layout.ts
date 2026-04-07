@@ -7,7 +7,7 @@ export function buildBpLayout(bp: BpState): LayoutDefault {
     return {
       layout: "columns",
       type: bp.colType,
-      width: bp.colWidth,
+      columnWidth: bp.colWidth,
       count: bp.count,
       gutter: bp.gutter,
       margin: `${bp.marginValue}${bp.marginUnit}`,
@@ -17,7 +17,7 @@ export function buildBpLayout(bp: BpState): LayoutDefault {
   return {
     layout: "rows",
     type: bp.rowType,
-    height: bp.rowHeight,
+    rowHeight: bp.rowHeight,
     count: bp.count,
     gutter: bp.gutter,
     margin: `${bp.marginValue}${bp.marginUnit}`,

@@ -37,7 +37,7 @@ describe("initial render", () => {
   });
 });
 
-describe("default prop fallbacks", () => {
+describe("default prop overrides", () => {
   it("overrides the default layout when provided", () => {
     const { container } = render(<LayoutGuide config={{ layout: "grid" }} />);
     const root = container.firstElementChild;
@@ -97,20 +97,20 @@ describe("default prop fallbacks", () => {
 
   it("overrides the default column width when provided", () => {
     const { container } = render(
-      <LayoutGuide config={{ layout: "columns", width: 100 }} />,
+      <LayoutGuide config={{ layout: "columns", columnWidth: 100 }} />,
     );
     const root = container.firstElementChild;
 
-    expect(root).toHaveStyle("--width: 100px");
+    expect(root).toHaveStyle("--column-width: 100px");
   });
 
   it("overrides the default row height when provided", () => {
     const { container } = render(
-      <LayoutGuide config={{ layout: "rows", height: 500 }} />,
+      <LayoutGuide config={{ layout: "rows", rowHeight: 500 }} />,
     );
     const root = container.firstElementChild;
 
-    expect(root).toHaveStyle("--height: 500px");
+    expect(root).toHaveStyle("--row-height: 500px");
   });
 
   it("overrides the default column/row gutter when provided", () => {
@@ -160,6 +160,21 @@ describe("default prop fallbacks", () => {
     expect(root?.querySelector(".rflg-layout-track")).toHaveStyle(
       "--delay: 0s",
     );
+  });
+
+  it("overrides the default contentWidth when provided", () => {
+    const { container, rerender } = render(
+      <LayoutGuide config={{ layout: "columns", contentWidth: 1200 }} />,
+    );
+    const root = container.firstElementChild;
+    expect(root).toHaveStyle("--content-width: 1200px");
+
+    rerender(
+      <LayoutGuide
+        config={{ layout: "columns", contentWidth: "min(85%, 1440px)" }}
+      />,
+    );
+    expect(root).toHaveStyle("--content-width: min(85%, 1440px)");
   });
 });
 
@@ -239,6 +254,14 @@ describe("css class application", () => {
     const root = container.firstElementChild;
 
     expect(root).toHaveClass("rflg-display");
+  });
+
+  it("adds rflg-content-width class to root when contentWidth is passed as prop", () => {
+    const { container } = render(
+      <LayoutGuide config={{ layout: "columns", contentWidth: 1440 }} />,
+    );
+    const root = container.firstElementChild;
+    expect(root).toHaveClass("rflg-content-width");
   });
 });
 

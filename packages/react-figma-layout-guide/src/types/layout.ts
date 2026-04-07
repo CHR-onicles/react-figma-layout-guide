@@ -38,8 +38,10 @@ export type FlatConfig = {
   defaultVisible?: boolean;
   type?: string;
   size?: number;
-  width?: number;
-  height?: number;
+  columnWidth?: number;
+  rowHeight?: number;
+  /** Only applies when `layout` is `"columns"` and `type` is `"stretch"` (or omitted). */
+  contentWidth?: number | string;
   margin?: number | string;
   gutter?: number;
   offset?: number | string;
@@ -81,6 +83,45 @@ export type LayoutBase = {
   mediaQueries?: LayoutMediaQueries;
 };
 
+type ColumnsCommon = LayoutBase & {
+  layout: "columns";
+
+  /**
+   * Width of columns
+   *
+   * Default: 25px
+   */
+  columnWidth?: number;
+
+  /**
+   * Horizontal space outside the columns. Could be a fixed number or relative units like: %, vw, vh, rem, em or even clamp().
+   *
+   * Default: 0
+   */
+  margin?: number | string;
+
+  /**
+   * Space in between columns.
+   *
+   * Default: 20px
+   */
+  gutter?: number;
+
+  /**
+   * For `type` left, right. Replaces margin in these scenarios. Fixed px or relative units.
+   *
+   * Default: 0
+   */
+  offset?: number | string;
+
+  /**
+   * Number of columns or rows
+   *
+   * Default: 5
+   */
+  count?: number;
+};
+
 // Type is scoped to layout
 export type LayoutDefault =
   | (LayoutBase & {
@@ -94,50 +135,25 @@ export type LayoutDefault =
        */
       size?: number;
     })
-  | (LayoutBase & {
-      layout: "columns";
+  | (ColumnsCommon & {
+      /**
+       * For `layout`: "columns" when the guide spans the full width (`stretch`), or is omitted (defaults to stretch).
+       */
+      type?: "stretch";
 
       /**
-       * For layout: columns
+       * Width of the overlay. Could be px, %, rem, vw, etc or even an expression like min(90%, 1440px) combined with `margin`: "auto" to center the overlay. Only for `layout`: "columns" with `type`: "stretch" (including when `type` is omitted).
        *
-       * Default: stretch
+       * Default: undefined
        */
-      type?: ColumnsLayoutType;
-
+      contentWidth?: number | string;
+    })
+  | (ColumnsCommon & {
       /**
-       * For option: columns
-       *
-       * Default: 25px
+       * For `layout`: "columns" — left, right, or centered column tracks.
        */
-      width?: number;
-
-      /**
-       * Space outside the `rows` and `columns`. Could be a fixed number or relative units like: %, vw, vh, rem, em or even clamp().
-       *
-       * Default: 0
-       */
-      margin?: number | string;
-
-      /**
-       * Space in between rows and columns.
-       *
-       * Default: 20px
-       */
-      gutter?: number;
-
-      /**
-       * For `type` left, right. Replaces margin in these scenarios. Fixed px or relative units.
-       *
-       * Default: 0
-       */
-      offset?: number | string;
-
-      /**
-       * Number of columns or rows
-       *
-       * Default: 5
-       */
-      count?: number;
+      type: "left" | "right" | "center";
+      contentWidth?: never;
     })
   | (LayoutBase & {
       layout: "rows";
@@ -150,21 +166,21 @@ export type LayoutDefault =
       type?: RowsLayoutType;
 
       /**
-       * For layout: rows
+       * Height of rows
        *
        * Default: 50px
        */
-      height?: number;
+      rowHeight?: number;
 
       /**
-       * Space outside the `rows` and `columns`. Could be a fixed number or relative units like: %, vw, vh, rem, em or even clamp().
+       * Vertical space outside the rows. Could be a fixed number or relative units like: %, vw, vh, rem, em or even clamp().
        *
        * Default: 0
        */
       margin?: number | string;
 
       /**
-       * Space in between rows and columns.
+       * Space in between rows.
        *
        * Default: 20px
        */
@@ -224,23 +240,22 @@ type LayoutWithMediaQueries = LayoutGlobalProps & {
   layout?: never;
 };
 
-export type LayoutGuideProps = {
-  config: LayoutWithMediaQueries | LayoutWithoutMediaQueries;
-};
-
 /**
  * Props for LayoutGuide component.
  * Pass layout configuration via the `config` prop.
  *
  * @example
- * // Grid layout - only size and base options (no type, width, height)
+ * // Grid layout - only size and base options (no type, columnWidth, rowHeight)
  * <LayoutGuide config={{ layout: "grid", size: 20 }} />
  *
  * @example
- * // Columns layout - type (stretch|left|right|center), width, gutter, margin, offset
- * <LayoutGuide config={{ layout: "columns", type: "center", width: 100 }} />
+ * // Columns layout - type (stretch|left|right|center), columnWidth, gutter, margin, offset
+ * <LayoutGuide config={{ layout: "columns", type: "center", columnWidth: 100 }} />
  *
  * @example
- * // Rows layout - type (stretch|top|center|bottom), height, gutter, margin, offset
+ * // Rows layout - type (stretch|top|center|bottom), rowHeight, gutter, margin, offset
  * <LayoutGuide config={{ layout: "rows", type: "stretch", gutter: 20, margin: 50 }} />
  */
+export type LayoutGuideProps = {
+  config: LayoutWithMediaQueries | LayoutWithoutMediaQueries;
+};
