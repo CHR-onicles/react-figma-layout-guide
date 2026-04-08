@@ -8,22 +8,23 @@ export type Layout = "grid" | "columns" | "rows";
 
 export type ColumnsLayoutType = "stretch" | "left" | "right" | "center";
 export type RowsLayoutType = "stretch" | "top" | "center" | "bottom";
+export type PositionType = "fixed" | "absolute";
 
 export type LayoutMediaQueries = {
   /**
    * Screen sizes < 768px
    */
-  mobile?: DistributiveOmit<LayoutDefault, "mediaQueries">;
+  mobile?: DistributiveOmit<LayoutDefault, "mediaQueries" | "position">;
 
   /**
    * Screen sizes between 768px and 1023px inclusive
    */
-  tablet?: DistributiveOmit<LayoutDefault, "mediaQueries">;
+  tablet?: DistributiveOmit<LayoutDefault, "mediaQueries" | "position">;
 
   /**
    * Screen sizes >= 1024px
    */
-  desktop?: DistributiveOmit<LayoutDefault, "mediaQueries">;
+  desktop?: DistributiveOmit<LayoutDefault, "mediaQueries" | "position">;
 };
 
 /**
@@ -32,6 +33,7 @@ export type LayoutMediaQueries = {
  * active `mediaQueries` branch).
  */
 export type FlatConfig = {
+  position?: PositionType;
   layout?: Layout;
   color?: string;
   animate?: boolean;
@@ -40,7 +42,9 @@ export type FlatConfig = {
   size?: number;
   columnWidth?: number;
   rowHeight?: number;
-  /** Only applies when `layout` is `"columns"` and `type` is `"stretch"` (or omitted). */
+  /**
+   * Only applies when `type` is `"stretch"` (or omitted) for columns and rows, or when `layout` is `"grid"`.
+   */
   contentWidth?: number | string;
   margin?: number | string;
   gutter?: number;
@@ -81,6 +85,13 @@ export type LayoutBase = {
    * Per-breakpoint layout (mobile, tablet, desktop); mobile-first fallbacks.
    */
   mediaQueries?: LayoutMediaQueries;
+
+  /**
+   * Controls whether the overlay covers the entire viewport (`fixed`) or only its parent container (`absolute`). If `absolute` is used, the parent container **must** have `position: relative`
+   *
+   * Default: fixed
+   */
+  position?: PositionType;
 };
 
 type ColumnsCommon = LayoutBase & {
@@ -122,6 +133,45 @@ type ColumnsCommon = LayoutBase & {
   count?: number;
 };
 
+type RowsCommon = LayoutBase & {
+  layout: "rows";
+
+  /**
+   * Height of rows
+   *
+   * Default: 50px
+   */
+  rowHeight?: number;
+
+  /**
+   * Vertical space outside the rows. Could be a fixed number or relative units like: %, vw, vh, rem, em or even clamp().
+   *
+   * Default: 0
+   */
+  margin?: number | string;
+
+  /**
+   * Space in between rows.
+   *
+   * Default: 20px
+   */
+  gutter?: number;
+
+  /**
+   * For `type` top, bottom. Replaces margin in these scenarios. Fixed px or relative units.
+   *
+   * Default: 0
+   */
+  offset?: number | string;
+
+  /**
+   * Number of columns or rows
+   *
+   * Default: 5
+   */
+  count?: number;
+};
+
 // Type is scoped to layout
 export type LayoutDefault =
   | (LayoutBase & {
@@ -134,6 +184,13 @@ export type LayoutDefault =
        * Default: 25px
        */
       size?: number;
+
+      /**
+       * Width of the overlay. Could be px, %, rem, vw, etc. or an expression like min(90%, 1440px) combined with `margin`: "auto" to center the overlay. Only works with `type`: "stretch" (including when `type` is omitted).
+       *
+       * Default: undefined
+       */
+      contentWidth?: number | string;
     })
   | (ColumnsCommon & {
       /**
@@ -142,7 +199,7 @@ export type LayoutDefault =
       type?: "stretch";
 
       /**
-       * Width of the overlay. Could be px, %, rem, vw, etc or even an expression like min(90%, 1440px) combined with `margin`: "auto" to center the overlay. Only for `layout`: "columns" with `type`: "stretch" (including when `type` is omitted).
+       * Width of the overlay. Could be px, %, rem, vw, etc or even an expression like min(90%, 1440px) combined with `margin`: "auto" to center the overlay. Only works with `type`: "stretch" (including when `type` is omitted).
        *
        * Default: undefined
        */
@@ -155,50 +212,25 @@ export type LayoutDefault =
       type: "left" | "right" | "center";
       contentWidth?: never;
     })
-  | (LayoutBase & {
-      layout: "rows";
+  | (RowsCommon & {
+      /**
+       * For `layout`: "rows" when the guide spans the full height (`stretch`), or is omitted (defaults to stretch).
+       */
+      type?: "stretch";
 
       /**
-       * For layout: rows
+       * Width of the overlay. Could be px, %, rem, vh, etc. or even an expression like min(90%, 800px) combined with `margin`: "auto" to center the overlay.
        *
-       * Default: stretch
+       * Default: undefined
        */
-      type?: RowsLayoutType;
-
+      contentWidth?: number | string;
+    })
+  | (RowsCommon & {
       /**
-       * Height of rows
-       *
-       * Default: 50px
+       * For `layout`: "rows" — top, bottom, or centered row tracks.
        */
-      rowHeight?: number;
-
-      /**
-       * Vertical space outside the rows. Could be a fixed number or relative units like: %, vw, vh, rem, em or even clamp().
-       *
-       * Default: 0
-       */
-      margin?: number | string;
-
-      /**
-       * Space in between rows.
-       *
-       * Default: 20px
-       */
-      gutter?: number;
-
-      /**
-       * For `type` top, bottom. Replaces margin in these scenarios. Fixed px or relative units.
-       *
-       * Default: 0
-       */
-      offset?: number | string;
-
-      /**
-       * Number of columns or rows
-       *
-       * Default: 5
-       */
-      count?: number;
+      type: "top" | "center" | "bottom";
+      contentWidth?: never;
     });
 
 /**
@@ -206,28 +238,10 @@ export type LayoutDefault =
  * In `resolveConfig` they are applied first, then the active breakpoint branch is
  * spread on top—per-breakpoint keys override these when both are set.
  */
-export type LayoutGlobalProps = {
-  /**
-   * Hex, rgb, hsl, or any other valid CSS color value.
-   *
-   * Default: hsl(0, 100%, 50%, 0.1) - Red
-   */
-  color?: string;
-
-  /**
-   * Whether or not to animate the appearance of the layout guide.
-   *
-   * Default: true
-   */
-  animate?: boolean;
-
-  /**
-   * Whether the layout guide is visible by default (without pressing Shift+G).
-   *
-   * Default: false
-   */
-  defaultVisible?: boolean;
-};
+export type LayoutGlobalProps = Pick<
+  LayoutBase,
+  "color" | "animate" | "defaultVisible" | "position"
+>;
 
 // Branch 1: no mediaQueries → full layout config (current behavior)
 type LayoutWithoutMediaQueries = LayoutDefault & {

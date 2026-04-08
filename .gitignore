@@ -12,3 +12,4 @@ dj.md
 dist/
 
 .env.production
+.cursor

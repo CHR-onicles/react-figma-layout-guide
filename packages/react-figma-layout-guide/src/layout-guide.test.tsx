@@ -35,6 +35,15 @@ describe("initial render", () => {
 
     expect(root).not.toHaveClass("rflg-display");
   });
+
+  it("root element has default position as fixed when position is omitted", () => {
+    const { container } = render(
+      <LayoutGuide config={{ layout: "columns" }} />,
+    );
+    const root = container.firstElementChild;
+
+    expect(root).not.toHaveClass("rflg-absolute");
+  });
 });
 
 describe("default prop overrides", () => {
@@ -176,6 +185,14 @@ describe("default prop overrides", () => {
     );
     expect(root).toHaveStyle("--content-width: min(85%, 1440px)");
   });
+
+  it("overrides the default position when position is provided", () => {
+    const { container } = render(
+      <LayoutGuide config={{ position: "absolute", layout: "columns" }} />,
+    );
+    const root = container.firstElementChild;
+    expect(root).toHaveClass("rflg-absolute");
+  });
 });
 
 describe("css class application", () => {
@@ -257,10 +274,24 @@ describe("css class application", () => {
   });
 
   it("adds rflg-content-width class to root when contentWidth is passed as prop", () => {
-    const { container } = render(
+    const { container, rerender } = render(
       <LayoutGuide config={{ layout: "columns", contentWidth: 1440 }} />,
     );
     const root = container.firstElementChild;
+    expect(root).toHaveClass("rflg-content-width");
+
+    rerender(
+      <LayoutGuide
+        config={{ layout: "rows", contentWidth: "min(95%, 1200px)" }}
+      />,
+    );
+    expect(root).toHaveClass("rflg-content-width");
+
+    rerender(
+      <LayoutGuide
+        config={{ layout: "grid", contentWidth: "min(90%, 1280px)" }}
+      />,
+    );
     expect(root).toHaveClass("rflg-content-width");
   });
 });
@@ -384,6 +415,34 @@ describe("children rendered for grid layout", () => {
       expect(columns).toHaveLength(calculatedColumns);
       expect(root).toHaveStyle(`--grid-columns: ${calculatedColumns}`);
       expect(rows).toHaveLength(calculatedRows);
+      expect(root).toHaveStyle(`--grid-rows: ${calculatedRows}`);
+    });
+  });
+
+  it("when position is absolute, grid columns and rows use the parent element size, not the window", async () => {
+    const parent = document.createElement("div");
+    vi.spyOn(parent, "clientWidth", "get").mockReturnValue(400);
+    vi.spyOn(parent, "clientHeight", "get").mockReturnValue(300);
+
+    render(
+      <LayoutGuide
+        config={{ layout: "grid", position: "absolute", size: 25 }}
+      />,
+      { container: parent },
+    );
+
+    const root = parent.firstElementChild as HTMLElement;
+    const calculatedColumns = Math.floor(400 / 25);
+    const calculatedRows = Math.floor(300 / 25);
+
+    await waitFor(() => {
+      expect(root.querySelectorAll(".rflg-grid-column")).toHaveLength(
+        calculatedColumns,
+      );
+      expect(root.querySelectorAll(".rflg-grid-row")).toHaveLength(
+        calculatedRows,
+      );
+      expect(root).toHaveStyle(`--grid-columns: ${calculatedColumns}`);
       expect(root).toHaveStyle(`--grid-rows: ${calculatedRows}`);
     });
   });

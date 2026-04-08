@@ -5,6 +5,7 @@ import type {
   Breakpoint,
   Layout,
   LayoutGuideProps,
+  PositionType,
 } from "packages/react-figma-layout-guide/src/types/layout";
 import { SliderField } from "~/components/slider-field";
 import { ToggleField } from "~/components/toggle-field";
@@ -43,6 +44,7 @@ export default function Home() {
   const [opacity, setOpacity] = useState(0.1);
   const [animate, setAnimate] = useState(true);
   const [defaultVisible, setDefaultVisible] = useState(true);
+  const [position, setPosition] = useState<PositionType>("fixed");
 
   // Simple mode — single flat config
   const [simple, setSimple] = useState<BpState>(DEFAULT_BP);
@@ -58,7 +60,7 @@ export default function Home() {
   const color = hexToRgba(colorHex, opacity);
 
   const config = useMemo((): LayoutGuideProps["config"] => {
-    const base = { color, animate, defaultVisible };
+    const base = { color, animate, defaultVisible, position };
     if (mode === "simple") {
       return {
         ...base,
@@ -73,7 +75,7 @@ export default function Home() {
         desktop: bps.desktop.enabled ? buildBpLayout(bps.desktop) : undefined,
       },
     } as LayoutGuideProps["config"];
-  }, [mode, color, animate, defaultVisible, simple, bps]);
+  }, [mode, color, animate, defaultVisible, position, simple, bps]);
 
   function updateSimple(updates: Partial<BpState>) {
     setSimple(prev => ({ ...prev, ...updates }));
@@ -105,9 +107,9 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950 font-sans">
       {/* ─── Main canvas ─────────────────────────────────────── */}
-      <main className="min-h-screen">
+      <main className="min-h-screen relative mx-12">
         {/* Hero */}
-        <section className="px-12 pt-16 pb-12 border-b border-gray-100 dark:border-gray-800/60">
+        <section className="pt-16 pb-12 border-b border-gray-100 dark:border-gray-800/60">
           <p className="text-xs font-semibold uppercase tracking-widest text-sky-500 mb-3">
             Playground
           </p>
@@ -152,7 +154,7 @@ export default function Home() {
         </section>
 
         {/* Feature cards */}
-        <section className="px-12 py-12">
+        <section className="py-12">
           <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-6">
             Layout modes
           </p>
@@ -207,7 +209,7 @@ export default function Home() {
         </section>
 
         {/* Content skeleton */}
-        <section className="px-12 pb-12 grid grid-cols-12 gap-6">
+        <section className="pb-12 grid grid-cols-12 gap-6">
           <div className="col-span-8 flex flex-col gap-3">
             <div className="h-5 bg-gray-100 dark:bg-gray-800 rounded-full w-3/5" />
             <div className="h-3 bg-gray-100 dark:bg-gray-800 rounded-full w-full" />
@@ -228,7 +230,7 @@ export default function Home() {
         </section>
 
         {/* Tile grid */}
-        <section className="px-12 pb-32 grid grid-cols-4 gap-4">
+        <section className="pb-32 grid grid-cols-4 gap-4">
           {Array.from({ length: 8 }).map((_, i) => (
             <div
               key={i}
@@ -236,6 +238,11 @@ export default function Home() {
             />
           ))}
         </section>
+
+        <LayoutGuide
+          // config={{ mediaQueries: { mobile: { layout: "columns" } } }}
+          config={config}
+        />
       </main>
 
       {/* ─── Floating controls panel ─────────────────────────── */}
@@ -345,6 +352,28 @@ export default function Home() {
                   onChange={setDefaultVisible}
                 />
               </div>
+              <div className="flex flex-col gap-2">
+                <p className="text-xs font-medium text-gray-300">Position</p>
+                <div className="grid grid-cols-2 gap-1 p-1 bg-gray-900 rounded-lg">
+                  {(["fixed", "absolute"] as const).map(p => (
+                    <button
+                      key={p}
+                      type="button"
+                      onClick={() => setPosition(p)}
+                      className={`py-1.5 rounded-md text-xs font-medium capitalize transition-colors ${
+                        position === p
+                          ? "bg-sky-600 text-white shadow-sm"
+                          : "text-gray-500 hover:text-gray-200 hover:bg-gray-800"
+                      }`}>
+                      {p}
+                    </button>
+                  ))}
+                </div>
+                <p className="text-[10px] text-gray-500 leading-relaxed">
+                  Fixed covers the viewport; absolute is confined to the main
+                  content area (requires a relative parent).
+                </p>
+              </div>
             </section>
 
             {/* ── Simple mode controls ── */}
@@ -442,17 +471,6 @@ export default function Home() {
           {panelOpen ? <CloseIcon /> : <DemoIcon />}
         </button>
       </div>
-
-      <LayoutGuide
-        // config={{
-        //   layout: "columns",
-        //   count: 12,
-        //   defaultVisible: true,
-        //   margin: "auto",
-        //   contentWidth: "min(90%, 1200px)",
-        // }}
-        config={config}
-      />
     </div>
   );
 }

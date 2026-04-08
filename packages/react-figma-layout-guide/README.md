@@ -10,10 +10,11 @@ Overlay a **Figma-style layout guide** in React with columns, rows, or a square 
 ## Features
 
 - 📐 **Layouts**: `columns`, `rows`, or `grid` with alignment options for columns and rows
+- 🎯 **Position**: Overlay can be anchored to the viewport or a specific container
 - 📱 **Responsive config** via `mediaQueries` (mobile / tablet / desktop)
 - ⌨️ **Toggle visibility** with **Shift+G**
 - ✨ **Animations** for guide lines (configurable)
-- 📦 **Lightweight** — 6 kB gzipped with **zero** dependencies
+- 📦 **Lightweight**: 7kB gzipped with **zero** dependencies
 
 ## [Playground](https://react-figma-layout-guide.vercel.app/)
 
@@ -57,11 +58,11 @@ export function App() {
 }
 ```
 
-The layout guide is absolutely positioned and intended to sit above your UI with a large z-index while you align layouts; use `defaultVisible` or **Shift+G** to show or hide it.
+The layout guide uses **`position: "fixed"`** by default so it covers the entire viewport, with a large z-index above your UI; use `defaultVisible` or **Shift+G** to show or hide it. Set **`position: "absolute"`** if you want it scoped to a parent container (see [Position](#position)).
 
 ## Usage
 
-Pass all options through the **`config`** prop. Types are inferred on the component. You get distinct shapes for `grid` vs `columns` vs `rows` exactly as Figma does.
+Pass all options through the **`config`** prop. Types are inferred on the component. You get distinct shapes for `grid` vs `columns` vs `rows` exactly as Figma does, and some extra options for practicality in web development.
 
 ### Columns
 
@@ -75,19 +76,6 @@ Pass all options through the **`config`** prop. Types are inferred on the compon
     gutter: 20,
     margin: 0,
     offset: 0, // used with type left | right
-  }}
-/>
-```
-
-**`contentWidth`** is only valid when `layout` is `"columns"` and `type` is `"stretch"` (or omitted, since `type` defaults to `"stretch"`). It sets the width of the overlay for fluid layout (number for px, or a string such as `%`, `rem`, `min(90%, 1200px)`). Omit it to use the default full-viewport behavior. Combine with `margin: "auto"` to center a constrained width.
-
-```tsx
-<LayoutGuide
-  config={{
-    layout: "columns",
-    type: "stretch",
-    margin: "auto",
-    contentWidth: "min(90%, 1200px)",
   }}
 />
 ```
@@ -114,14 +102,67 @@ Pass all options through the **`config`** prop. Types are inferred on the compon
 <LayoutGuide
   config={{
     layout: "grid",
-    size: 25, // cell size in px; columns/rows derived from viewport
+    size: 25, // cell size in px; columns/rows derived from viewport for position: "fixed" or parent container for position: "absolute"
   }}
 />
 ```
 
+### Position
+
+`position` controls how the overlay is anchored:
+
+| Value                 | Behavior                        |
+| --------------------- | ------------------------------- |
+| `"fixed"` _(default)_ | Covers the entire **viewport**. |
+| `"absolute"`          | Covers the parent container.    |
+
+If you use **`"absolute"`**, the parent element **must** establish a containing block—typically `position: relative` (or `absolute` / `fixed` / `sticky`). Render `<LayoutGuide />` **inside** that element.
+
+With **`mediaQueries`**, set `position` at the **top level** next to `color`, `animate`, and `defaultVisible` (it applies to all breakpoints).
+
+```tsx
+<LayoutGuide
+  config={{
+    position: "absolute",
+    layout: "columns",
+    count: 12,
+  }}
+/>
+```
+
+### Content width
+
+**`contentWidth`** is only valid when `type` is `"stretch"` (or omitted, since `type` defaults to `"stretch"`) for both `columns` and `rows` layouts, and for `grid`. It sets the width of the overlay for fluid layouts (number for px, or a string such as `%`, `rem`, `min(90%, 1200px)`). Omit it to use the default full viewport/parent behavior. Combine with `margin: "auto"` to center a constrained width.
+
+```tsx
+<LayoutGuide
+  config={{
+    layout: "columns",
+    type: "stretch",
+    margin: "auto", // To center the overlay
+    contentWidth: "min(90%, 1200px)", // To cap the overlay at 1200px width, or whatever value you use in your project
+  }}
+/>
+```
+
+### Margin and offset
+
+- **`margin`** applies when `type` is `stretch` (outer space around the column/row tracks).
+- **`offset`** applies when `type` is `left` / `right` (columns) or `top` / `bottom` (rows) instead of margin in those layouts.
+
+Pass a **number** for pixel values or a **string** to use relative units or other CSS lengths to mimic your project, for example:
+
+```tsx
+margin: "5vw";
+// or
+offset: "10%";
+// or
+margin: "clamp(1rem, 4vw, 3rem)";
+```
+
 ### Responsive `mediaQueries`
 
-When you use `mediaQueries`, put **only** shared options at the top level (`color`, `animate`, `defaultVisible`). Put `layout` and layout-specific fields inside each breakpoint.
+When you use `mediaQueries`, put **only** shared options at the top level (`color`, `animate`, `defaultVisible`, `position`). Put `layout` and layout-specific fields inside each breakpoint.
 
 Breakpoints (viewport width):
 
@@ -152,35 +193,23 @@ Breakpoints (viewport width):
 
 ## API summary
 
-| Option           | Applies to                 | Default                  | Notes                                                                                                               |
-| ---------------- | -------------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------- |
-| `layout`         | all                        | `"columns"`              | `"grid"` \| `"columns"` \| `"rows"`                                                                                 |
-| `color`          | all                        | `hsl(0, 100%, 50%, 0.1)` | Any CSS color                                                                                                       |
-| `animate`        | all                        | `true`                   | Staggered line animation                                                                                            |
-| `defaultVisible` | all                        | `false`                  | Without Shift+G                                                                                                     |
-| `size`           | `grid`                     | `25`                     | Cell size (px)                                                                                                      |
-| `type`           | `columns`                  | `"stretch"`              | `stretch` \| `left` \| `right` \| `center`                                                                          |
-| `type`           | `rows`                     | `"stretch"`              | `stretch` \| `top` \| `center` \| `bottom`                                                                          |
-| `columnWidth`    | `columns`                  | `25`                     | Column width (px)                                                                                                   |
-| `contentWidth`   | `columns` (`stretch` only) | undefined                | Overlay width: **number** (px) or **string** (any CSS length). Invalid when `type` is `left`, `right`, or `center`. |
-| `rowHeight`      | `rows`                     | `50`                     | Row height (px)                                                                                                     |
-| `count`          | `columns`, `rows`          | `5`                      | Number of tracks                                                                                                    |
-| `gutter`         | `columns`, `rows`          | `20`                     | Gap between tracks (px)                                                                                             |
-| `margin`         | `columns`, `rows`          | `0`                      | Outer margin: **number** → `px`, or **string** (any CSS length: `%`, `vw`, `vh`, `rem`, `clamp()`, …)               |
-| `offset`         | `columns`, `rows`          | `0`                      | For `left`/`right` or `top`/`bottom` types; same **number** \| **string** rules as `margin`                         |
-
-### Margin and offset units
-
-- **`margin`** applies when `type` is `stretch` (outer space around the column/row tracks).
-- **`offset`** applies when `type` is `left` / `right` (columns) or `top` / `bottom` (rows) instead of margin in those layouts.
-
-Pass a **number** for pixel values (`20` → `20px`). Pass a **string** to use viewport-relative or other CSS lengths, for example:
-
-```tsx
-margin: "5vw";
-offset: "10%";
-margin: "clamp(1rem, 4vw, 3rem)";
-```
+| Option           | Applies to                                              | Default                  | Notes                                                                                                                                                    |
+| ---------------- | ------------------------------------------------------- | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `layout`         | all                                                     | `"columns"`              | `"grid"` \| `"columns"` \| `"rows"`                                                                                                                      |
+| `color`          | all                                                     | `hsl(0, 100%, 50%, 0.1)` | Any CSS color                                                                                                                                            |
+| `animate`        | all                                                     | `true`                   | Staggered line animation                                                                                                                                 |
+| `defaultVisible` | all                                                     | `false`                  | Without Shift+G                                                                                                                                          |
+| `position`       | all                                                     | `"fixed"`                | `"fixed"` (viewport) \| `"absolute"` (parent-scoped; parent must be positioned). See [Position](#position).                                              |
+| `size`           | `grid`                                                  | `25`                     | Cell size (px)                                                                                                                                           |
+| `type`           | `columns`                                               | `"stretch"`              | `stretch` \| `left` \| `right` \| `center`                                                                                                               |
+| `type`           | `rows`                                                  | `"stretch"`              | `stretch` \| `top` \| `center` \| `bottom`                                                                                                               |
+| `columnWidth`    | `columns`                                               | `25`                     | Column width (px)                                                                                                                                        |
+| `contentWidth`   | `columns` and `rows` (type: `stretch` only), and `grid` | undefined                | Overlay width: **number** (px) or **string** (any CSS length). Invalid when `type` is `left`, `right`, or `center`. See [Content width](#content-width). |
+| `rowHeight`      | `rows`                                                  | `50`                     | Row height (px)                                                                                                                                          |
+| `count`          | `columns`, `rows`                                       | `5`                      | Number of tracks                                                                                                                                         |
+| `gutter`         | `columns`, `rows`                                       | `20`                     | Gap between tracks (px)                                                                                                                                  |
+| `margin`         | `columns`, `rows`                                       | `0`                      | Outer margin: **number** → `px`, or **string** (any CSS length: `%`, `vw`, `vh`, `rem`, `clamp()`, …)                                                    |
+| `offset`         | `columns`, `rows`                                       | `0`                      | For `left`/`right` or `top`/`bottom` types; same **number** \| **string** rules as `margin`                                                              |
 
 ## License
 

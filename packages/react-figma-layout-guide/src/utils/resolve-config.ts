@@ -13,7 +13,7 @@ export function resolveConfig(
 
   if (!mq) return config as FlatConfig;
 
-  const { color, animate, defaultVisible } = config;
+  const { color, animate, defaultVisible, position } = config;
   const bp = getBreakpoint(width);
 
   const breakpointConfig =
@@ -23,5 +23,5 @@ export function resolveConfig(
         ? (mq.tablet ?? mq.mobile)
         : mq.mobile;
 
-  return { color, animate, defaultVisible, ...breakpointConfig };
+  return { color, animate, defaultVisible, position, ...breakpointConfig };
 }
