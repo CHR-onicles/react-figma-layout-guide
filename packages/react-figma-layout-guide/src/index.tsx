@@ -27,6 +27,7 @@ export const LayoutGuide = ({ config }: LayoutGuideProps) => {
     const syncParentResizeObserver = (resolved: FlatConfig) => {
       parentResizeObserverRef.current?.disconnect();
       parentResizeObserverRef.current = null;
+
       const needsParentObserver =
         (resolved.layout ?? "columns") === "grid" &&
         (resolved.position ?? "fixed") === "absolute" &&
@@ -113,19 +114,18 @@ export const LayoutGuide = ({ config }: LayoutGuideProps) => {
   const offset = activeConfig.offset ?? 0;
   const animate = activeConfig.animate ?? true;
   const delayConstant = animate ? 0.015 : 0;
-  const canUseContentWidth =
-    (layout === "columns" && (activeConfig.type ?? "stretch") === "stretch") ||
-    (layout === "rows" && (activeConfig.type ?? "stretch") === "stretch") ||
-    layout === "grid";
-  const contentWidth = canUseContentWidth
-    ? (activeConfig.contentWidth ?? undefined)
+  const canUseOverlayWidth =
+    layout === "columns" && (activeConfig.type ?? "stretch") === "stretch";
+
+  const overlayWidth = canUseOverlayWidth
+    ? (activeConfig.overlayWidth ?? undefined)
     : undefined;
   const position = activeConfig.position ?? "fixed";
 
   return (
     <div
       ref={containerRef}
-      className={`rflg-layout-guide ${displayLayout ? "rflg-display" : ""} rflg-${layout} ${type ? `rflg-${type}` : ""} ${contentWidth != null ? "rflg-content-width" : ""} ${position === "absolute" ? `rflg-absolute` : ""}`}
+      className={`rflg-layout-guide ${displayLayout ? "rflg-display" : ""} rflg-${layout} ${type ? `rflg-${type}` : ""} ${overlayWidth != null ? "rflg-overlay-width" : ""} ${position === "absolute" ? `rflg-absolute` : ""}`}
       aria-hidden
       tabIndex={-1}
       style={
@@ -140,12 +140,12 @@ export const LayoutGuide = ({ config }: LayoutGuideProps) => {
           "--offset": typeof offset === "number" ? `${offset}px` : `${offset}`,
           "--grid-columns": gridColumns,
           "--grid-rows": gridRows,
-          "--content-width":
-            contentWidth == null
+          "--overlay-width":
+            overlayWidth == null
               ? undefined
-              : typeof contentWidth === "number"
-                ? `${contentWidth}px`
-                : `${contentWidth}`,
+              : typeof overlayWidth === "number"
+                ? `${overlayWidth}px`
+                : `${overlayWidth}`,
         } as React.CSSProperties
       }>
       {layout === "rows" || layout === "columns" ? (

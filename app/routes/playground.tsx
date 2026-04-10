@@ -240,7 +240,7 @@ export default function Home() {
         </section>
 
         <LayoutGuide
-          // config={{ mediaQueries: { mobile: { layout: "columns" } } }}
+          // config={{ mediaQueries: { mobile: { layout: "columns", type: "stretch" } } }}
           config={config}
         />
       </main>

@@ -43,9 +43,9 @@ export type FlatConfig = {
   columnWidth?: number;
   rowHeight?: number;
   /**
-   * Only applies when `type` is `"stretch"` (or omitted) for columns and rows, or when `layout` is `"grid"`.
+   * Only applies when `type` is `"stretch"` (or omitted) for columns.
    */
-  contentWidth?: number | string;
+  overlayWidth?: number | string;
   margin?: number | string;
   gutter?: number;
   offset?: number | string;
@@ -82,7 +82,7 @@ export type LayoutBase = {
   defaultVisible?: boolean;
 
   /**
-   * Per-breakpoint layout (mobile, tablet, desktop); mobile-first fallbacks.
+   * Per-breakpoint layout (mobile, tablet, desktop). Uses mobile-first fallbacks.
    */
   mediaQueries?: LayoutMediaQueries;
 
@@ -133,45 +133,6 @@ type ColumnsCommon = LayoutBase & {
   count?: number;
 };
 
-type RowsCommon = LayoutBase & {
-  layout: "rows";
-
-  /**
-   * Height of rows
-   *
-   * Default: 50px
-   */
-  rowHeight?: number;
-
-  /**
-   * Vertical space outside the rows. Could be a fixed number or relative units like: %, vw, vh, rem, em or even clamp().
-   *
-   * Default: 0
-   */
-  margin?: number | string;
-
-  /**
-   * Space in between rows.
-   *
-   * Default: 20px
-   */
-  gutter?: number;
-
-  /**
-   * For `type` top, bottom. Replaces margin in these scenarios. Fixed px or relative units.
-   *
-   * Default: 0
-   */
-  offset?: number | string;
-
-  /**
-   * Number of columns or rows
-   *
-   * Default: 5
-   */
-  count?: number;
-};
-
 // Type is scoped to layout
 export type LayoutDefault =
   | (LayoutBase & {
@@ -184,17 +145,18 @@ export type LayoutDefault =
        * Default: 25px
        */
       size?: number;
-
-      /**
-       * Width of the overlay. Could be px, %, rem, vw, etc. or an expression like min(90%, 1440px) combined with `margin`: "auto" to center the overlay. Only works with `type`: "stretch" (including when `type` is omitted).
-       *
-       * Default: undefined
-       */
-      contentWidth?: number | string;
     })
   | (ColumnsCommon & {
       /**
-       * For `layout`: "columns" when the guide spans the full width (`stretch`), or is omitted (defaults to stretch).
+       * Alignment of the columns.
+       *
+       * Options:
+       * - "stretch": columns fill the available space equally.
+       * - "left": columns are aligned to the left.
+       * - "center": columns are centered horizontally.
+       * - "right": columns are aligned to the right.
+       *
+       * Default: "stretch"
        */
       type?: "stretch";
 
@@ -203,34 +165,73 @@ export type LayoutDefault =
        *
        * Default: undefined
        */
-      contentWidth?: number | string;
+      overlayWidth?: number | string;
     })
   | (ColumnsCommon & {
       /**
-       * For `layout`: "columns" — left, right, or centered column tracks.
+       * Alignment of the columns.
+       *
+       * Options:
+       * - "stretch": columns fill the available space equally.
+       * - "left": columns are aligned to the left.
+       * - "center": columns are centered horizontally.
+       * - "right": columns are aligned to the right.
+       *
+       * Default: "stretch"
        */
       type: "left" | "right" | "center";
-      contentWidth?: never;
+      overlayWidth?: never;
     })
-  | (RowsCommon & {
-      /**
-       * For `layout`: "rows" when the guide spans the full height (`stretch`), or is omitted (defaults to stretch).
-       */
-      type?: "stretch";
+  | (LayoutBase & {
+      layout: "rows";
 
       /**
-       * Width of the overlay. Could be px, %, rem, vh, etc. or even an expression like min(90%, 800px) combined with `margin`: "auto" to center the overlay.
+       * Height of rows
        *
-       * Default: undefined
+       * Default: 50px
        */
-      contentWidth?: number | string;
-    })
-  | (RowsCommon & {
+      rowHeight?: number;
+
       /**
-       * For `layout`: "rows" — top, bottom, or centered row tracks.
+       * Vertical space outside the rows. Could be a fixed number or relative units like: %, vw, vh, rem, em or even clamp().
+       *
+       * Default: 0
        */
-      type: "top" | "center" | "bottom";
-      contentWidth?: never;
+      margin?: number | string;
+
+      /**
+       * Space in between rows.
+       *
+       * Default: 20px
+       */
+      gutter?: number;
+
+      /**
+       * For `type` top, bottom. Replaces margin in these scenarios. Fixed px or relative units.
+       *
+       * Default: 0
+       */
+      offset?: number | string;
+
+      /**
+       * Number of columns or rows
+       *
+       * Default: 5
+       */
+      count?: number;
+
+      /**
+       * Alignment of the rows.
+       *
+       * Options:
+       * - "stretch": Rows fill the available space equally.
+       * - "top": Rows are aligned to the top.
+       * - "center": Rows are centered vertically.
+       * - "bottom": Rows are aligned to the bottom.
+       *
+       * Default: "stretch"
+       */
+      type?: RowsLayoutType;
     });
 
 /**
@@ -249,6 +250,9 @@ type LayoutWithoutMediaQueries = LayoutDefault & {
 };
 // Branch 2: with mediaQueries → only global props at top level
 type LayoutWithMediaQueries = LayoutGlobalProps & {
+  /**
+   * Per-breakpoint layout (mobile, tablet, desktop). Uses mobile-first fallbacks.
+   */
   mediaQueries: LayoutMediaQueries;
   // layout-specific props are forbidden at top level
   layout?: never;

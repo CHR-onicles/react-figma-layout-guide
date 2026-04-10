@@ -71,10 +71,6 @@
   }
 }
 
-.rflg-grid.rflg-content-width {
-  width: var(--content-width, 100%);
-}
-
 .rflg-columns {
   grid-template-columns: repeat(var(--count), 1fr);
   gap: var(--gutter);
@@ -89,16 +85,12 @@
 .rflg-stretch.rflg-columns {
   margin-inline: var(--margin);
 }
-.rflg-stretch.rflg-columns.rflg-content-width {
-  width: var(--content-width, 100%);
+.rflg-stretch.rflg-columns.rflg-overlay-width {
+  width: var(--overlay-width, 100%);
 }
 
 .rflg-stretch.rflg-rows {
   margin-block: var(--margin);
-}
-
-.rflg-stretch.rflg-rows.rflg-content-width {
-  width: var(--content-width, 100%);
 }
 
 .rflg-left,

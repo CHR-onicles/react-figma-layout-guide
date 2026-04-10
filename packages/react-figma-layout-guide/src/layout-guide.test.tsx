@@ -171,19 +171,19 @@ describe("default prop overrides", () => {
     );
   });
 
-  it("overrides the default contentWidth when provided", () => {
+  it("overrides the default overlayWidth when provided", () => {
     const { container, rerender } = render(
-      <LayoutGuide config={{ layout: "columns", contentWidth: 1200 }} />,
+      <LayoutGuide config={{ layout: "columns", overlayWidth: 1200 }} />,
     );
     const root = container.firstElementChild;
-    expect(root).toHaveStyle("--content-width: 1200px");
+    expect(root).toHaveStyle("--overlay-width: 1200px");
 
     rerender(
       <LayoutGuide
-        config={{ layout: "columns", contentWidth: "min(85%, 1440px)" }}
+        config={{ layout: "columns", overlayWidth: "min(85%, 1440px)" }}
       />,
     );
-    expect(root).toHaveStyle("--content-width: min(85%, 1440px)");
+    expect(root).toHaveStyle("--overlay-width: min(85%, 1440px)");
   });
 
   it("overrides the default position when position is provided", () => {
@@ -273,26 +273,12 @@ describe("css class application", () => {
     expect(root).toHaveClass("rflg-display");
   });
 
-  it("adds rflg-content-width class to root when contentWidth is passed as prop", () => {
-    const { container, rerender } = render(
-      <LayoutGuide config={{ layout: "columns", contentWidth: 1440 }} />,
+  it("adds rflg-overlay-width class to root when overlayWidth is passed as prop for only layouts: columns", () => {
+    const { container } = render(
+      <LayoutGuide config={{ layout: "columns", overlayWidth: 1440 }} />,
     );
     const root = container.firstElementChild;
-    expect(root).toHaveClass("rflg-content-width");
-
-    rerender(
-      <LayoutGuide
-        config={{ layout: "rows", contentWidth: "min(95%, 1200px)" }}
-      />,
-    );
-    expect(root).toHaveClass("rflg-content-width");
-
-    rerender(
-      <LayoutGuide
-        config={{ layout: "grid", contentWidth: "min(90%, 1280px)" }}
-      />,
-    );
-    expect(root).toHaveClass("rflg-content-width");
+    expect(root).toHaveClass("rflg-overlay-width");
   });
 });
 

@@ -26,7 +26,7 @@ describe("resolveConfig with mediaQueries", () => {
           layout: "columns",
           type: "stretch",
           color: "#00ff0011",
-          contentWidth: 1200,
+          overlayWidth: 1200,
         },
       },
     } as LayoutGuideProps["config"];
@@ -37,7 +37,7 @@ describe("resolveConfig with mediaQueries", () => {
       defaultVisible: false,
       layout: "columns",
       type: "stretch",
-      contentWidth: 1200,
+      overlayWidth: 1200,
     });
   });
 
