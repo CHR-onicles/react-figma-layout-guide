@@ -149,7 +149,7 @@ With **`mediaQueries`**, set `position` at the **top level** next to `color`, `a
 
 ### Margin and offset
 
-- **`margin`** applies when `type` is `stretch` (outer space around the column/row tracks).
+- **`margin`** applies when `type` is `stretch` (outer space around the tracks: horizontal for columns, vertical for rows).
 - **`offset`** applies when `type` is `left` / `right` (columns) or `top` / `bottom` (rows) instead of margin in those layouts.
 
 Pass a **number** for pixel values or a **string** to use relative units or other CSS lengths to mimic your project, for example:
@@ -165,6 +165,8 @@ margin: "clamp(1rem, 4vw, 3rem)";
 ### Responsive `mediaQueries`
 
 When you use `mediaQueries`, put **only** shared options at the top level (ie: `color`, `animate`, `defaultVisible`, `position`). Put `layout` and layout-specific fields inside each breakpoint.
+
+Each breakpoint is configured in isolation: values do **not** cascade from `mobile` → `tablet` → `desktop`. If a breakpoint needs a given option (for example `layout`, `count`, or `gutter`), declare it there explicitly. Smarter merging or inheritance across breakpoints is not available yet but may arrive in a future version.
 
 Breakpoints (viewport width):
 
@@ -210,8 +212,8 @@ Breakpoints (viewport width):
 | `rowHeight`      | `rows`                           | `50`                     | Row height (px)                                                                                                                                                      |
 | `count`          | `columns`, `rows`                | `5`                      | Number of tracks                                                                                                                                                     |
 | `gutter`         | `columns`, `rows`                | `20`                     | Gap between tracks: **number** → `px`, or **string** (any CSS length: `rem`, `%`, `clamp()`, …)                                                                      |
-| `margin`         | `columns`, `rows`                | `0`                      | Outer margin: **number** → `px`, or **string** (any CSS length: `%`, `vw`, `vh`, `rem`, `clamp()`, …)                                                                |
-| `offset`         | `columns`, `rows`                | `0`                      | For `left`/`right` or `top`/`bottom` types; same **number** \| **string** rules as `margin`                                                                          |
+| `margin`         | `columns`, `rows`                | `0`                      | Space outside rows/columns for type `stretch`: **number** → `px`, or **string** (any CSS length: `%`, `vw`, `vh`, `rem`, `clamp()`, …)                               |
+| `offset`         | `columns`, `rows`                | `0`                      | Space outside rows/columns for `left`/`right` or `top`/`bottom` types; same **number** \| **string** rules as `margin`                                               |
 
 ## License
 
