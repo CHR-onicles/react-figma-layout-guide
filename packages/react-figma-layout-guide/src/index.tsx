@@ -135,7 +135,8 @@ export const LayoutGuide = ({ config }: LayoutGuideProps) => {
           "--size": `${size}px`,
           "--column-width": `${columnWidth}px`,
           "--row-height": `${rowHeight}px`,
-          "--gutter": `${gutter}px`,
+          "--gutter":
+            typeof gutter === "number" ? `${gutter}px` : `${gutter}`,
           "--margin": typeof margin === "number" ? `${margin}px` : `${margin}`,
           "--offset": typeof offset === "number" ? `${offset}px` : `${offset}`,
           "--grid-columns": gridColumns,

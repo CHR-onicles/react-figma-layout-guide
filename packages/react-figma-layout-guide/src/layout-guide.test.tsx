@@ -123,12 +123,15 @@ describe("default prop overrides", () => {
   });
 
   it("overrides the default column/row gutter when provided", () => {
-    const { container } = render(
+    const { container, rerender } = render(
       <LayoutGuide config={{ layout: "rows", gutter: 50 }} />,
     );
     const root = container.firstElementChild;
 
     expect(root).toHaveStyle("--gutter: 50px");
+
+    rerender(<LayoutGuide config={{ layout: "rows", gutter: "2rem" }} />);
+    expect(root).toHaveStyle("--gutter: 2rem");
   });
 
   it("overrides the default column/row margin when provided", () => {

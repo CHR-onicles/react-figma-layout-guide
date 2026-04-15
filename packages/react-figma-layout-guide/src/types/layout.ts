@@ -47,7 +47,7 @@ export type FlatConfig = {
    */
   overlayWidth?: number | string;
   margin?: number | string;
-  gutter?: number;
+  gutter?: number | string;
   offset?: number | string;
   count?: number;
 };
@@ -112,11 +112,11 @@ type ColumnsCommon = LayoutBase & {
   margin?: number | string;
 
   /**
-   * Space in between columns.
+   * Space between columns. A number is treated as pixels; a string can be any valid CSS length (`rem`, `%`, `clamp()`, …).
    *
    * Default: 20px
    */
-  gutter?: number;
+  gutter?: number | string;
 
   /**
    * For `type` left, right. Replaces margin in these scenarios. Fixed px or relative units.
@@ -200,11 +200,11 @@ export type LayoutDefault =
       margin?: number | string;
 
       /**
-       * Space in between rows.
+       * Space between rows. A number is treated as pixels; a string can be any valid CSS length (`rem`, `%`, `clamp()`, …).
        *
        * Default: 20px
        */
-      gutter?: number;
+      gutter?: number | string;
 
       /**
        * For `type` top, bottom. Replaces margin in these scenarios. Fixed px or relative units.
@@ -272,7 +272,7 @@ type LayoutWithMediaQueries = LayoutGlobalProps & {
  *
  * @example
  * // Rows layout - type (stretch|top|center|bottom), rowHeight, gutter, margin, offset
- * <LayoutGuide config={{ layout: "rows", type: "stretch", gutter: 20, margin: 50 }} />
+ * <LayoutGuide config={{ layout: "rows", type: "stretch", gutter: "2rem", margin: 50 }} />
  */
 export type LayoutGuideProps = {
   config: LayoutWithMediaQueries | LayoutWithoutMediaQueries;
