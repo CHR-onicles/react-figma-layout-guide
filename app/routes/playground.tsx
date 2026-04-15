@@ -109,7 +109,7 @@ export default function Home() {
       {/* ─── Main canvas ─────────────────────────────────────── */}
       <main className="min-h-screen relative mx-12">
         {/* Hero */}
-        <section className="pt-16 pb-12 border-b border-gray-100 dark:border-gray-800/60">
+        <section className="relative pt-16 pb-12 border-b border-gray-100 dark:border-gray-800/60">
           <p className="text-xs font-semibold uppercase tracking-widest text-sky-500 mb-3">
             Playground
           </p>
@@ -151,6 +151,10 @@ export default function Home() {
                 : `${configuredBpCount} of 3 breakpoints configured`}
             </span>
           </div>
+          <LayoutGuide
+            // config={{ mediaQueries: { mobile: { layout: "columns", type: "stretch" } } }}
+            config={config}
+          />
         </section>
 
         {/* Feature cards */}
@@ -238,11 +242,6 @@ export default function Home() {
             />
           ))}
         </section>
-
-        <LayoutGuide
-          // config={{ mediaQueries: { mobile: { layout: "columns", type: "stretch" } } }}
-          config={config}
-        />
       </main>
 
       {/* ─── Floating controls panel ─────────────────────────── */}
@@ -370,8 +369,8 @@ export default function Home() {
                   ))}
                 </div>
                 <p className="text-[10px] text-gray-500 leading-relaxed">
-                  Fixed covers the viewport; absolute is confined to the main
-                  content area (requires a relative parent).
+                  Fixed covers the viewport; absolute is confined to the hero
+                  section (requires a relative parent).
                 </p>
               </div>
             </section>
