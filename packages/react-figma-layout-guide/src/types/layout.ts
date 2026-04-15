@@ -87,7 +87,7 @@ export type LayoutBase = {
   mediaQueries?: LayoutMediaQueries;
 
   /**
-   * Controls whether the overlay covers the entire viewport (`fixed`) or only its parent container (`absolute`). If `absolute` is used, the parent container **must** have `position: relative`
+   * Controls whether the overlay covers the entire viewport (`fixed`) or only its parent container (`absolute`). If `absolute` is used, the parent element **must** establish a containing block—typically `position: relative` (or `absolute`, `fixed`, or `sticky`).
    *
    * Default: fixed
    */

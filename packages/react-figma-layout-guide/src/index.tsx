@@ -182,7 +182,7 @@ export const LayoutGuide = ({ config }: LayoutGuideProps) => {
                 className="rflg-grid-row"
                 style={
                   {
-                    "--delay": `${index * 0.015 * 0.5 * (gridColumns > gridRows ? 1 : 0.5)}s`,
+                    "--delay": `${index * delayConstant * 0.5 * (gridColumns > gridRows ? 1 : 0.5)}s`,
                   } as React.CSSProperties
                 }
               />

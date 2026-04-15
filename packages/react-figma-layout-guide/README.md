@@ -54,7 +54,9 @@ export function App() {
 ```tsx
 // Or for Node-based setups:
 {
-  process.env.DEV && <LayoutGuide config={{ layout: "grid", size: 25 }} />;
+  process.env.NODE_ENV === "development" && (
+    <LayoutGuide config={{ layout: "grid", size: 25 }} />
+  );
 }
 ```
 
@@ -175,7 +177,7 @@ Breakpoints (viewport width):
 ```tsx
 <LayoutGuide
   config={{
-    color: "hsl(200 80% 50% / 0.15)",
+    color: "hsl(200, 80%, 50%, 0.15)",
     defaultVisible: false,
     mediaQueries: {
       mobile: { layout: "columns", type: "stretch", count: 4, columnWidth: 20 },

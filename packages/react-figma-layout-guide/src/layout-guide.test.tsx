@@ -160,8 +160,8 @@ describe("default prop overrides", () => {
     expect(root).toHaveStyle("--offset: 15vw");
   });
 
-  it("overrides the default animate value when provided", () => {
-    const { container } = render(
+  it("overrides the default animate value when provided", async () => {
+    const { container, rerender } = render(
       <LayoutGuide config={{ layout: "columns", count: 3, animate: false }} />,
     );
     const root = container.firstElementChild;
@@ -169,6 +169,19 @@ describe("default prop overrides", () => {
     expect(root?.querySelector(".rflg-layout-track")).toHaveStyle(
       "--delay: 0s",
     );
+
+    rerender(
+      <LayoutGuide config={{ layout: "grid", size: 100, animate: false }} />,
+    );
+    await waitFor(() => {
+      const columns = root?.querySelectorAll(".rflg-grid-column");
+      expect(columns?.length).toBeGreaterThan(1);
+    });
+
+    const secondCol = root?.querySelectorAll(".rflg-grid-column")[1];
+    const secondRow = root?.querySelectorAll(".rflg-grid-row")[1];
+    expect(secondCol).toHaveStyle("--delay: 0s");
+    expect(secondRow).toHaveStyle("--delay: 0s");
   });
 
   it("overrides the default overlayWidth when provided", () => {

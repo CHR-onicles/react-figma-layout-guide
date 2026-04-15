@@ -4,6 +4,7 @@ import { getBreakpoint } from "./get-breakpoint";
 describe("getBreakpoint", () => {
   it("returns mobile if 0 < width < 768", () => {
     expect(getBreakpoint(1)).toBe("mobile");
+    expect(getBreakpoint(375.5)).toBe("mobile");
     expect(getBreakpoint(375)).toBe("mobile");
     expect(getBreakpoint(767)).toBe("mobile");
   });
@@ -30,11 +31,7 @@ describe("getBreakpoint", () => {
     );
   });
   it("throws if width is < 1", () => {
-    expect(() => getBreakpoint(0)).toThrowError(
-      "width must be a positive integer",
-    );
-    expect(() => getBreakpoint(-2)).toThrowError(
-      "width must be a positive integer",
-    );
+    expect(() => getBreakpoint(0)).toThrowError("width must be at least 1");
+    expect(() => getBreakpoint(-2)).toThrowError("width must be at least 1");
   });
 });
