@@ -1,0 +1,10 @@
+node_modules
+build
+coverage
+.react-router
+**/dist
+*.min.js
+**/tsconfig.json
+package-lock.json
+pnpm-lock.yaml
+yarn.lock

@@ -1,0 +1,26 @@
+import type { LayoutDefault } from "packages/react-figma-layout-guide/src/types/layout";
+import type { BpState } from "~/types";
+
+export function buildBpLayout(bp: BpState): LayoutDefault {
+  if (bp.layout === "grid") return { layout: "grid", size: bp.size };
+  if (bp.layout === "columns") {
+    return {
+      layout: "columns",
+      type: bp.colType,
+      columnWidth: bp.colWidth,
+      count: bp.count,
+      gutter: bp.gutter,
+      margin: `${bp.marginValue}${bp.marginUnit}`,
+      offset: `${bp.offsetValue}${bp.offsetUnit}`,
+    };
+  }
+  return {
+    layout: "rows",
+    type: bp.rowType,
+    rowHeight: bp.rowHeight,
+    count: bp.count,
+    gutter: bp.gutter,
+    margin: `${bp.marginValue}${bp.marginUnit}`,
+    offset: `${bp.offsetValue}${bp.offsetUnit}`,
+  };
+}

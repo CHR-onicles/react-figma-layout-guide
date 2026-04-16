@@ -8,6 +8,12 @@
   z-index: 999999999; /* Nine 9s */
 }
 
+.rflg-layout-guide.rflg-absolute,
+.rflg-inner-column-grid.rflg-absolute,
+.rflg-inner-row-grid.rflg-absolute {
+  position: absolute;
+}
+
 .rflg-display {
   .rflg-layout-track {
     opacity: 1 !important;
@@ -76,12 +82,11 @@
 }
 
 /* Layout option types ------------------------ */
-/* .rflg-stretch { */
-/* Do nothing */
-/* } */
-
 .rflg-stretch.rflg-columns {
   margin-inline: var(--margin);
+}
+.rflg-stretch.rflg-columns.rflg-overlay-width {
+  width: var(--overlay-width, 100%);
 }
 
 .rflg-stretch.rflg-rows {
@@ -97,13 +102,13 @@
 .rflg-left.rflg-columns,
 .rflg-right.rflg-columns,
 .rflg-center.rflg-columns {
-  grid-template-columns: repeat(var(--count), var(--width));
+  grid-template-columns: repeat(var(--count), var(--column-width));
 }
 
 .rflg-center.rflg-rows,
 .rflg-top.rflg-rows,
 .rflg-bottom.rflg-rows {
-  grid-template-rows: repeat(var(--count), var(--height));
+  grid-template-rows: repeat(var(--count), var(--row-height));
 }
 
 .rflg-left {

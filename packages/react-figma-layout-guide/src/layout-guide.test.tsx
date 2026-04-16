@@ -35,9 +35,18 @@ describe("initial render", () => {
 
     expect(root).not.toHaveClass("rflg-display");
   });
+
+  it("root element has default position as fixed when position is omitted", () => {
+    const { container } = render(
+      <LayoutGuide config={{ layout: "columns" }} />,
+    );
+    const root = container.firstElementChild;
+
+    expect(root).not.toHaveClass("rflg-absolute");
+  });
 });
 
-describe("default prop fallbacks", () => {
+describe("default prop overrides", () => {
   it("overrides the default layout when provided", () => {
     const { container } = render(<LayoutGuide config={{ layout: "grid" }} />);
     const root = container.firstElementChild;
@@ -97,51 +106,65 @@ describe("default prop fallbacks", () => {
 
   it("overrides the default column width when provided", () => {
     const { container } = render(
-      <LayoutGuide config={{ layout: "columns", width: 100 }} />,
+      <LayoutGuide config={{ layout: "columns", columnWidth: 100 }} />,
     );
     const root = container.firstElementChild;
 
-    expect(root).toHaveStyle("--width: 100px");
+    expect(root).toHaveStyle("--column-width: 100px");
   });
 
   it("overrides the default row height when provided", () => {
     const { container } = render(
-      <LayoutGuide config={{ layout: "rows", height: 500 }} />,
+      <LayoutGuide config={{ layout: "rows", rowHeight: 500 }} />,
     );
     const root = container.firstElementChild;
 
-    expect(root).toHaveStyle("--height: 500px");
+    expect(root).toHaveStyle("--row-height: 500px");
   });
 
   it("overrides the default column/row gutter when provided", () => {
-    const { container } = render(
+    const { container, rerender } = render(
       <LayoutGuide config={{ layout: "rows", gutter: 50 }} />,
     );
     const root = container.firstElementChild;
 
     expect(root).toHaveStyle("--gutter: 50px");
+
+    rerender(<LayoutGuide config={{ layout: "rows", gutter: "2rem" }} />);
+    expect(root).toHaveStyle("--gutter: 2rem");
   });
 
   it("overrides the default column/row margin when provided", () => {
-    const { container } = render(
+    const { container, rerender } = render(
       <LayoutGuide config={{ layout: "rows", margin: 10 }} />,
     );
     const root = container.firstElementChild;
 
     expect(root).toHaveStyle("--margin: 10px");
+
+    rerender(<LayoutGuide config={{ layout: "rows", margin: "20vw" }} />);
+    expect(root).toHaveStyle("--margin: 20vw");
+
+    rerender(<LayoutGuide config={{ layout: "rows", margin: "15rem" }} />);
+    expect(root).toHaveStyle("--margin: 15rem");
   });
 
   it("overrides the default column/row offset when provided", () => {
-    const { container } = render(
+    const { container, rerender } = render(
       <LayoutGuide config={{ layout: "rows", offset: 100 }} />,
     );
     const root = container.firstElementChild;
-
     expect(root).toHaveStyle("--offset: 100px");
+
+    rerender(<LayoutGuide config={{ layout: "rows", offset: "10%" }} />);
+    expect(root).toHaveStyle("--offset: 10%");
+
+    rerender(<LayoutGuide config={{ layout: "rows", offset: "15vw" }} />);
+    expect(root).toHaveStyle("--offset: 15vw");
   });
 
-  it("overrides the default animate value when provided", () => {
-    const { container } = render(
+  it("overrides the default animate value when provided", async () => {
+    const { container, rerender } = render(
       <LayoutGuide config={{ layout: "columns", count: 3, animate: false }} />,
     );
     const root = container.firstElementChild;
@@ -149,6 +172,42 @@ describe("default prop fallbacks", () => {
     expect(root?.querySelector(".rflg-layout-track")).toHaveStyle(
       "--delay: 0s",
     );
+
+    rerender(
+      <LayoutGuide config={{ layout: "grid", size: 100, animate: false }} />,
+    );
+    await waitFor(() => {
+      const columns = root?.querySelectorAll(".rflg-grid-column");
+      expect(columns?.length).toBeGreaterThan(1);
+    });
+
+    const secondCol = root?.querySelectorAll(".rflg-grid-column")[1];
+    const secondRow = root?.querySelectorAll(".rflg-grid-row")[1];
+    expect(secondCol).toHaveStyle("--delay: 0s");
+    expect(secondRow).toHaveStyle("--delay: 0s");
+  });
+
+  it("overrides the default overlayWidth when provided", () => {
+    const { container, rerender } = render(
+      <LayoutGuide config={{ layout: "columns", overlayWidth: 1200 }} />,
+    );
+    const root = container.firstElementChild;
+    expect(root).toHaveStyle("--overlay-width: 1200px");
+
+    rerender(
+      <LayoutGuide
+        config={{ layout: "columns", overlayWidth: "min(85%, 1440px)" }}
+      />,
+    );
+    expect(root).toHaveStyle("--overlay-width: min(85%, 1440px)");
+  });
+
+  it("overrides the default position when position is provided", () => {
+    const { container } = render(
+      <LayoutGuide config={{ position: "absolute", layout: "columns" }} />,
+    );
+    const root = container.firstElementChild;
+    expect(root).toHaveClass("rflg-absolute");
   });
 });
 
@@ -228,6 +287,14 @@ describe("css class application", () => {
     const root = container.firstElementChild;
 
     expect(root).toHaveClass("rflg-display");
+  });
+
+  it("adds rflg-overlay-width class to root when overlayWidth is passed as prop for only layouts: columns", () => {
+    const { container } = render(
+      <LayoutGuide config={{ layout: "columns", overlayWidth: 1440 }} />,
+    );
+    const root = container.firstElementChild;
+    expect(root).toHaveClass("rflg-overlay-width");
   });
 });
 
@@ -350,6 +417,34 @@ describe("children rendered for grid layout", () => {
       expect(columns).toHaveLength(calculatedColumns);
       expect(root).toHaveStyle(`--grid-columns: ${calculatedColumns}`);
       expect(rows).toHaveLength(calculatedRows);
+      expect(root).toHaveStyle(`--grid-rows: ${calculatedRows}`);
+    });
+  });
+
+  it("when position is absolute, grid columns and rows use the parent element size, not the window", async () => {
+    const parent = document.createElement("div");
+    vi.spyOn(parent, "clientWidth", "get").mockReturnValue(400);
+    vi.spyOn(parent, "clientHeight", "get").mockReturnValue(300);
+
+    render(
+      <LayoutGuide
+        config={{ layout: "grid", position: "absolute", size: 25 }}
+      />,
+      { container: parent },
+    );
+
+    const root = parent.firstElementChild as HTMLElement;
+    const calculatedColumns = Math.floor(400 / 25);
+    const calculatedRows = Math.floor(300 / 25);
+
+    await waitFor(() => {
+      expect(root.querySelectorAll(".rflg-grid-column")).toHaveLength(
+        calculatedColumns,
+      );
+      expect(root.querySelectorAll(".rflg-grid-row")).toHaveLength(
+        calculatedRows,
+      );
+      expect(root).toHaveStyle(`--grid-columns: ${calculatedColumns}`);
       expect(root).toHaveStyle(`--grid-rows: ${calculatedRows}`);
     });
   });
