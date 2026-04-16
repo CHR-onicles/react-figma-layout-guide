@@ -9,7 +9,7 @@ import type {
 } from "packages/react-figma-layout-guide/src/types/layout";
 import { SliderField } from "~/components/slider-field";
 import { ToggleField } from "~/components/toggle-field";
-import { CloseIcon, DemoIcon, InfoIcon } from "~/components/icons";
+import { CloseIcon, DemoIcon, GhIcon, InfoIcon } from "~/components/icons";
 import type { BpRecord, BpState } from "~/types";
 import { SectionHeading } from "~/components/section-heading";
 import { LayoutControls } from "~/components/layout-controls";
@@ -234,7 +234,7 @@ export default function Home() {
         </section>
 
         {/* Tile grid */}
-        <section className="pb-32 grid grid-cols-4 gap-4">
+        <section className=" grid grid-cols-4 gap-4">
           {Array.from({ length: 8 }).map((_, i) => (
             <div
               key={i}
@@ -242,6 +242,22 @@ export default function Home() {
             />
           ))}
         </section>
+        <footer className="py-4 mt-12 text-center text-xs text-gray-500 dark:text-gray-400">
+          <p>
+            Built at odd hours in{" "}
+            <span title="Ghana">
+              <GhIcon />
+            </span>{" "}
+            by{" "}
+            <a
+              href="https://www.divineanum.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-700 dark:text-gray-300 hover:underline underline-offset-2">
+              Divine Anum
+            </a>
+          </p>
+        </footer>
       </main>
 
       {/* ─── Floating controls panel ─────────────────────────── */}
