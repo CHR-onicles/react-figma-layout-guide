@@ -1,5 +1,6 @@
 # react-figma-layout-guide playground
 
+[![npm](https://img.shields.io/npm/v/react-figma-layout-guide)](https://www.npmjs.com/package/react-figma-layout-guide)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/CHR-onicles/react-figma-layout-guide/blob/main/LICENSE)
 [![Node](https://img.shields.io/badge/node-%3E%3D20-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
 [![Tests](https://img.shields.io/github/actions/workflow/status/CHR-onicles/react-figma-layout-guide/test.yml?branch=main&label=tests)](https://github.com/CHR-onicles/react-figma-layout-guide/actions/workflows/test.yml)
