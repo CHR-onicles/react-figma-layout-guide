@@ -10,6 +10,7 @@ import {
 import type { Route } from "./+types/root";
 import { LayoutGuide } from "../packages/react-figma-layout-guide/src";
 import { useEffect } from "react";
+import { Analytics } from "@vercel/analytics/react";
 import "./app.css";
 
 export const links: Route.LinksFunction = () => [
@@ -36,21 +37,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         {children}
-        {/* <LayoutGuide
-          config={{
-            // animate: false,
-            mediaQueries: {
-              mobile: { layout: "columns", count: 3 },
-              tablet: {
-                layout: "rows",
-                count: 5,
-                type: "center",
-                color: "#ffffff7f",
-              },
-              desktop: { layout: "columns", count: 12 },
-            },
-          }}
-        /> */}
+        <Analytics />
         <ScrollRestoration />
         <Scripts />
       </body>
