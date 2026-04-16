@@ -1,5 +1,4 @@
 .DS_Store
-.env
 /node_modules/
 
 # React Router
@@ -11,5 +10,5 @@ dj.md
 *.tgz
 dist/
 
-.env.production
 .cursor
+config.bat
