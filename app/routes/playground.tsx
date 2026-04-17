@@ -18,12 +18,32 @@ import { buildBpLayout } from "~/utils/build-bp-layout";
 import { hexToRgba } from "~/utils/hex-to-rgba";
 import { getInheritLabel } from "~/utils/get-inherit-label";
 
-export function meta({}: Route.MetaArgs) {
+export function meta() {
+  const title = "React Figma Layout Guide — Playground";
+  const description = "Playground for the LayoutGuide component.";
+  const image =
+    "https://raw.githubusercontent.com/CHR-onicles/react-figma-layout-guide/main/assets/playground.png";
+  const url = "https://react-figma-layout-guide.vercel.app/";
+
   return [
-    { title: "React Figma Layout Guide — Playground" },
+    { title },
+    { name: "description", content: description },
+    { property: "og:title", content: title },
+    { property: "og:description", content: description },
+    { property: "og:type", content: "website" },
+    { property: "og:url", content: url },
+    { property: "og:image", content: image },
     {
-      name: "description",
-      content: "Playground for the LayoutGuide component.",
+      property: "og:image:alt",
+      content: "Screenshot of the LayoutGuide playground",
+    },
+    { name: "twitter:card", content: "summary_large_image" },
+    { name: "twitter:title", content: title },
+    { name: "twitter:description", content: description },
+    { name: "twitter:image", content: image },
+    {
+      name: "twitter:image:alt",
+      content: "Screenshot of the LayoutGuide playground",
     },
   ];
 }
