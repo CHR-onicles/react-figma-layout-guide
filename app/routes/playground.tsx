@@ -1,5 +1,4 @@
 import { useMemo, useState } from "react";
-import type { Route } from "./+types/playground";
 import { LayoutGuide } from "packages/react-figma-layout-guide/src";
 import type {
   Breakpoint,
@@ -20,7 +19,8 @@ import { getInheritLabel } from "~/utils/get-inherit-label";
 
 export function meta() {
   const title = "React Figma Layout Guide — Playground";
-  const description = "Playground for the LayoutGuide component.";
+  const description =
+    "Interactive demo of LayoutGuide: a dev-only Figma-style overlay for columns, rows, or a square grid—tune colors, layout, and responsive breakpoints, then toggle the guide with Shift+G.";
   const image =
     "https://raw.githubusercontent.com/CHR-onicles/react-figma-layout-guide/main/assets/playground.png";
   const url = "https://react-figma-layout-guide.vercel.app/";
